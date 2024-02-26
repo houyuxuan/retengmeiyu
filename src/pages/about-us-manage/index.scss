@@ -1,0 +1,41 @@
+@import '~@/app.scss';
+
+.manage-container {
+    padding: 30px;
+
+    .form {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+
+        .input-wrapper {
+            width: 65%;
+            height: 70px;
+            box-sizing: border-box;
+        }
+
+        .at-button {
+            width: 30%;
+            height: 70px;
+            margin: 0;
+            padding: 6px;
+            
+            button {
+                color: #333;
+            }
+        }
+    }
+
+    .btn-group {
+        display: flex;
+        margin-top: 30px;
+
+        .at-button {
+            width: 25%;
+        }
+    }
+
+    .at-card {
+        margin: 20px 0;
+    }
+}

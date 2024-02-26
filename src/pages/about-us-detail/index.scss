@@ -1,0 +1,32 @@
+@import '~@/app.scss';
+
+.detail-container {
+    padding: 30px;
+
+    .detail {
+        border: 1px solid $color-border-base;
+        border-radius: 20px;
+        padding: 20px;
+        
+        .title {
+            font-size: 40px;
+            // margin: 20px 0;
+        }
+
+        .date {
+            margin-bottom: 20px;
+            color: #aaa;
+            font-size: 20px;
+        }
+
+        .img {
+            text-align: center;
+        }
+
+        image {
+            width: 94%;
+            border-radius: 20px;
+            margin: 20px auto;
+        }
+    }
+}

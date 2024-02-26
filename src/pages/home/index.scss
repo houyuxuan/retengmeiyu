@@ -1,0 +1,27 @@
+@import '~@/app.scss';
+
+.home-container {
+    .title {
+        font-size: 60px;
+        margin: 60px 0;
+        text-align: center;
+    }
+
+    .enter-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px 5vw;
+        font-size: 36px;
+
+        .item {
+            width: 35vw;
+            height: 35vw;
+            margin: 3vw;
+            border: 2px solid $color-border-base;
+            border-radius: 50px;
+            text-align: center;
+            line-height: 35vw;
+        }
+    }
+}

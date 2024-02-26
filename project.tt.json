@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "retengmeiyu",
+  "description": "热腾美育项目",
+  "appid": "wxa688e0cca18e3f1f",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

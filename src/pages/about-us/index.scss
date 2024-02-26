@@ -1,0 +1,30 @@
+@import '~@/app.scss';
+
+.intro-list {
+    .intro-item {
+        display: flex;
+        position: relative;
+        border: 1px solid $color-border-base;
+        border-radius: 20px;
+        padding: 30px 20px;
+        margin: 20px;
+
+        image {
+            width: 30vw;
+            height: 30vw;
+            border-radius: 20px;
+        }
+
+        .text {
+            margin-left: 30px;
+
+            .date {
+                position: absolute;
+                bottom: 30px;
+                right: 30px;
+                color: #999;
+                font-size: 20px;
+            }
+        }
+    }
+}

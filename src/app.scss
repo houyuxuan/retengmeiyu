@@ -1,0 +1,50 @@
+@import "~taro-ui/dist/style/index.scss";
+
+page {
+    color: #333;
+}
+
+textarea {
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid $color-border-base;
+    border-radius: 20px;
+}
+
+.input-wrapper {
+    margin-bottom: 20px;
+
+    &.has-prefix {
+        position: relative;
+        padding: 10px 20px 10px 60px;
+        border: 1px solid $color-border-base;
+        border-radius: 10px;
+
+        .at-icon {
+            font-size: 20px;
+            position: absolute;
+            left: 10px;
+            top: 14px;
+        }
+    }
+
+    &.has-label {
+        label {
+            display: block;
+            color: #333;
+            padding-bottom: 10px;
+        }
+        input {
+            padding: 10px 20px;
+            border: 1px solid $color-border-base;
+            border-radius: 10px;
+        }
+        &.required {
+            label::before {
+                content: '*';
+                color: $color-error;
+                padding: 0 5px;
+            }
+        }
+    }
+}
