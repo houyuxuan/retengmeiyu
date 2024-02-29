@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
-import { getIntroDetail } from '@/api'
-import { AboutUs } from '@/types'
+import { getActivityDetail } from '@/api'
 import ArticleDetail from '@/components/ArticleDetail'
+import { Garden } from '@/types'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -11,11 +10,11 @@ function Index() {
   const currId = currPage.options.id
   const isPreview = currPage.options.preview
 
-  const [detail, setDetail] = useState<AboutUs.IntroDetail>()
+  const [detail, setDetail] = useState<Garden.ActivityDetail>()
 
   const getDetail = () => {
-    getIntroDetail({
-      id: +currId
+    getActivityDetail({
+      activityId: +currId
     }).then(res => {
       setDetail(res.data)
     })
@@ -24,7 +23,7 @@ function Index() {
   useEffect(() => {
     if (+isPreview === 1) {
       Taro.setNavigationBarTitle({
-        title: '关于我们-预览'
+        title: '活动预览'
       })
     }
   }, [isPreview])
@@ -36,7 +35,7 @@ function Index() {
   return <ArticleDetail detail={
     detail ? {
       ...detail,
-      title: detail.title,
+      title: detail.activityTitle,
       id: detail.id!,
       createTime: detail.createTime || ''
     } : undefined}

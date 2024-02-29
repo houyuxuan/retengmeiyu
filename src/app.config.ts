@@ -2,7 +2,8 @@ export default defineAppConfig({
    pages: [
     'pages/index/index',
     'pages/home/index',
-    'pages/garden/index',
+    'pages/garden-school/index',
+    'pages/garden-activity/index',
     'pages/community/index',
     'pages/resource/index',
     'pages/mine/index',
@@ -10,6 +11,8 @@ export default defineAppConfig({
     'pages/about-us-detail/index',
     'pages/about-us-manage/index',
     'pages/about-us-edit/index',
+    'pages/activity-detail/index',
+    'pages/community-post-detail/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -26,8 +29,14 @@ export default defineAppConfig({
       text: '首页',
       // iconPath: 'home'
     }, {
-      pagePath: 'pages/about-us/index',
-      text: '关于我们'
+      pagePath: 'pages/garden-school/index',
+      text: '花园'
+    }, {
+      pagePath: 'pages/community/index',
+      text: '社区'
+    }, {
+      pagePath: 'pages/resource/index',
+      text: '资源'
     }, {
       pagePath: 'pages/mine/index',
       text: '我的'

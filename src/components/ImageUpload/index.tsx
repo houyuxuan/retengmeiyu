@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro';
-import { AtImagePicker } from 'taro-ui'
+import { AtImagePicker, AtMessage } from 'taro-ui'
+import { uploadFile } from '@/api';
+import { FileType } from '../../types';
 import './index.scss'
-// import * as mockData from './data'
-// import Taro from '@tarojs/taro'
 
 interface IProps {
   multiple?: boolean;
   length: number;
   max?: number;
-  fileList?: [{
+  fileList?: {
     url: string;
-  }];
+  }[];
   center?: boolean;
 }
 
@@ -28,16 +28,15 @@ function Index(props: IProps) {
   const handleImageChange = async (files: any[]) => {
     setFiles(files)
 
-    console.log(123333, files, files[files.length - 1])
-    Taro.cloud.uploadFile({
-        cloudPath: `test/${files[files.length - 1].url.split('tmp/')[1]}`,
-        filePath: files[files.length - 1].url,
-    }).then(res => {
-        console.log(11111, res)
-    }).catch(error => {
-        console.error(22222, error)
+    uploadFile({
+      filePath: files[files.length - 1].url,
+      type: FileType.Image
     })
   }
+
+  useEffect(() => {
+    props.fileList && setFiles(props.fileList)
+  }, [props.fileList])
 
   useEffect(() => {
     setShowAddBtn(fileList.length < (props.max || 1))
@@ -65,6 +64,7 @@ function Index(props: IProps) {
 
   return (
     <View>
+      <AtMessage />
       <View>
         <AtImagePicker
           length={props.length || 3}

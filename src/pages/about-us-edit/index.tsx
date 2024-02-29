@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { View, Image, Input, Label, Textarea } from '@tarojs/components'
 import { AtCard, AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
-import { AboutUs } from 'types'
+import { AboutUs } from '@/types'
 import { getIntroDetail, introEdit } from '@/api'
 import Taro from '@tarojs/taro'
 import ImageUpload from '../../components/ImageUpload'
 import './index.scss'
 
 function Index() {
-  const route = Taro.getCurrentPages().pop()!
+  const currPage = Taro.getCurrentPages().pop()!
 
-  const currId = route.options.id
+  const currId = currPage.options.id
   const [detail, setDetail] = useState<AboutUs.IntroDetail>({
     title: '',
-    coverImg: '',
+    coverUrl: '',
     detailList: [],
+    detail: ''
   })
 
   const getDetail = () => {
@@ -28,10 +29,10 @@ function Index() {
   }
 
   useEffect(() => {
-    currId && getDetail()
+    getDetail()
   }, [currId])
 
-  const [contentOpen, setContentOpen] = useState(false)
+  const [contentOpen, setContentOpen] = useState(true)
 
   const addContent = (type: 'text' | 'img') => {
     setDetail({
@@ -70,6 +71,7 @@ function Index() {
       message: '保存成功',
       type: 'success',
     })
+    Taro.redirectTo({url: '/pages/about-us-manage/index'})
   }
 
   const cancel = () => {
@@ -79,6 +81,7 @@ function Index() {
   const getButtons = () => {
     return (
       <View className='btn-group'>
+        <AtMessage />
         <AtButton type='secondary' size='small' onClick={() => addContent('text')}>
           <AtIcon value='add' size='16' />
           添加文本
@@ -109,8 +112,9 @@ function Index() {
           <View className='input-wrapper has-label required'>
             <Label>封面图上传(每张不超过10M)</Label>
             <ImageUpload
-              length={3}
+              length={2}
               max={1}
+              fileList={detail.coverUrl? [{ url: detail.coverUrl }] : []}
             />
           </View>
         </View>
@@ -125,7 +129,7 @@ function Index() {
               {detail.detailList.map((item, idx) => (
                 item.type === 'img' ? (
                   <View key={idx} className='img'>
-                    <ImageUpload fileList={[{ url: item.content }]} length={2} max={1} center multiple />
+                    <ImageUpload fileList={[{ url: item.content }]} length={1} max={1} center multiple />
                     {getButtons()}
                   </View>
                 ) : (
