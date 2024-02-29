@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Image } from '@tarojs/components'
 import { ContentItem, IdType } from '@/types'
-import { AtActivityIndicator, AtMessage } from 'taro-ui'
+import { AtActivityIndicator } from 'taro-ui'
 import './index.scss'
 
 export default function ArticleDetail(props: {
@@ -17,7 +17,6 @@ export default function ArticleDetail(props: {
 }) {
   return (
     <View className='detail-container'>
-      <AtMessage />
       {props.detail?.id ? (
         <View className='detail'>
           {props.showTitle && (<>

@@ -21,7 +21,7 @@ export default function request<T>(options: Taro.request.Option): Promise<Respon
         }).catch(err => {
             Taro.atMessage({
                 type: 'success',
-                message: err
+                message: err.errMsg
             })
             reject(err)
         })
