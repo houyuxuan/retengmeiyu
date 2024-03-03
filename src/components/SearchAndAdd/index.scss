@@ -1,0 +1,22 @@
+@import "~taro-ui/dist/style/index.scss";
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    .input-wrapper {
+        width: 65%;
+        height: 70px;
+        box-sizing: border-box;
+        flex: 1;
+        margin-right: 30px;
+    }
+
+    .at-button {
+        width: 30%;
+        height: 70px;
+        margin: 0;
+        padding: 6px;
+    }
+}

@@ -1,0 +1,19 @@
+.manage-list {
+    .at-card__content-info {
+        view {
+            margin-bottom: 10px;
+        }
+    }
+    .btn-group {
+        display: flex;
+        margin-top: 20px;
+
+        .at-button {
+            width: 25%;
+        }
+    }
+
+    .at-card {
+        margin: 20px 0;
+    }
+}

@@ -12,7 +12,14 @@ export default defineAppConfig({
     'pages/about-us-manage/index',
     'pages/about-us-edit/index',
     'pages/activity-detail/index',
-    'pages/community-post-detail/index'
+    'pages/community-post-detail/index',
+    'pages/community-discuss-post/index',
+    'pages/school-manage/index',
+    'pages/activity-manage/index',
+    'pages/user-manage/index',
+    'pages/user-info/index',
+    'pages/activity-edit/index',
+    'pages/school-edit/index',
   ],
   window: {
     backgroundTextStyle: 'light',

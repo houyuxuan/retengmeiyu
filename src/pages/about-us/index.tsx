@@ -28,7 +28,6 @@ function Index() {
         }))}
         detailUrl='/pages/about-us-detail/index'
       />
-      <Button onClick={() => Taro.navigateTo({url: '/pages/about-us-manage/index'})}>管理</Button>
     </View>
   )
 }

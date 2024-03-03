@@ -13,14 +13,14 @@ export default function request<T>(options: Taro.request.Option): Promise<Respon
                 resolve(res.data)
             } else {
                 Taro.atMessage({
-                    type: 'success',
+                    type: 'error',
                     message: res.data.msg
                 })
                 reject(res.data)
             }
         }).catch(err => {
             Taro.atMessage({
-                type: 'success',
+                type: 'error',
                 message: err.errMsg
             })
             reject(err)

@@ -9,14 +9,14 @@ export default function ArticleDetail(props: {
     id: IdType;
     title: string;
     createTime: string;
-    detailList: ContentItem[]
+    detailList: ContentItem[];
   };
-  showTitle: boolean
+  showTitle?: boolean;
 } = {
   showTitle: true
 }) {
   return (
-    <View className='detail-container'>
+    <View className='detail-wrapper'>
       {props.detail?.id ? (
         <View className='detail'>
           {props.showTitle && (<>

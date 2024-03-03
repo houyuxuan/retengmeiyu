@@ -1,4 +1,4 @@
-import { Garden, AboutUs, Community } from "../types";
+import { Garden, AboutUs, Community, UserManagement } from "../types";
 
 export const introList: AboutUs.IntroDetail[] = [{
     id: 1,
@@ -158,7 +158,8 @@ export const activityList: Garden.ActivityDetail[] = [{
     {
         type: 'text',
         content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
-    },])
+    },]),
+    zanNumber: 200
 }, {
     id: 2,
     activityCoverUrl: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg',
@@ -173,7 +174,8 @@ export const activityList: Garden.ActivityDetail[] = [{
     {
         type: 'text',
         content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
-    },])
+    },]),
+    zanNumber: 200
 }, {
     id: 3,
     activityCoverUrl: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg',
@@ -188,7 +190,8 @@ export const activityList: Garden.ActivityDetail[] = [{
     {
         type: 'text',
         content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
-    },])
+    },]),
+    zanNumber: 200
 }, {
     id: 5,
     activityCoverUrl: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg',
@@ -203,7 +206,8 @@ export const activityList: Garden.ActivityDetail[] = [{
     {
         type: 'text',
         content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
-    },])
+    },]),
+    zanNumber: 200
 }, {
     id: 6,
     activityCoverUrl: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg',
@@ -218,7 +222,8 @@ export const activityList: Garden.ActivityDetail[] = [{
     {
         type: 'text',
         content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
-    },])
+    },]),
+    zanNumber: 200
 }]
 
 export const postList: Community.PostDetail[] = [{
@@ -338,7 +343,7 @@ export const postList: Community.PostDetail[] = [{
     detailList: []
 }]
 
-export const discussList: Community.PostDiscussDetail = [{
+export const discussList: Community.PostDiscussDetail[] = [{
     id: 23,
     postId: 5,
     avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
@@ -370,4 +375,52 @@ export const discussList: Community.PostDiscussDetail = [{
     nickname: '哈哈哈',
     memberUserId: 1,
     createTime: '2024-01-01 11:11:11',
+}]
+
+export const menuList: UserManagement.MenuListItem[] = [{
+    id: 1,
+    menuName: '用户管理',
+    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    path: '/pages/user-manage/index'
+}, {
+    id: 2,
+    menuName: '学校管理',
+    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    path: '/pages/school-manage/index'
+}, {
+    id: 3,
+    menuName: '活动管理',
+    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    path: '/pages/activity-manage/index'
+}, {
+    id: 4,
+    menuName: '关于我们管理',
+    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    path: '/pages/about-us-manage/index'
+}]
+
+export const userList: UserManagement.UserInfo[] = [{
+    id: 1,
+    nickname: '哈哈哈',
+    mobile: '13131313131',
+    createTime: '2024-01-01 11:11:11',
+    status: 0,
+    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    sex: 1
+}, {
+    id: 2,
+    nickname: '哈哈哈2',
+    mobile: '13131313133',
+    createTime: '2024-01-01 11:11:11',
+    status: 1,
+    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    sex: 1
+}, {
+    id: 3,
+    nickname: '哈哈哈',
+    mobile: '13131333333',
+    createTime: '2024-01-01 11:11:11',
+    status: 0,
+    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    sex: 0
 }]

@@ -1,0 +1,60 @@
+@import "~taro-ui/dist/style/index.scss";
+
+.edit-container {
+
+    .content-wrapper {
+        padding: 30px;
+        height: calc(100vh - 150px);
+        overflow: auto;
+    }
+
+    .info,
+    .detail {
+        padding: 20px;
+        border: 1px solid $color-border-base;
+        border-radius: 20px;
+
+        &.info {
+            margin-bottom: 20px;
+        }
+    }
+
+    .content-list {
+        padding: 20px;
+    }
+
+    .btn-group {
+        margin: 20px;
+        display: flex;
+
+        .at-button {
+            width: 200px;
+            border: none;
+
+            .at-icon {
+                margin-right: 8px;
+            }
+        }
+    }
+
+    .fixed-buttons {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .at-button {
+            width: 50%;
+            border: 0;
+            border-radius: 0;
+            border-top: 1px solid $color-border-base;
+            border-bottom: 1px solid $color-border-base;
+
+            &:last-child {
+                border-left: 1px solid $color-border-base;
+            }
+        }
+    }
+}

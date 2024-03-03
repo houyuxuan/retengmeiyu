@@ -1,6 +1,6 @@
 import Taro, { UserInfo } from "@tarojs/taro";
 import { AboutUs, Community, FileType, Garden, IdType, PageParams, PageResult, UserManagement } from "@/types";
-import { activityList, introList, postList, schoolList } from "@/mock/data";
+import { activityList, discussList, introList, menuList, postList, schoolList, userList } from "@/mock/data";
 import request from "./request";
 
 /**************************   登录  **************************/
@@ -133,10 +133,28 @@ export function getSchoolActivity(params: { schoolId: IdType, searchKeyWord?: st
     //     method: 'POST',
     //     data: params
     // })
-    const list = ((Taro.getStorageSync('activityList') || activityList) as Garden.ActivityDetail[]).filter(i => i.schoolId === params.schoolId && (params?.searchKeyWord ? i.activityTitle.includes(params.searchKeyWord) : true))
+    const list = ((Taro.getStorageSync('activityList') || activityList) as Garden.ActivityDetail[]).filter(i => i.schoolId === params.schoolId && i.activityTitle.includes(params.searchKeyWord || ''))
     return Promise.resolve({
         data: {
             schoolActivityList: list,
+            total: list.length
+        }
+    })
+}
+
+// 花园-获取学校下活动列表
+export function getActivityList(params: { searchKeyWord?: string } & PageParams) {
+    // return request<{
+    //     schoolActivityList: Garden.ActivityDetail[]
+    // } & PageResult>({
+    //     url: '/rt/school/activity/list',
+    //     method: 'POST',
+    //     data: params
+    // })
+    const list = ((Taro.getStorageSync('activityList') || activityList) as Garden.ActivityDetail[]).filter(i => i.activityTitle.includes(params.searchKeyWord || ''))
+    return Promise.resolve({
+        data: {
+            activityList: list,
             total: list.length
         }
     })
@@ -201,19 +219,23 @@ export function getActivityUpvote(params: {
 
 // 我的-菜单列表
 export function getMenu() {
-    return request<{
-        memberMenuList: UserManagement.MenuListItem[]
-    }>({
-        url: '/rt/aboutMe/memberMenu/list',
-        method: 'POST',
-    }).then(res => {
-        return {
-            ...res,
-            data: res.data.memberMenuList
-        }
+    // return request<{
+    //     memberMenuList: UserManagement.MenuListItem[]
+    // }>({
+    //     url: '/rt/aboutMe/memberMenu/list',
+    //     method: 'POST',
+    // }).then(res => {
+    //     return {
+    //         ...res,
+    //         data: res.data.memberMenuList
+    //     }
+    // })
+    return Promise.resolve({
+        data: menuList
     })
 }
 
+// 上传文件
 export function uploadFile(params: {
     filePath: string;
     type: FileType;
@@ -279,34 +301,49 @@ export function getUserList(params: {
     searchKeyWord: string,
     status: UserManagement.UserStatusEnum,
 } & PageParams) {
-    return request<{
-        memberUserList: UserManagement.UserInfo[]
-    } & PageResult>({
-        url: '/rt/member/user/list',
-        method: 'POST',
-        data: params
+    // return request<{
+    //     memberUserList: UserManagement.UserInfo[]
+    // } & PageResult>({
+    //     url: '/rt/member/user/list',
+    //     method: 'POST',
+    //     data: params
+    // })
+
+    const list = ((Taro.getStorageSync('userList') || userList) as UserManagement.UserInfo[]).filter(i => i.nickname.includes(params.searchKeyWord || '') && (params.status === UserManagement.UserStatusEnum.All || params.status === i.status))
+    return Promise.resolve({
+        data: {
+            memberUserList: list,
+            total: list.length
+        }
     })
 }
 
 // 用户-获取用户列表 (超管权限)
 export function getUserDetail(params: { id: IdType }) {
-    return request<{memberUserInfo: UserManagement.UserInfo}>({
-        url: '/rt/member/user/Info',
-        method: 'POST',
-        data: params
-    }).then(res => {
-        return {
-            ...res,
-            data: res.data.memberUserInfo
-        }
+    // return request<{memberUserInfo: UserManagement.UserInfo}>({
+    //     url: '/rt/member/user/Info',
+    //     method: 'POST',
+    //     data: params
+    // }).then(res => {
+    //     return {
+    //         ...res,
+    //         data: res.data.memberUserInfo
+    //     }
+    // })
+
+    const detail = ((Taro.getStorageSync('userList') || userList) as UserManagement.UserInfo[]).find(i => i.id === params.id)!
+
+    return Promise.resolve({
+        data: detail
     })
 }
 
 // 用户-禁用/解禁用户
-export function userStatusChange() {
+export function userStatusChange(params: {id: IdType}) {
     return request({
         url: '/rt/member/user/disable',
         method: 'GET',
+        data: params
     })
 }
 
@@ -384,10 +421,29 @@ export function getPostDiscuss(params: {
     postId: IdType;
     createdTime?: [string, string];
 } & PageParams) {
-    return request<{
-        postDiscussList: Community.PostDiscussDetail[]
-    } & PageResult>({
-        url: '/rt/post/discuss/list',
+    // return request<{
+    //     postDiscussList: Community.PostDiscussDetail[]
+    // } & PageResult>({
+    //     url: '/rt/post/discuss/list',
+    //     method: 'POST',
+    //     data: params
+    // })
+    const list = ((Taro.getStorageSync('discussList') || discussList) as Community.PostDiscussDetail[])
+    return Promise.resolve({
+        data: {
+            postDiscussList: list,
+            total: list.length
+        }
+    })
+}
+
+export function publishDiscuss(params: {
+    postId: IdType;
+    discussContent: string;
+    memberUserId: number;
+}) {
+    return request({
+        url: '/rt/post/discuss/public',
         method: 'POST',
         data: params
     })

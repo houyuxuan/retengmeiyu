@@ -1,0 +1,52 @@
+@import "~taro-ui/dist/style/index.scss";
+
+.mine-container {
+    font-size: 30px;
+
+    .base-info {
+        height: 140px;
+        padding-left: 30px;
+        border-bottom: 1px solid $color-border-base;
+
+        .at-avatar {
+            display: inline-block;
+            margin-right: 30px;
+            vertical-align: top;
+        }
+    }
+    
+    .count {
+        display: flex;
+        height: 140px;
+        border-bottom: 1px solid $color-border-base;
+        .count-item {
+            width: 50%;
+            line-height: 70px;
+            text-align: center;
+
+            &:first-child {
+                border-right: 1px solid $color-border-base;
+            }
+        }
+    }
+
+    .function-title {
+        padding-left: 30px;
+        font-size: 38px;
+        height: 110px;
+        line-height: 110px;
+        border-bottom: 1px solid $color-border-base;
+
+        .at-icon {
+            margin-right: 10px;
+        }
+    }
+
+    .at-grid {
+        border-bottom: 1px solid $color-border-base;
+    }
+    
+    .content-inner__text {
+        font-size: 28px;
+    }
+}

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
+import { View, Image, Text } from '@tarojs/components'
+import { AtButton, AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
 import { getPostDetail, getPostDiscuss } from '@/api'
 import { Community, PageParams } from '@/types'
 import ArticleDetail from '@/components/ArticleDetail'
+import './index.scss'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -41,7 +42,7 @@ function Index() {
   const tabList = [{ title: '详情' }, { title: '讨论' }]
 
   return (
-    <View>
+    <View className='post-container'>
       <AtMessage />
       {detail && <View className='post-title'>
         <Image src={detail?.postCoverUrl || ''} />
@@ -50,8 +51,8 @@ function Index() {
           {detail.createTime}
         </View>
       </View>}
-      <View>
-        <AtTabs current={currTab} tabList={tabList} onClick={(index)=>setTab(index)}>
+      <View className='tab-container'>
+        <AtTabs animated={false} current={currTab} tabList={tabList} onClick={(index)=>setTab(index)}>
           <AtTabsPane current={currTab} index={0}>
             <ArticleDetail
               detail={
@@ -66,16 +67,21 @@ function Index() {
             />
           </AtTabsPane>
           <AtTabsPane current={currTab} index={1}>
-            {discussList.map(item => (
-              <View key={item.id}>
+            <View className='discuss-list'>
+              {discussList.map(item => (
+              <View className='discuss-item' key={item.id}>
                 <Image src={item.avatar} />
-                <View>{item.nickname}</View>
-                <View>{item.createTime}</View>
-                <View>{item.discussContent}</View>
+                <View className='text-content'>
+                  <Text className='nickname'>{item.nickname}</Text>
+                  <Text className='date'>{item.createTime}</Text>
+                  <View>{item.discussContent}</View>
+                </View>
               </View>
             ))}
+            </View>
           </AtTabsPane>
         </AtTabs>
+        <AtButton onClick={() => {Taro.navigateTo({url: '/pages/community-discuss-post/index'})}}>我要讨论</AtButton>
       </View>
     </View>
   )

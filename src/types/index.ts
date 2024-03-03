@@ -52,6 +52,7 @@ namespace Garden {
         createTime: string; // 'yyyy-mm-dd HH-mm-ss'
         activityDetails: string;
         detailList: ContentItem[];
+        zanNumber: number;
     }
 
     // 活动-点赞详情
@@ -97,6 +98,7 @@ namespace UserManagement {
     export enum UserStatusEnum {
         Disabled = 1, // 禁用状态
         Normal = 0, // 正常
+        All = 9, // 全部
     }
     
     export enum UserGenderEnum {
