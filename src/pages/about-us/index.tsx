@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Button } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { getIntroList } from '@/api'
-import { AboutUs } from '@/types'
+import { AboutUs, PageParams } from '@/types'
 import RtList from '@/components/RtList'
 import './index.scss'
 
 function Index() {
   const [introList, setIntro] = useState<AboutUs.IntroDetail[]>([])
 
+  const [page, setPage] = useState<PageParams>({
+    pageNo: 1,
+    pageSize: 20
+  })
+
+  const [total, setTotal] = useState(0)
+
   const getList = () => {
-    getIntroList().then(res => {
-      setIntro(res.data.aboutUsList)
+    getIntroList({
+      searchKeyWord: '',
+      ...page
+    }).then(res => {
+      setTotal(res.data.total)
+      setIntro([
+        ...introList,
+        ...res.data.list
+      ])
     })
   }
 
-  useEffect(getList, [])
+  useEffect(getList, [page])
 
   return (
     <View className='about-us'>
@@ -27,6 +40,13 @@ function Index() {
           date: i.createTime || ''
         }))}
         detailUrl='/pages/about-us-detail/index'
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
     </View>
   )

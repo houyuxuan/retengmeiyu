@@ -19,6 +19,13 @@
             font-size: 20px;
         }
 
+        .content {
+            .text {
+                margin-bottom: 20px;
+                text-indent: 2em;
+            }
+        }
+
         .img {
             text-align: center;
         }
@@ -26,7 +33,7 @@
         image {
             width: 94%;
             border-radius: 20px;
-            margin: 20px auto;
+            margin: 0 auto 20px;
         }
     }
 

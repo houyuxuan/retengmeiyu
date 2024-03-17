@@ -4,4 +4,18 @@
     .at-avatar {
         margin: 0 0 40px 50px;
     }
+
+    view {
+        margin-bottom: 20px;
+    }
+
+    .select-wrapper {
+        position: relative;
+
+        .at-icon {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+        }
+    }
 }

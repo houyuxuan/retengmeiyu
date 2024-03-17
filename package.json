@@ -52,6 +52,8 @@
     "@tarojs/shared": "3.6.23",
     "@tarojs/taro": "3.6.23",
     "lodash": "4.17.15",
+    "moment": "^2.30.1",
+    "qiniu.js": "^0.1.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "taro-ui": "^3.2.1",

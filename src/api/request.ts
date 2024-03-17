@@ -1,4 +1,5 @@
 import Taro from "@tarojs/taro";
+import moment from "moment";
 
 interface Response<T = any> {
     code: number;
@@ -6,9 +7,16 @@ interface Response<T = any> {
     data: T
 }
 
-export default function request<T>(options: Taro.request.Option): Promise<Response<T>> {
+export default function request<T = any>(options: Taro.request.Option): Promise<Response<T>> {
     return new Promise((resolve, reject) => {
-        Taro.request<Response<T>>(options).then(res => {
+        Taro.request<Response<T>>({
+            ...options,
+            url: process.env.TARO_APP_API + '/app-api' + options.url,
+            header: {
+                ...options.header,
+                Authorization: Taro.getStorageSync('token')
+            }
+        }).then(res => {
             if (res.data.code === 0) {
                 resolve(res.data)
             } else {

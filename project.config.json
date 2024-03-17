@@ -4,7 +4,7 @@
   	"description": "热腾美育项目",
 	"appid": "wxa688e0cca18e3f1f",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"enhance": false,
 		"compileHotReLoad": false,

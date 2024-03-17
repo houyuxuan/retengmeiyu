@@ -1,4 +1,5 @@
 import { resolve } from "path";
+import webpack from 'webpack';
 
 function getPath(path) {
     return resolve(__dirname, "..", path);
@@ -15,7 +16,13 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [],
+  // plugins: [
+  //   new webpack.DefinePlugin({ // webpack自带该插件，无需单独安装
+  //       'process.env' : {
+  //           NODE_ENV: JSON.stringify(process.env.NODE_ENV) // 将属性转化为全局变量，让代码中可以正常访问
+  //       }
+  //   })
+  // ],
   defineConstants: {
   },
   copy: {
@@ -39,6 +46,22 @@ const config = {
     loaderOptions: {
       scss: {
         prependData: `@import "~@/app.scss;`
+      }
+    }
+  },
+  weapp: {
+    module: {
+      postcss: {
+        autoprefixer: {
+          enable: true
+        },
+        // 小程序端样式引用本地资源内联配置
+        url: {
+          enable: true,
+          config: {
+            limit: 10240 // 文件大小限制
+          }
+        }
       }
     }
   },

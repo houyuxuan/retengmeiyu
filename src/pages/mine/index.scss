@@ -4,17 +4,43 @@
     font-size: 30px;
 
     .base-info {
+        display: flex;
         height: 140px;
         padding-left: 30px;
         border-bottom: 1px solid $color-border-base;
 
-        .at-avatar {
+        .name {
+            padding: 0 20px;
+            vertical-align: middle;
+        }
+
+        .at-icon-edit {
+            height: 32px;
+            margin-top: 4px;
+        }
+
+        .get-avatar {
             display: inline-block;
-            margin-right: 30px;
             vertical-align: top;
+            width: 100px;
+            height: 100px;
+            padding: 0;
+            margin: 0;
+            margin-right: 30px;
+            background: transparent;
+            border: 0;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        .nickname-input {
+            display: inline-block;
+            width: calc(100vw - 260rpx);
         }
     }
-    
+
     .count {
         display: flex;
         height: 140px;
@@ -42,10 +68,27 @@
         }
     }
 
-    .at-grid {
-        border-bottom: 1px solid $color-border-base;
+    .menu-list {
+        display: flex;
+        flex-wrap: wrap;
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(25% - 1px);
+            border-right: 1px solid $color-border-base;
+            border-bottom: 1px solid $color-border-base;
+            text-align: center;
+            padding: 30px 0;
+
+            image {
+                width: 10vw;
+                height: 10vw;
+                margin-bottom: 20px;
+            }
+        }
     }
-    
     .content-inner__text {
         font-size: 28px;
     }

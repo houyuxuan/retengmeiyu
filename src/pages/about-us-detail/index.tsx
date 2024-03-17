@@ -9,7 +9,7 @@ function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
   const currId = currPage.options.id
-  const isPreview = currPage.options.preview
+  const isPreview = +currPage.options.preview === 1
 
   const [detail, setDetail] = useState<AboutUs.IntroDetail>()
 
@@ -22,7 +22,7 @@ function Index() {
   }
 
   useEffect(() => {
-    if (+isPreview === 1) {
+    if (isPreview) {
       Taro.setNavigationBarTitle({
         title: '关于我们-预览'
       })

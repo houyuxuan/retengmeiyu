@@ -12,6 +12,12 @@ textarea {
     width: 100%;
 }
 
+input {
+    padding: 10px 20px;
+    border: 1px solid $color-border-base;
+    border-radius: 10px;
+}
+
 .input-wrapper {
     margin-bottom: 20px;
 
@@ -27,6 +33,11 @@ textarea {
             left: 10px;
             top: 14px;
         }
+
+        input {
+            padding: 0;
+            border: 0;
+        }
     }
 
     &.has-label {
@@ -35,22 +46,20 @@ textarea {
             color: #333;
             padding-bottom: 10px;
         }
-        input {
-            padding: 10px 20px;
-            border: 1px solid $color-border-base;
-            border-radius: 10px;
-        }
-        &.required {
-            label::before {
-                content: '*';
-                color: $color-error;
-                padding: 0 5px;
-            }
-        }
     }
+}
+
+label.required::before {
+    content: '*';
+    color: $color-error;
+    padding: 0 5px;
 }
 
 .empty {
     margin: 50px 0;
     text-align: center;
+}
+
+.at-avatar {
+    background: transparent !important;
 }

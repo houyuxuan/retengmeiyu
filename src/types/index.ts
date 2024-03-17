@@ -10,15 +10,33 @@ interface PageResult {
 }
 
 export enum FileType {
-    Image = 1,
-    Video = 2,
-    Audio = 3
+    image = 1,
+    video = 2,
+    audio = 3
+}
+
+export interface FileListItem {
+    url: string;
+    type: FileType
+}
+
+export interface UploadFileResponse {
+    fileURL: string;
+    hash: string;
+    imageURL: string;
+    key: string;
 }
 
 export interface ContentItem {
-    type: 'text' | 'img' | 'video' | 'audio';
+    type: 'text' | keyof typeof FileType;
     content: string;
 }
+
+export enum PublicStatus {
+    Draft = 0,
+    Published = 1
+}
+
 // 关于我们
 namespace AboutUs {
     // 关于我们-新增介绍
@@ -26,7 +44,7 @@ namespace AboutUs {
         id?: IdType; // 有：编辑/获取详情 无：新增
         title: string;
         coverUrl: string; // url
-        detail: string;
+        details: string;
         detailList: ContentItem[];
         createTime?: string; // 'yyyy-mm-dd HH-mm-ss'
     }
@@ -76,6 +94,12 @@ namespace UserManagement {
         path: string;
     }
 
+    // 我的-统计数据
+    export interface StatisticData{
+        activityNum: number;
+        memberUserNum: number;
+    }
+
     // 用户详情
     export interface UserInfo {
         id: IdType;
@@ -84,15 +108,26 @@ namespace UserManagement {
         createTime: string; // 'yyyy-mm-dd HH-mm-ss'
         status: UserStatusEnum;
         avatar: string; // url
-        sex: UserGenderEnum
+        sex: UserGenderEnum;
         // role: UserRoleEnum
+        schoolIds: IdType[];
+        schoolNames?: string; // 自己拼接
+        memberUserRoleDTOList: RoleInfo[]
     }
 
-    export enum UserRoleEnum {
-        SuperAdmin = 1,
-        Administrator = 2,
-        CommonUser = 3,
-        Visiter = 4
+    export interface RoleInfo {
+        id: IdType;
+        memberRoleName: string;
+        code: RoleCodeEnum;
+        status: 0;
+        createTime: string;
+    }
+
+    export enum RoleCodeEnum {
+        Member = 'member',
+        Teacher = 'teacher',
+        Admin = 'admin',
+        SuperAdmin = 'super_admin'
     }
 
     export enum UserStatusEnum {
@@ -137,6 +172,26 @@ namespace Community {
     }
 }
 
+namespace Resource {
+    export enum ResourceType {
+        Theater = 1,
+        Music = 2,
+        All = 100
+    }
+
+    export interface ResourceDetail {
+        id: IdType;
+        resourcesTitle: string;
+        resourcesCoverUrl: string;
+        publicStatus: PublicStatus;
+        resourcesType: ResourceType;
+        memberUserId: IdType;
+        createTime: string;
+        resourcesDetails: string;
+        detailList: ContentItem[]
+      }
+}
+
 export {
     IdType,
     AboutUs,
@@ -144,5 +199,6 @@ export {
     UserManagement,
     PageParams,
     PageResult,
-    Community
+    Community,
+    Resource
 }

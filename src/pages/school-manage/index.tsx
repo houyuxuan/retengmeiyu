@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtButton, AtMessage } from 'taro-ui'
-import { getSchoolList, introDelete } from '@/api'
+import { AtMessage } from 'taro-ui'
+import { getSchoolList, schoolDelete } from '@/api'
 import { Garden, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
+import moment from 'moment'
 import './index.scss'
 
 function Index() {
@@ -15,20 +16,35 @@ function Index() {
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
 
+  const [total, setTotal] = useState(0)
+
   const getList = () => {
-    getSchoolList(keyword ? {
-      searchKeyWord: keyword,
+    getSchoolList({
+      searchKeyWord: keyword || '',
       ...page
-    } : undefined).then(res => {
-      setList(res.data.schoolList)
+    }).then(res => {
+      setTotal(res.data.total)
+      setList([...schoolList, ...res.data.list])
+    })
+  }
+
+  useEffect(getList, [page])
+
+  useDidShow(() => refresh())
+
+  const refresh = () => {
+    setList([])
+    setPage({
+      ...page,
+      pageNo: 1,
     })
   }
 
   useDidShow(() => {
-    getList()
+    refresh()
   })
 
   const goEdit = (id?: IdType) => {
@@ -36,7 +52,13 @@ function Index() {
   }
 
   const deleteItem = (id: IdType) => {
-    introDelete({ id })
+    schoolDelete({ id }).then(res => {
+      Taro.atMessage({
+          type: 'success',
+          message: res.msg
+      })
+      refresh()
+    })
   }
 
   return (
@@ -44,25 +66,29 @@ function Index() {
       <AtMessage />
       <SearchAndAdd
         onAdd={() => goEdit()}
-        onConfirm={getList}
+        onConfirm={refresh}
         onChange={setKeyword}
         addText='添加学校'
       />
       <ManageList
         list={schoolList.map(i => ({
             ...i,
+            id: i.id!,
             title: i.schoolName
         }))}
         cardContent={(item: Garden.SchoolDetail) => (<>
             <View>简介：{item.schoolIntroduction}</View>
-            <View>创建时间：{item.createTime}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
-        btns={item => (
-          <>
-            <AtButton size="small" type='secondary' onClick={() => goEdit(item.id)}>编辑</AtButton>
-            <AtButton size="small" type='secondary' onClick={() => deleteItem(item.id!)}>删除</AtButton>
-          </>
-        )}
+        editFun={goEdit}
+        deleteFun={deleteItem}
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
     </View>
   )

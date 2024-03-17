@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { ContentItem, IdType } from '@/types'
 import { AtActivityIndicator } from 'taro-ui'
+import moment from 'moment'
 import './index.scss'
 
 export default function ArticleDetail(props: {
@@ -12,28 +13,36 @@ export default function ArticleDetail(props: {
     detailList: ContentItem[];
   };
   showTitle?: boolean;
-} = {
-  showTitle: true
 }) {
+  const [titleVisible, setVisible] = useState(true)
+
+  useEffect(() => {
+    if (props.showTitle === false) {
+      setVisible(props.showTitle)
+    }
+  }, [props.showTitle])
+
   return (
     <View className='detail-wrapper'>
       {props.detail?.id ? (
         <View className='detail'>
-          {props.showTitle && (<>
+          {titleVisible && (<>
             <View className='title'>{props.detail.title}</View>
             <View className='date'>
-              {props.detail.createTime}
+              {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
             </View>
           </>)}
-          {props.detail.detailList.map((item, idx) => (
-            item.type === 'img' ? (
-              <View key={idx} className='img'><Image src={item.content} /></View>
-            ) : (
-              <View key={idx}>
-                {item.content}
-              </View>
-            )
-          ))}
+          <View className='content'>
+            {props.detail.detailList.map((item, idx) => (
+              item.type === 'image' ? (
+                <View key={idx} className='img'><Image src={item.content} /></View>
+              ) : (
+                <View className='text' key={idx}>
+                  {item.content}
+                </View>
+              )
+            ))}
+          </View>
         </View>
       ) : (
         <View>

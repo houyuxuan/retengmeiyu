@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtTabs, AtTabsPane, AtMessage } from 'taro-ui'
 import { getPostDetail, getPostDiscuss } from '@/api'
 import { Community, PageParams } from '@/types'
 import ArticleDetail from '@/components/ArticleDetail'
+import moment from 'moment'
 import './index.scss'
 
 function Index() {
@@ -14,25 +15,42 @@ function Index() {
 
   const [detail, setDetail] = useState<Community.PostDetail>()
 
+  const isPreview = +currPage.options.preview === 1
+
+  useEffect(() => {
+    if (isPreview) {
+      Taro.setNavigationBarTitle({
+        title: '美育社区-帖子预览'
+      })
+    }
+  }, [isPreview])
+
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
 
   const [discussList, setDiscussList] = useState<Community.PostDiscussDetail[]>([])
   const getDetail = () => {
     getPostDetail({
-      postId: +currId
+      id: +currId
     }).then(res => {
       setDetail(res.data)
     })
+  }
+
+  const getDiscussList = () => {
     getPostDiscuss({
       postId: +currId,
       ...page
     }).then(res => {
-      setDiscussList(res.data.postDiscussList)
+      setDiscussList(res.data.list)
     })
   }
+
+  useDidShow(() => {
+    getDiscussList()
+  })
 
   useEffect(() => {
     currId && getDetail()
@@ -48,7 +66,7 @@ function Index() {
         <Image src={detail?.postCoverUrl || ''} />
         <View className='title'>{detail?.postTitle}</View>
         <View className='date'>
-          {detail.createTime}
+          {moment(detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
         </View>
       </View>}
       <View className='tab-container'>
@@ -73,7 +91,7 @@ function Index() {
                 <Image src={item.avatar} />
                 <View className='text-content'>
                   <Text className='nickname'>{item.nickname}</Text>
-                  <Text className='date'>{item.createTime}</Text>
+                  <Text className='date'>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
                   <View>{item.discussContent}</View>
                 </View>
               </View>
@@ -81,7 +99,16 @@ function Index() {
             </View>
           </AtTabsPane>
         </AtTabs>
-        <AtButton onClick={() => {Taro.navigateTo({url: '/pages/community-discuss-post/index'})}}>我要讨论</AtButton>
+        {!isPreview && currTab === 1 && (
+          <AtButton onClick={() => {
+              Taro.navigateTo({
+                url: `/pages/community-discuss-post/index?id=${detail?.id}`
+              })
+            }}
+          >
+            我要讨论
+          </AtButton>
+        )}
       </View>
     </View>
   )

@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '美育社区-详情'
+  navigationBarTitleText: '美育社区-帖子详情'
 })

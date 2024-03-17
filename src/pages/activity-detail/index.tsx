@@ -8,20 +8,20 @@ function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
   const currId = currPage.options.id
-  const isPreview = currPage.options.preview
+  const isPreview = +currPage.options.preview === 1
 
   const [detail, setDetail] = useState<Garden.ActivityDetail>()
 
   const getDetail = () => {
     getActivityDetail({
-      activityId: +currId
+      id: +currId
     }).then(res => {
       setDetail(res.data)
     })
   }
 
   useEffect(() => {
-    if (+isPreview === 1) {
+    if (isPreview) {
       Taro.setNavigationBarTitle({
         title: '活动预览'
       })

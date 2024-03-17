@@ -1,6 +1,8 @@
 @import '~@/app.scss';
 
 .list-content {
+    height: 500px;
+
     .list-item {
         display: flex;
         position: relative;

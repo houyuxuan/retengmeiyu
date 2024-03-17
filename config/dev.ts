@@ -3,6 +3,7 @@ module.exports = {
     NODE_ENV: '"development"'
   },
   defineConstants: {
+    'process.env' : JSON.stringify(process.env)
   },
   mini: {
     optimizeMainPackage: {

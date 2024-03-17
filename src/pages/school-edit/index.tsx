@@ -3,7 +3,6 @@ import { Garden } from '@/types'
 import { getSchoolDetail, schoolEdit } from '@/api'
 import Taro from '@tarojs/taro'
 import EditArticle, { ArticleDetail } from '@/components/EditArticle'
-import './index.scss'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -36,7 +35,7 @@ function Index() {
       message: '保存成功',
       type: 'success',
     })
-    Taro.redirectTo({url: '/pages/about-us-manage/index'})
+    Taro.navigateBack()
   }
 
   return (

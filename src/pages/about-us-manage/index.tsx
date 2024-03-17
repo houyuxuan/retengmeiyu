@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtCard, AtButton, AtMessage } from 'taro-ui'
+import { AtMessage } from 'taro-ui'
 import { getIntroList, introDelete } from '@/api'
 import { AboutUs, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
+import moment from 'moment'
 import './index.scss'
 
 function Index() {
@@ -15,20 +16,34 @@ function Index() {
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
 
+  const [total, setTotal] = useState(0)
   const getList = () => {
-    getIntroList(keyword ? {
+    getIntroList({
       searchKeyWord: keyword,
       ...page
-    } : undefined).then(res => {
-      setIntro(res.data.aboutUsList)
+    }).then(res => {
+      setTotal(res.data.total)
+      setIntro([...introList, ...res.data.list])
     })
   }
 
-  useDidShow(() => {
+  const refresh = () => {
+    setIntro([])
+    setPage({
+      ...page,
+      pageNo: 1,
+    })
+  }
+
+  useEffect(() => {
     getList()
+  }, [page])
+
+  useDidShow(() => {
+    refresh()
   })
 
   const goEdit = (id?: IdType) => {
@@ -40,7 +55,13 @@ function Index() {
   }
 
   const deleteItem = (id: IdType) => {
-    introDelete({ id })
+    introDelete({ id }).then(res => {
+      Taro.atMessage({
+          type: 'success',
+          message: res.msg
+      })
+      refresh()
+    })
   }
 
   return (
@@ -48,22 +69,29 @@ function Index() {
       <AtMessage />
       <SearchAndAdd
         onAdd={() => goEdit()}
-        onConfirm={getList}
+        onConfirm={refresh}
         onChange={setKeyword}
       />
       <ManageList
-        list={introList}
+        list={introList.map(i => ({
+          ...i,
+          id: i.id!,
+          title: i.title
+        }))}
         cardContent={(item) => (<>
             <View>序号：{item.id}</View>
-            <View>创建时间：{item.createTime}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
-        btns={item => (
-          <>
-            <AtButton size="small" type='secondary' onClick={() => goEdit(item.id)}>编辑</AtButton>
-              <AtButton size="small" type='secondary' onClick={() => goPreview(item.id!)}>预览</AtButton>
-              <AtButton size="small" type='secondary' onClick={() => deleteItem(item.id!)}>删除</AtButton>
-          </>
-        )}
+        editFun={goEdit}
+        previewFun={goPreview}
+        deleteFun={deleteItem}
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
     </View>
   )

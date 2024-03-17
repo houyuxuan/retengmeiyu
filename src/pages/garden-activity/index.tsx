@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { getSchoolActivity, } from '@/api'
 import { Garden, PageParams } from '@/types'
@@ -11,25 +11,28 @@ function Index() {
 
   const schoolId = +(currPage.options.id as string)
 
-  const [schoolList, setList] = useState<Garden.ActivityDetail[]>([])
+  const [activityList, setList] = useState<Garden.ActivityDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
+
+  const [total, setTotal] = useState(0)
 
   const getList = () => {
     getSchoolActivity({ schoolId, ...page }).then(res => {
-      setList(res.data.schoolActivityList)
+      setTotal(res.data.total)
+      setList([...activityList,...res.data.list])
     })
   }
 
-  useEffect(getList, [])
+  useEffect(getList, [page])
 
   return (
     <View className='activity-container'>
       <RtList
-        list={schoolList.map(i => ({
+        list={activityList.map(i => ({
           ...i,
           title: i.activityTitle,
           id: i.id!,
@@ -37,8 +40,14 @@ function Index() {
           date: i.createTime || ''
         }))}
         detailUrl='/pages/activity-detail/index'
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
-      {/* <Button onClick={() => Taro.navigateTo({url: '/pages/about-us-manage/index'})}>管理</Button> */}
     </View>
   )
 }

@@ -20,7 +20,46 @@
     }
 
     .content-list {
-        padding: 20px;
+        padding: 40px 20px 20px;
+
+        .edit-item {
+            position: relative;
+
+            textarea {
+                width: 95%;
+                margin: 0 auto;
+            }
+        }
+
+        .minus-icon {
+            position: absolute;
+            top: -10px;
+            right: -18px;
+            background: #FF4949;
+            border-radius: 50%;
+            z-index: 10;
+        }
+    }
+
+    .select-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-bottom: 20px;
+
+        label {
+            margin-right: 20px;
+        }
+
+        picker {
+            flex: 1;
+        }
+
+        .at-icon {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+        }
     }
 
     .btn-group {
@@ -28,11 +67,9 @@
         display: flex;
 
         .at-button {
-            width: 200px;
             border: none;
-
             .at-icon {
-                margin-right: 8px;
+                margin: -8px 8px 0 0 ;
             }
         }
     }

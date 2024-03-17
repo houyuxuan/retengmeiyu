@@ -34,8 +34,8 @@ function Index() {
   return (
     <View className='discuss-container'>
         <AtMessage />
-        <View className='input-wrapper has-label required'>
-            <Label>标题</Label>
+        <View className='input-wrapper has-label'>
+            <Label className='required'>标题</Label>
             <AtTextarea
               placeholder='请填写讨论内容'
               value={discuss}

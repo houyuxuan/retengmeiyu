@@ -7,7 +7,7 @@ import RtList from '@/components/RtList'
 import './index.scss'
 
 function Index() {
-  const [currTab, setTab] = useState<Community.PostType>(0)
+  const [currTab, setTab] = useState(0)
   const tabList = [{
     title: '全部',
     value: Community.PostType.All
@@ -21,28 +21,38 @@ function Index() {
 
   const [keyword, setKeyword] = useState('');
 
-  const handleChange = (e: any) => {
-    setKeyword(e.detail.value)
-  }
-
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
+
+  const [total, setTotal] = useState(0)
 
   const [postList, setList] = useState<Community.PostDetail[]>([])
 
-  const getList = () => {
+  const getList = (pageParams?: PageParams) => {
     getPostList({
-      postType: tabList[currTab].value,
+      postType: tabList[currTab].value || undefined,
       searchKeyWord: keyword,
-      ...page
+      ...page,
+      ...pageParams
     }).then(res => {
-      setList(res.data.postList)
+      setList([...postList, ...res.data.list])
+      setTotal(res.data.total)
     })
   }
 
-  useEffect(getList, [currTab, keyword, page])
+  const refresh = () => {
+    setList([])
+    setPage({
+      ...page,
+      pageNo: 1
+    })
+  }
+
+  useEffect(getList, [page])
+
+  useEffect(refresh, [currTab, keyword])
 
   return (
     <View className='community-container'>
@@ -53,8 +63,8 @@ function Index() {
           type='text'
           placeholder='搜索标题'
           value={keyword}
-          onInput={(text) => handleChange(text)}
-          onConfirm={() => getList()}
+          onInput={e => setKeyword(e.detail.value)}
+          onConfirm={refresh}
         />
       </View>
       <AtTabs
@@ -71,6 +81,13 @@ function Index() {
           date: i.createTime || ''
         }))}
         detailUrl='/pages/community-post-detail/index'
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
     </View>
   )

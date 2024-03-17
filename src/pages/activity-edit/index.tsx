@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { AboutUs, Garden } from '@/types'
-import { activityEdit, getActivityDetail, introEdit } from '@/api'
+import { Garden } from '@/types'
+import { activityEdit, getActivityDetail } from '@/api'
 import Taro from '@tarojs/taro'
 import EditArticle, { ArticleDetail } from '@/components/EditArticle'
-import './index.scss'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -14,7 +13,7 @@ function Index() {
   const getDetail = () => {
     if (currId) {
       getActivityDetail({
-        activityId: +currId
+        id: +currId
       }).then(res => {
         setDetail(res.data)
       })
@@ -36,18 +35,19 @@ function Index() {
       message: '保存成功',
       type: 'success',
     })
-    Taro.redirectTo({url: '/pages/about-us-manage/index'})
+    Taro.navigateBack()
   }
 
   return (
     <EditArticle
       article={activityDetail ? {
         ...activityDetail,
-        coverImg: activityDetail.activityCoverUrl,
-        title: activityDetail.activityTitle,
-        detailList: activityDetail.detailList
+        coverImg: activityDetail.activityCoverUrl || '',
+        title: activityDetail.activityTitle || '',
+        detailList: activityDetail.detailList || []
       } : undefined}
       onSave={onSave}
+      showSchoolSelect
       headerTitle={currId ? '活动管理-编辑' : '活动管理-新增'}
       titleText='活动标题'
     />

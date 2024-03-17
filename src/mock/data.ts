@@ -1,4 +1,4 @@
-import { Garden, AboutUs, Community, UserManagement } from "../types";
+import { Garden, AboutUs, Community, UserManagement, Resource } from "../types";
 
 export const introList: AboutUs.IntroDetail[] = [{
     id: 1,
@@ -377,50 +377,158 @@ export const discussList: Community.PostDiscussDetail[] = [{
     createTime: '2024-01-01 11:11:11',
 }]
 
+// 超级管理员菜单
+// export const menuList: UserManagement.MenuListItem[] = [{
+//     id: 1,
+//     menuName: '用户管理',
+//     menuIconUrl: 'users',
+//     path: '/pages/user-manage/index'
+// }, {
+//     id: 2,
+//     menuName: '学校管理',
+//     menuIconUrl: 'school',
+//     path: '/pages/school-manage/index'
+// }, {
+//     id: 3,
+//     menuName: '活动管理',
+//     menuIconUrl: 'activity',
+//     path: '/pages/activity-manage/index'
+// }, {
+//     id: 4,
+//     menuName: '关于我们管理',
+//     menuIconUrl: 'introduction',
+//     path: '/pages/about-us-manage/index'
+// }]
+
+// 普通管理员菜单
 export const menuList: UserManagement.MenuListItem[] = [{
     id: 1,
     menuName: '用户管理',
-    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    menuIconUrl: 'https://media.retenggy.com/systemImage/users.svg',
     path: '/pages/user-manage/index'
 }, {
     id: 2,
-    menuName: '学校管理',
-    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
-    path: '/pages/school-manage/index'
+    menuName: '帖子管理',
+    menuIconUrl: 'https://media.retenggy.com/systemImage/school.svg',
+    path: "/pages/post-manage/index"
 }, {
     id: 3,
     menuName: '活动管理',
-    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    menuIconUrl: 'https://media.retenggy.com/systemImage/activity.svg',
     path: '/pages/activity-manage/index'
 }, {
     id: 4,
     menuName: '关于我们管理',
-    menuIconUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    menuIconUrl: 'https://media.retenggy.com/systemImage/introduction.svg',
     path: '/pages/about-us-manage/index'
+}, {
+    id: 5,
+    menuName: '资源管理',
+    menuIconUrl: 'https://media.retenggy.com/systemImage/resource.svg',
+    path: '/pages/resource-manage/index'
 }]
 
-export const userList: UserManagement.UserInfo[] = [{
+// export const userList: UserManagement.UserInfo[] = [{
+//     id: 1,
+//     nickname: '哈哈哈',
+//     mobile: '13131313131',
+//     createTime: '2024-01-01 11:11:11',
+//     status: 0,
+//     avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+//     sex: 1
+// }, {
+//     id: 2,
+//     nickname: '哈哈哈2',
+//     mobile: '13131313133',
+//     createTime: '2024-01-01 11:11:11',
+//     status: 1,
+//     avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+//     sex: 1
+// }, {
+//     id: 3,
+//     nickname: '哈哈哈',
+//     mobile: '13131333333',
+//     createTime: '2024-01-01 11:11:11',
+//     status: 0,
+//     avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+//     sex: 0
+// }]
+
+export const resourceList: Resource.ResourceDetail[] = [{
     id: 1,
-    nickname: '哈哈哈',
-    mobile: '13131313131',
-    createTime: '2024-01-01 11:11:11',
-    status: 0,
-    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
-    sex: 1
-}, {
-    id: 2,
-    nickname: '哈哈哈2',
-    mobile: '13131313133',
-    createTime: '2024-01-01 11:11:11',
-    status: 1,
-    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
-    sex: 1
+    resourcesTitle: '戏剧标题1',
+    resourcesCoverUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    publicStatus: 1,
+    resourcesType: 1,
+    memberUserId: "1",
+    createTime: "2024-2-26 11:11:11",
+    resourcesDetails: JSON.stringify([
+        {
+            type: 'img',
+            content: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg'
+        },
+        {
+            type: 'text',
+            content: '长期扎根青海省，开展热腾助学、热腾助老、热腾助医、热腾应急救灾四个方面公益项目',
+        },
+        {
+            type: 'text',
+            content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
+        },
+    ]),
+    detailList: []
 }, {
     id: 3,
-    nickname: '哈哈哈',
-    mobile: '13131333333',
-    createTime: '2024-01-01 11:11:11',
-    status: 0,
-    avatar: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
-    sex: 0
+    resourcesTitle: '音乐标题2',
+    resourcesCoverUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    publicStatus: 1,
+    resourcesType: 2,
+    memberUserId: "1",
+    createTime: "2024-2-26 11:11:11",
+    resourcesDetails: JSON.stringify([
+        {
+            type: 'text',
+            content: '北京热腾基金会成立于2018年7月，是在北京市民政局依法注册的AAA级慈善组织'
+        },
+        {
+            type: 'text',
+            content: '长期扎根青海省，开展热腾助学、热腾助老、热腾助医、热腾应急救灾四个方面公益项目',
+        },
+        {
+            type: 'img',
+            content: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg'
+        }
+    ]),
+    detailList: []
+}, {
+    id: 4,
+    resourcesTitle: '戏剧标题3',
+    resourcesCoverUrl: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg',
+    publicStatus: 1,
+    resourcesType: 1,
+    memberUserId: "2",
+    createTime: "2024-2-26 11:11:11",
+    resourcesDetails: JSON.stringify([
+        {
+            type: 'text',
+            content: '北京热腾基金会成立于2018年7月，是在北京市民政局依法注册的AAA级慈善组织'
+        },
+        {
+            type: 'img',
+            content: 'https://youimg1.c-ctrip.com/target/100r10000000pycel4E0E.jpg'
+        },
+        {
+            type: 'text',
+            content: '长期扎根青海省，开展热腾助学、热腾助老、热腾助医、热腾应急救灾四个方面公益项目',
+        },
+        {
+            type: 'img',
+            content: 'https://n.sinaimg.cn/sinacn20107/200/w400h600/20190427/c79e-hvvuiyp2168445.jpg'
+        },
+        {
+            type: 'text',
+            content: '理念：汇聚热情 升腾善心 给人欢喜 给人希望。'
+        },
+    ]),
+    detailList: []
 }]

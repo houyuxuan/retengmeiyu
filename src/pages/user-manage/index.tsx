@@ -6,6 +6,7 @@ import { getUserList, userDelete, userStatusChange } from '@/api'
 import { IdType, PageParams, UserManagement } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
+import moment from 'moment'
 import './index.scss'
 
 function Index() {
@@ -15,10 +16,10 @@ function Index() {
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 10
+    pageSize: 20
   })
 
-  const [currTab, setTab] = useState<UserManagement.UserStatusEnum>(0)
+  const [currTab, setTab] = useState(0)
 
   const tabList = [{
     title: '全部',
@@ -31,43 +32,63 @@ function Index() {
     value: UserManagement.UserStatusEnum.Disabled
   }]
 
-  useEffect(() => {
-    getList()
-  }, [currTab])
-
+  const [total, setTotal] = useState(0)
   const getList = () => {
+    const status = tabList[currTab].value
     getUserList({
       searchKeyWord: keyword,
-      status: tabList[currTab].value,
+      status: status === UserManagement.UserStatusEnum.All ? undefined : status,
       ...page
     }).then(res => {
-      setList(res.data.memberUserList)
+      setTotal(res.data.total)
+      setList([...userList, ...res.data.list])
     })
   }
 
-  useDidShow(() => {
-    getList()
-  })
+  useEffect(getList, [page])
+
+  const refresh = () => {
+    setList([])
+    setPage({
+      ...page,
+      pageNo: 1,
+    })
+  }
+
+  useEffect(() => {
+    refresh()
+  }, [currTab])
+
+  useDidShow(() => refresh())
 
   const goDetail = (id: IdType) => {
     Taro.navigateTo({url: `/pages/user-info/index?id=${id}`})
   }
 
   const deleteItem = (id: IdType) => {
-    userDelete({id})
+    userDelete({id}).then(res => {
+      Taro.atMessage({
+          type: 'success',
+          message: res.msg
+      })
+      refresh()
+    })
   }
 
-  const changeStatus = (id) => {
-    userStatusChange({ id })
+  const changeStatus = (id, index) => {
+    const status = userList[index].status
+    userStatusChange({ id }).then(res => {
+      userList[index].status = status === UserManagement.UserStatusEnum.Normal ? UserManagement.UserStatusEnum.Disabled : UserManagement.UserStatusEnum.Normal
+    })
   }
 
   return (
     <View className='manage-container'>
       <AtMessage />
       <SearchAndAdd
-        onConfirm={getList}
+        onConfirm={refresh}
         onChange={setKeyword}
-        addText='添加新活动'
+        addText='新增用户'
       />
       <AtTabs
         current={currTab}
@@ -81,17 +102,23 @@ function Index() {
         }))}
         cardContent={(item: UserManagement.UserInfo) => (<>
             <View>手机：{item.mobile}</View>
-            <View>创建时间：{item.createTime}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
-        btns={(item: UserManagement.UserInfo) => (
-          <>
-            <AtButton size="small" type='secondary' onClick={() => goDetail(item.id!)}>查看</AtButton>
-            <AtButton size="small" type='secondary' onClick={() => changeStatus(item.id)}>
-              {item.status === UserManagement.UserStatusEnum.Disabled ? '恢复正常' : '禁用'}
-            </AtButton>
-            <AtButton size="small" type='secondary' onClick={() => deleteItem(item.id!)}>删除</AtButton>
-          </>
-        )}
+        editFun={goDetail}
+        deleteFun={deleteItem}
+        otherBtn={[{
+          text: item => item.status === UserManagement.UserStatusEnum.Disabled ? '恢复正常' : '禁用',
+          fun(item, index) {
+            changeStatus(item, index)
+          }
+        }]}
+        total={total}
+        onLoading={() => {
+          setPage({
+            ...page,
+            pageNo: page.pageNo + 1,
+          })
+        }}
       />
     </View>
   )

@@ -1,0 +1,28 @@
+@import "~taro-ui/dist/style/index.scss";
+
+.custom-audio {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    height: 80px;
+    padding: 0 20px;
+    align-items: center;
+    border: 1px solid $color-border-base;
+    border-radius: 40px;
+
+    .process-bar {
+        flex: 1;
+        position: relative;
+        height: 6px;
+        margin: 0 20px;
+        background: #eee;
+
+        .process-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #aaa;
+        }
+    }
+}
