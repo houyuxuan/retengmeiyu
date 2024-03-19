@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage } from 'taro-ui'
-import { activityDelete, getActivityList } from '@/api'
+import { getSchoolList, schoolDelete } from '@/api'
 import { Garden, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
@@ -12,7 +12,7 @@ import './index.scss'
 function Index() {
   const [keyword, setKeyword] = useState('');
 
-  const [schoolList, setList] = useState<Garden.ActivityDetail[]>([])
+  const [schoolList, setList] = useState<Garden.SchoolDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
@@ -20,15 +20,20 @@ function Index() {
   })
 
   const [total, setTotal] = useState(0)
+
   const getList = () => {
-    getActivityList({
-      searchKeyWord: keyword,
+    getSchoolList({
+      searchKeyWord: keyword || '',
       ...page
     }).then(res => {
       setTotal(res.data.total)
       setList([...schoolList, ...res.data.list])
     })
   }
+
+  useEffect(getList, [page])
+
+  useDidShow(() => refresh())
 
   const refresh = () => {
     setList([])
@@ -38,22 +43,16 @@ function Index() {
     })
   }
 
-  useDidShow(refresh)
-
-  useEffect(() => {
-    getList()
-  }, [page])
+  useDidShow(() => {
+    refresh()
+  })
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `/pages/activity-edit/index${id ? '?id=' + id : ''}`})
-  }
-
-  const goPreview = (id: IdType) => {
-    Taro.navigateTo({url: `/pages/activity-detail/index?id=${id}&preview=1`})
+    Taro.navigateTo({url: `../school-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const deleteItem = (id: IdType) => {
-    activityDelete({ id }).then(res => {
+    schoolDelete({ id }).then(res => {
       Taro.atMessage({
           type: 'success',
           message: res.msg
@@ -69,20 +68,19 @@ function Index() {
         onAdd={() => goEdit()}
         onConfirm={refresh}
         onChange={setKeyword}
-        addText='添加新活动'
+        addText='添加学校'
       />
       <ManageList
         list={schoolList.map(i => ({
             ...i,
             id: i.id!,
-            title: i.activityTitle
+            title: i.schoolName
         }))}
-        cardContent={(item: Garden.ActivityDetail) => (<>
-            <View>点赞数：{item.zanNumber}</View>
+        cardContent={(item: Garden.SchoolDetail) => (<>
+            <View>简介：{item.schoolIntroduction}</View>
             <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
         editFun={goEdit}
-        previewFun={goPreview}
         deleteFun={deleteItem}
         total={total}
         onLoading={() => {

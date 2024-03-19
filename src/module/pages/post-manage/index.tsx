@@ -2,28 +2,22 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage, AtTabs } from 'taro-ui'
-import { getPostList, postDelete } from '@/api'
+import { getPostAdminList, getPostList, postDelete } from '@/api'
 import { Community, Garden, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
+import { postTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
 function Index() {
+  const currPage = Taro.getCurrentPages().pop()!
+
+  const isAdmin = currPage.options.from === 'admin'
+
   const [keyword, setKeyword] = useState('');
 
   const [postList, setList] = useState<Community.PostDetail[]>([])
-
-  const tabList = [{
-    title: '全部',
-    value: Community.PostType.All
-  }, {
-    title: '分享帖',
-    value: Community.PostType.Share
-  }, {
-    title: '讨论帖',
-    value: Community.PostType.Discuss
-  }]
 
   const [currTab, setTab] = useState(0)
   const [page, setPage] = useState<PageParams>({
@@ -33,15 +27,27 @@ function Index() {
 
   const [total, setTotal] = useState(0)
   const getList = (pageParams?: PageParams) => {
-    getPostList({
-      postType: tabList[currTab].value || undefined,
-      searchKeyWord: keyword,
-      ...page,
-      ...pageParams
-    }).then(res => {
-      setTotal(res.data.total)
-      setList([...postList, ...res.data.list])
-    })
+    if (isAdmin) {
+      getPostAdminList({
+        postType: postTabList[currTab].value || undefined,
+        searchKeyWord: keyword,
+        ...page,
+        ...pageParams
+      }).then(res => {
+        setTotal(res.data.total)
+        setList([...postList, ...res.data.list])
+      })
+    } else {
+      getPostList({
+        postType: postTabList[currTab].value || undefined,
+        searchKeyWord: keyword,
+        ...page,
+        ...pageParams
+      }).then(res => {
+        setTotal(res.data.total)
+        setList([...postList, ...res.data.list])
+      })
+    }
   }
 
   const refresh = () => {
@@ -60,11 +66,11 @@ function Index() {
   useDidShow(() => refresh())
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `/pages/post-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `../post-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    Taro.navigateTo({url: `/pages/community-post-detail/index?id=${id}&preview=1`})
+    Taro.navigateTo({url: `../community-post-detail/index?id=${id}&preview=1`})
   }
 
   const deleteItem = (id: IdType) => {
@@ -88,7 +94,7 @@ function Index() {
       />
       <AtTabs
         current={currTab}
-        tabList={tabList}
+        tabList={postTabList}
         onClick={item => setTab(item)}
       />
       <ManageList
@@ -102,8 +108,13 @@ function Index() {
           <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
         editFun={goEdit}
-        previewFun={goPreview}
         deleteFun={deleteItem}
+        otherBtn={[{
+          text: () => '讨论管理',
+          fun(item) {
+            Taro.navigateTo({url: `../discuss-manage/index?id=${item.id}`})
+          }
+        }]}
         total={total}
         onLoading={() => {
           setPage({

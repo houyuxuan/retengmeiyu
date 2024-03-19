@@ -1,6 +1,6 @@
 import Taro, { UserInfo } from "@tarojs/taro";
 import { AboutUs, Community, FileType, Garden, IdType, PageParams, PageResult, Resource, UploadFileResponse, UserManagement } from "@/types";
-import { menuList } from "@/mock/data";
+import { menuInfoMap } from "@/utils/constant";
 import request from "./request";
 import { upload } from './qiniuUploader'
 
@@ -108,7 +108,18 @@ export function getSchoolActivity(params: { schoolId: IdType, searchKeyWord?: st
     return request<{
         list: Garden.ActivityDetail[]
     } & PageResult>({
-        url: '/rt/school/activity/list',
+        url: '/rt/school/activity/public/page',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 花园-获取学校下活动列表
+export function getSchoolAdminActivity(params: { schoolId: IdType, searchKeyWord?: string } & PageParams) {
+    return request<{
+        list: Garden.ActivityDetail[]
+    } & PageResult>({
+        url: '/rt/school/activity/admin/page',
         method: 'POST',
         data: params
     })
@@ -119,7 +130,18 @@ export function getActivityList(params: { searchKeyWord?: string } & PageParams)
     return request<{
         list: Garden.ActivityDetail[]
     } & PageResult>({
-        url: '/rt/school/activity/list',
+        url: '/rt/school/activity/public/page',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 花园-获取学校下活动列表
+export function getActivityAdminList(params: { searchKeyWord?: string } & PageParams) {
+    return request<{
+        list: Garden.ActivityDetail[]
+    } & PageResult>({
+        url: '/rt/school/activity/admin/page',
         method: 'POST',
         data: params
     })
@@ -282,12 +304,15 @@ export function getMenu() {
     return request<UserManagement.MenuListItem[]>({
         url: '/rt/member/menu/me/list',
         method: 'GET',
-    })
-    .then(res => {
+    }).then(res => {
         return {
             ...res,
-            data: menuList
-            // res.data
+            data: res.data.map(i => ({
+                id: i.id,
+                menuName: i.menuName,
+                menuIconUrl: menuInfoMap[i.menuName]?.icon,
+                path: menuInfoMap[i.menuName]?.path,
+            }))
         }
     })
 }
@@ -326,6 +351,16 @@ export function getManageMenu() {
     return request({
         url: '/rt/member/menu/admin/index/list',
         method: 'GET'
+    }).then(res => {
+        return {
+            ...res,
+            data: res.data.map(i => ({
+                id: i.id,
+                menuName: i.menuName,
+                menuIconUrl: menuInfoMap[i.menuName]?.icon,
+                path: menuInfoMap[i.menuName]?.path,
+            }))
+        }
     })
 }
 
@@ -422,7 +457,21 @@ export function getPostList(params: {
     return request<{
         list: Community.PostDetail[]
     } & PageResult>({
-        url: '/rt/post/list',
+        url: '/rt/post/public/page',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 管理-获取社区帖子列表
+export function getPostAdminList(params: {
+    postType?: Community.PostType;
+    searchKeyWord: string;
+} & PageParams) {
+    return request<{
+        list: Community.PostDetail[]
+    } & PageResult>({
+        url: '/rt/post/admin/page',
         method: 'POST',
         data: params
     })
@@ -504,6 +553,7 @@ export function discussDelete(params: { id: IdType }) {
 
 /**************************   资源  **************************/
 
+// 资源-获取自己的列表
 export function getResourceList(params: {
     resourcesType: Resource.ResourceType;
     searchKeyWord: string;
@@ -514,7 +564,24 @@ export function getResourceList(params: {
     return request<{
         list: Resource.ResourceDetail[]
     } & PageResult>({
-        url: '/rt/resources/list',
+        url: '/rt/resources/public/page',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 资源-获取管理列表
+export function getResourceAdminList(params: {
+    resourcesType: Resource.ResourceType;
+    searchKeyWord: string;
+} & PageParams) {
+    if (params.resourcesType === Resource.ResourceType.All) {
+        params.resourcesType = undefined as any
+    }
+    return request<{
+        list: Resource.ResourceDetail[]
+    } & PageResult>({
+        url: '/rt/resources/admin/page',
         method: 'POST',
         data: params
     })
@@ -522,14 +589,17 @@ export function getResourceList(params: {
 
 // 资源详情
 export function getResourceDetail(params: {id: IdType}) {
-    return request<{resourcesInfo: Resource.ResourceDetail}>({
+    return request<Resource.ResourceDetail>({
         url: '/rt/resources/info',
         method: 'POST',
         data: params
     }).then(res => {
         return {
             ...res,
-            data: res.data.resourcesInfo
+            data: {
+                ...res.data,
+                detailList: JSON.parse(res.data.resourcesDetails)
+            }
         }
     })
 }

@@ -16,12 +16,14 @@ interface ListItem {
 
 function Index(props: {
     list: ListItem[];
-    detailUrl: string;
+    detailUrl?: string;
     onLoading: () => void;
     total: number
 }) {
   const toDetail = (id) => {
-    Taro.navigateTo({ url: `${props.detailUrl}?id=${id}` })
+    if (props.detailUrl) {
+      Taro.navigateTo({ url: `${props.detailUrl}?id=${id}` })
+    }
   }
 
   const [loading, setLoading] = useState(false)

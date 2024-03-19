@@ -6,6 +6,7 @@ import { getUserList, userDelete, userStatusChange } from '@/api'
 import { IdType, PageParams, UserManagement } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
+import { userTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
@@ -21,20 +22,9 @@ function Index() {
 
   const [currTab, setTab] = useState(0)
 
-  const tabList = [{
-    title: '全部',
-    value: UserManagement.UserStatusEnum.All
-  }, {
-    title: '正常',
-    value: UserManagement.UserStatusEnum.Normal
-  }, {
-    title: '禁用',
-    value: UserManagement.UserStatusEnum.Disabled
-  }]
-
   const [total, setTotal] = useState(0)
   const getList = () => {
-    const status = tabList[currTab].value
+    const status = userTabList[currTab].value
     getUserList({
       searchKeyWord: keyword,
       status: status === UserManagement.UserStatusEnum.All ? undefined : status,
@@ -62,7 +52,7 @@ function Index() {
   useDidShow(() => refresh())
 
   const goDetail = (id: IdType) => {
-    Taro.navigateTo({url: `/pages/user-info/index?id=${id}`})
+    Taro.navigateTo({url: `../user-info/index?id=${id}`})
   }
 
   const deleteItem = (id: IdType) => {
@@ -92,7 +82,7 @@ function Index() {
       />
       <AtTabs
         current={currTab}
-        tabList={tabList}
+        tabList={userTabList}
         onClick={item => setTab(item)}
       />
       <ManageList

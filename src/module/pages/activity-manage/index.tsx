@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtMessage, AtTabs } from 'taro-ui'
-import { getResourceList, resourceDelete } from '@/api'
-import { IdType, PageParams, Resource } from '@/types'
+import { AtMessage } from 'taro-ui'
+import { activityDelete, getActivityAdminList, getActivityList } from '@/api'
+import { Garden, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
-import { resourceTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
 function Index() {
+  const currPage = Taro.getCurrentPages().pop()!
+
+  const isAdmin = currPage.options.from === 'admin'
+
   const [keyword, setKeyword] = useState('');
 
-  const [resourceList, setResourceList] = useState<Resource.ResourceDetail[]>([])
-  const [currTab, setTab] = useState(0)
+  const [schoolList, setList] = useState<Garden.ActivityDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
@@ -23,44 +25,49 @@ function Index() {
 
   const [total, setTotal] = useState(0)
   const getList = () => {
-    getResourceList({
-      resourcesType: resourceTabList[currTab]?.value,
-      searchKeyWord: keyword,
-      ...page
-    }).then(res => {
-      setTotal(res.data.total)
-      setResourceList([...resourceList, ...res.data.list])
-    })
+    if (isAdmin) {
+      getActivityAdminList({
+        searchKeyWord: keyword,
+        ...page
+      }).then(res => {
+        setTotal(res.data.total)
+        setList([...schoolList, ...res.data.list])
+      })
+    } else {
+      getActivityList({
+        searchKeyWord: keyword,
+        ...page
+      }).then(res => {
+        setTotal(res.data.total)
+        setList([...schoolList, ...res.data.list])
+      })
+    }
   }
 
   const refresh = () => {
-    setResourceList([])
+    setList([])
     setPage({
       ...page,
       pageNo: 1,
     })
   }
 
+  useDidShow(refresh)
+
   useEffect(() => {
-    refresh()
-  }, [currTab, keyword])
-
-  useEffect(getList, [page])
-
-  useDidShow(() => {
-    refresh()
-  })
+    getList()
+  }, [page])
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `/pages/resource-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `../activity-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    Taro.navigateTo({ url: `/pages/resource-detail/index?id=${id}&preview=1` })
+    Taro.navigateTo({url: `../activity-detail/index?id=${id}&preview=1`})
   }
 
   const deleteItem = (id: IdType) => {
-    resourceDelete({ id }).then(res => {
+    activityDelete({ id }).then(res => {
       Taro.atMessage({
           type: 'success',
           message: res.msg
@@ -76,22 +83,16 @@ function Index() {
         onAdd={() => goEdit()}
         onConfirm={refresh}
         onChange={setKeyword}
-        addText='添加新资源'
-      />
-      <AtTabs
-        current={currTab}
-        tabList={resourceTabList}
-        onClick={item => setTab(item)}
+        addText='添加新活动'
       />
       <ManageList
-        list={resourceList.map(i => ({
-          ...i,
-          id: i.id!,
-          title: i.resourcesTitle,
-          coverImg: i.resourcesCoverUrl
+        list={schoolList.map(i => ({
+            ...i,
+            id: i.id!,
+            title: i.activityTitle
         }))}
-        cardContent={(item) => (<>
-            <View>序号：{item.id}</View>
+        cardContent={(item: Garden.ActivityDetail) => (<>
+            <View>点赞数：{item.zanNumber}</View>
             <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
         editFun={goEdit}

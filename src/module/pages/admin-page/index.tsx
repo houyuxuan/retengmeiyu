@@ -3,7 +3,7 @@ import { View, Text, Image, Button, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtAvatar, AtButton, AtIcon } from 'taro-ui'
 import { FileType, UserManagement } from '@/types'
-import { getMenu, getMineInfo, getStatistic, login, qiniuUpload, updateMyInfo } from '@/api'
+import { getManageMenu, getMenu, getMineInfo, getStatistic, login, qiniuUpload, updateMyInfo } from '@/api'
 import './index.scss'
 
 function Index() {
@@ -33,13 +33,6 @@ function Index() {
     }
   }, [])
 
-  // // TODO 1. 角色管理：教师才选学校，其他不选
-  // TODO 2. 我的-用户菜单按配置
-  // // TODO 3. 首页菜单跳转限制
-  // // TODO 4. 日期格式化
-  // // TODO 5. 分页
-  // TODO 6. 新增-管理员页面
-  // // TODO 7. 新增-讨论管理页面
   useEffect(() => {
     getMenuList()
   }, [])
@@ -52,7 +45,7 @@ function Index() {
   }
 
   const getMenuList = () => {
-    getMenu().then(res => {
+    getManageMenu().then(res => {
       setMenuList(res.data)
     }).catch(err => {
       console.log('err', err)
@@ -147,9 +140,24 @@ function Index() {
           </Button>
         )}
       </View>
+      {stat && <View className='count'>
+        <View className='count-item'>
+          <View>{stat.memberUserNum}</View>
+          <View>用户数</View>
+        </View>
+        <View className='count-item'>
+          <View>{stat.activityNum}</View>
+          <View>活动数</View>
+        </View>
+      </View>}
+      {menuList.length ? (
+        <View className='function-title'>
+          <Text>功能管理</Text>
+        </View>
+      ) : <></>}
       <View className='menu-list'>
         {menuList.map(i => (
-          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `../../module${i.path}`})}>
+          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `..${i.path.split('/pages')[1]}?from=admin`})}>
             <Image src={i.menuIconUrl} />
             <View>{i.menuName}</View>
           </View>

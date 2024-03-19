@@ -4,20 +4,11 @@ import { Community, PageParams } from '@/types'
 import { AtTabs, AtIcon } from 'taro-ui'
 import { getPostList } from '@/api'
 import RtList from '@/components/RtList'
+import { postTabList } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
   const [currTab, setTab] = useState(0)
-  const tabList = [{
-    title: '全部',
-    value: Community.PostType.All
-  }, {
-    title: '分享帖',
-    value: Community.PostType.Share
-  }, {
-    title: '讨论帖',
-    value: Community.PostType.Discuss
-  }]
 
   const [keyword, setKeyword] = useState('');
 
@@ -30,12 +21,11 @@ function Index() {
 
   const [postList, setList] = useState<Community.PostDetail[]>([])
 
-  const getList = (pageParams?: PageParams) => {
+  const getList = () => {
     getPostList({
-      postType: tabList[currTab].value || undefined,
+      postType: postTabList[currTab].value || undefined,
       searchKeyWord: keyword,
-      ...page,
-      ...pageParams
+      ...page
     }).then(res => {
       setList([...postList, ...res.data.list])
       setTotal(res.data.total)
@@ -69,7 +59,7 @@ function Index() {
       </View>
       <AtTabs
         current={currTab}
-        tabList={tabList}
+        tabList={postTabList}
         onClick={item => setTab(item)}
       />
       <RtList
@@ -80,7 +70,7 @@ function Index() {
           title: i.postTitle,
           date: i.createTime || ''
         }))}
-        detailUrl='/pages/community-post-detail/index'
+        detailUrl='../../module/pages/community-post-detail/index'
         total={total}
         onLoading={() => {
           setPage({

@@ -74,7 +74,7 @@ function Index() {
           title: i.resourcesTitle,
           date: i.createTime || ''
         }))}
-        detailUrl='/pages/resource-detail/index'
+        detailUrl='../../module/pages/resource-detail/index'
         total={total}
         onLoading={() => {
           setPage({

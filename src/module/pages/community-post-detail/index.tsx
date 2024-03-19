@@ -102,7 +102,7 @@ function Index() {
         {!isPreview && currTab === 1 && (
           <AtButton onClick={() => {
               Taro.navigateTo({
-                url: `/pages/community-discuss-post/index?id=${detail?.id}`
+                url: `../community-discuss-post/index?id=${detail?.id}`
               })
             }}
           >

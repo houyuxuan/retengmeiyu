@@ -39,7 +39,7 @@ function Index() {
           coverImg: i.activityCoverUrl,
           date: i.createTime || ''
         }))}
-        detailUrl='/pages/activity-detail/index'
+        detailUrl='../activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({

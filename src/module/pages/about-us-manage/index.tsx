@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage } from 'taro-ui'
-import { getSchoolList, schoolDelete } from '@/api'
-import { Garden, IdType, PageParams } from '@/types'
+import { getIntroList, introDelete } from '@/api'
+import { AboutUs, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
 import moment from 'moment'
@@ -12,7 +12,7 @@ import './index.scss'
 function Index() {
   const [keyword, setKeyword] = useState('');
 
-  const [schoolList, setList] = useState<Garden.SchoolDetail[]>([])
+  const [introList, setIntro] = useState<AboutUs.IntroDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
@@ -20,39 +20,42 @@ function Index() {
   })
 
   const [total, setTotal] = useState(0)
-
   const getList = () => {
-    getSchoolList({
-      searchKeyWord: keyword || '',
+    getIntroList({
+      searchKeyWord: keyword,
       ...page
     }).then(res => {
       setTotal(res.data.total)
-      setList([...schoolList, ...res.data.list])
+      setIntro([...introList, ...res.data.list])
     })
   }
 
-  useEffect(getList, [page])
-
-  useDidShow(() => refresh())
-
   const refresh = () => {
-    setList([])
+    setIntro([])
     setPage({
       ...page,
       pageNo: 1,
     })
   }
 
+  useEffect(() => {
+    getList()
+  }, [page])
+
   useDidShow(() => {
     refresh()
   })
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `/pages/school-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `../about-us-edit/index${id ? '?id=' + id : ''}`})
+  }
+
+  const goPreview = (id: IdType) => {
+    Taro.navigateTo({ url: `../about-us-detail/index?id=${id}&preview=1` })
   }
 
   const deleteItem = (id: IdType) => {
-    schoolDelete({ id }).then(res => {
+    introDelete({ id }).then(res => {
       Taro.atMessage({
           type: 'success',
           message: res.msg
@@ -68,19 +71,19 @@ function Index() {
         onAdd={() => goEdit()}
         onConfirm={refresh}
         onChange={setKeyword}
-        addText='添加学校'
       />
       <ManageList
-        list={schoolList.map(i => ({
-            ...i,
-            id: i.id!,
-            title: i.schoolName
+        list={introList.map(i => ({
+          ...i,
+          id: i.id!,
+          title: i.title
         }))}
-        cardContent={(item: Garden.SchoolDetail) => (<>
-            <View>简介：{item.schoolIntroduction}</View>
+        cardContent={(item) => (<>
+            <View>序号：{item.id}</View>
             <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
         </>)}
         editFun={goEdit}
+        previewFun={goPreview}
         deleteFun={deleteItem}
         total={total}
         onLoading={() => {
