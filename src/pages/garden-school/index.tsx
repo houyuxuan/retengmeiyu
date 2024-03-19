@@ -26,7 +26,6 @@ function Index() {
 
   return (
     <View className='school-container'>
-      <AtMessage />
       <RtList
         list={schoolList.map(i => ({
           ...i,

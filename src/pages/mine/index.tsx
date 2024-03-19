@@ -3,15 +3,13 @@ import { View, Text, Image, Button, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtAvatar, AtButton, AtIcon } from 'taro-ui'
 import { FileType, UserManagement } from '@/types'
-import { getMenu, getMineInfo, getStatistic, login, qiniuUpload, updateMyInfo } from '@/api'
+import { getMenu, getMineInfo, login, qiniuUpload, updateMyInfo } from '@/api'
 import './index.scss'
 
 function Index() {
   const [userInfo, setUserInfo] = useState<UserManagement.UserInfo>()
 
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
-
-  const [stat, setStat] = useState<UserManagement.StatisticData>()
 
   const [nameEditing, setEditing] = useState(false)
 
@@ -24,22 +22,6 @@ function Index() {
     }
   }, [userInfo])
 
-  useEffect(() => {
-    const loginInfo = Taro.getStorageSync('loginInfo')
-    if (loginInfo && ['admin', 'super_admin'].includes(loginInfo.roleCode)) {
-      getStatistic().then(res => {
-        setStat(res.data)
-      })
-    }
-  }, [])
-
-  // // TODO 1. 角色管理：教师才选学校，其他不选
-  // TODO 2. 我的-用户菜单按配置
-  // // TODO 3. 首页菜单跳转限制
-  // // TODO 4. 日期格式化
-  // // TODO 5. 分页
-  // TODO 6. 新增-管理员页面
-  // // TODO 7. 新增-讨论管理页面
   useEffect(() => {
     getMenuList()
   }, [])
@@ -137,14 +119,17 @@ function Index() {
             </>
           )
         ) : (
-          <Button
-            className='login-btn'
-            open-type='getPhoneNumber|agreePrivacyAuthorization'
-            onGetPhoneNumber={handleGetPhoneNumber}
-            onAgreePrivacyAuthorization={handleAgreePrivacyAuthorization}
-          >
-            登录/注册
-          </Button>
+          <>
+            <Text className='name'>未登录</Text>
+            <Button
+              className='login-btn'
+              open-type='getPhoneNumber|agreePrivacyAuthorization'
+              onGetPhoneNumber={handleGetPhoneNumber}
+              onAgreePrivacyAuthorization={handleAgreePrivacyAuthorization}
+            >
+              登录/注册
+            </Button>
+          </>
         )}
       </View>
       <View className='menu-list'>

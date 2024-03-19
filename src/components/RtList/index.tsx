@@ -3,7 +3,7 @@ import { View, Image, Button, ScrollView } from '@tarojs/components'
 import Taro, { useReachBottom } from '@tarojs/taro'
 import { IdType } from '@/types'
 import moment from 'moment'
-import { AtActivityIndicator } from 'taro-ui'
+import { AtActivityIndicator, AtMessage } from 'taro-ui'
 import './index.scss'
 
 interface ListItem {
@@ -37,6 +37,7 @@ function Index(props: {
 
   return (
     <View className='list-content'>
+      <AtMessage />
       {props.list.length ? props.list.map((item, index) => (
         <View className='list-item' key={index} onClick={() => toDetail(item.id)}>
           <Image src={item.coverImg} />
