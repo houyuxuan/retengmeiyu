@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image, Button, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { AtAvatar, AtButton, AtIcon } from 'taro-ui'
+import { AtAvatar, AtIcon } from 'taro-ui'
 import { FileType, UserManagement } from '@/types'
 import { getMenu, getMineInfo, login, qiniuUpload, updateMyInfo } from '@/api'
 import './index.scss'

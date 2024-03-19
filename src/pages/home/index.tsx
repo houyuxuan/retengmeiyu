@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-// import resource from '@/assets/svg/resource.svg';
-// import garden from '@/assets/svg/garden.svg';
-// import aboutUs from '@/assets/svg/about-us.svg';
-// import community from '@/assets/svg/community.svg';
-import { login } from '@/api';
 import './index.scss'
 
 function Index() {

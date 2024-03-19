@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, Button } from '@tarojs/components'
-import { AtMessage } from 'taro-ui'
+import { View } from '@tarojs/components'
 import { getSchoolList } from '@/api'
 import { Garden, PageParams } from '@/types'
 import RtList from '@/components/RtList'
-import './index.scss'
 
 function Index() {
   const [schoolList, setList] = useState<Garden.SchoolDetail[]>([])

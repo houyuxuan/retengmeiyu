@@ -73,4 +73,5 @@ export default defineAppConfig({
     }],
   },
   __usePrivacyCheck__: true,
+  lazyCodeLoading: 'requiredComponents',
 })

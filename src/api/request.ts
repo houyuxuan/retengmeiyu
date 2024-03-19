@@ -1,5 +1,4 @@
 import Taro from "@tarojs/taro";
-import moment from "moment";
 
 interface Response<T = any> {
     code: number;
