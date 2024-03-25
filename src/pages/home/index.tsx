@@ -23,14 +23,11 @@ function Index() {
   }]
 
   const redirectToPage = (url) => {
-    Taro.navigateTo({
-      url,
-      fail(err) {
-        if (err.errMsg.includes('tabbar')) {
-          Taro.switchTab({ url })
-        }
-      }
-    })
+    if (url.includes('module')) {
+      Taro.navigateTo({ url })
+    } else {
+      Taro.switchTab({ url })
+    }
   }
 
   useEffect(() => {
