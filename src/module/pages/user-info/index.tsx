@@ -54,8 +54,6 @@ function Index() {
     }).then(res => {
       setRoleList(res.data.list || [])
       const currRole = res.data.list.findIndex(i => i.memberRoleName === userInfo?.memberUserRoleDTOList[0]?.memberRoleName)
-
-      console.log(1111, currRole)
       currRole > -1 && setRoleIndex(currRole)
     })
   }
@@ -63,14 +61,14 @@ function Index() {
   const [allSchoolList, setAllSchoolList] = useState<Garden.SchoolDetail[]>()
 
   const getAllSchool = () => {
-    return showSchool ? (allSchoolList || getSchoolList({
+    return allSchoolList || getSchoolList({
       pageNo: 1,
       pageSize: 100
     }).then(res => {
       setAllSchoolList(res.data.list || [])
       const currSchool = res.data.list.findIndex(i => i.id === userInfo?.schoolIds[0])
       currSchool > -1 && setSchoolIndex(currSchool)
-    })) : []
+    })
   }
 
   const changeUser = () => {
@@ -114,7 +112,9 @@ function Index() {
                   setRoleIndex(index)
                   const canShowSchool = roleList?.[index].code === UserManagement.RoleCodeEnum.Teacher
                   setShowSchool(canShowSchool)
-                  getAllSchool()
+                  if (canShowSchool) {
+                    getAllSchool()
+                  }
                 }}
               >
                 <View className='select-wrapper'>
@@ -129,7 +129,7 @@ function Index() {
             ) : userInfo.memberUserRoleDTOList[0]?.memberRoleName}
           </View>
           {showSchool && <View>
-            所属学校：{}
+            所属学校：
             {isModify ? (
               <Picker mode='selector' range={allSchoolList || []} rangeKey='schoolName' value={schoolIndex} onChange={e => {
                   const index = +e.detail.value
@@ -153,7 +153,6 @@ function Index() {
             changeUser()
           } else {
             await getAllRole()
-            await getAllSchool()
             setIsModify(true)
           }
         }}

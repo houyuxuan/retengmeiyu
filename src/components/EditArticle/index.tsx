@@ -4,7 +4,7 @@ import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
 import { ContentItem, FileType, Garden } from '@/types'
 import Taro from '@tarojs/taro'
 import { getSchoolList } from '@/api'
-import ImageUpload from '../FileUpload'
+import FileUpload from '../FileUpload'
 import './index.scss'
 
 export interface ArticleDetail {
@@ -22,7 +22,8 @@ export default function EditArticle(props: {
   hasIntro?: boolean;
   titleText?: string
   showSchoolSelect?: boolean
-  hasMedia?: boolean
+  hasVideo?: boolean
+  hasAudio?: boolean
 }) {
   const [article, setArticle] = useState(props.article || {
     title: '',
@@ -75,11 +76,14 @@ export default function EditArticle(props: {
 
   useEffect(() => {
     props.article && setArticle(props.article)
+  }, [props.article])
+
+  useEffect(() => {
     if (article.detailList.length) {
       const textCount = article.detailList.filter(i => i.type === 'text').length
       setCount([textCount, article.detailList.length - textCount])
     }
-  }, [props.article])
+  }, [article])
 
   const handleChange = (e: any) => {
     setArticle({
@@ -118,7 +122,7 @@ export default function EditArticle(props: {
       return
     }
     article.detailList = article.detailList.filter(i => !!i.content)
-    if (!article.detailList.length) {
+    if (!props.hasIntro && !article.detailList.length) {
       Taro.atMessage({type: 'warning', message: '请填写内容！'})
       return
     }
@@ -142,9 +146,9 @@ export default function EditArticle(props: {
         </AtButton>
         <AtButton type='secondary' size='small' onClick={() => addContent('image', index)}>
           <AtIcon value='edit' size='16' />
-          添加图片{props.hasMedia && '/视频'}
+          添加图片{props.hasVideo && '/视频'}
         </AtButton>
-        {props.hasMedia && <AtButton type='secondary' size='small' onClick={() => addContent('audio', index)}>
+        {props.hasAudio && <AtButton type='secondary' size='small' onClick={() => addContent('audio', index)}>
           <AtIcon value='file-audio' size='16' />
           添加音频
         </AtButton>}
@@ -200,16 +204,17 @@ export default function EditArticle(props: {
             </View>) : (
             <View className='input-wrapper has-label'>
               <Label className='required'>封面图上传(每张不超过10M)</Label>
-              <ImageUpload
+              <FileUpload
                 fileType={FileType.image}
                 length={2}
                 max={1}
+                showClose
                 fileList={article.coverImg? [{ url:
                    article.coverImg, type: FileType.image }] : []}
                 onUploadSuccess={
-                  url => setArticle({
+                  res => setArticle({
                     ...article,
-                    coverImg: url[0]
+                    coverImg: res[0].url
                   })
                 }
               />
@@ -229,17 +234,18 @@ export default function EditArticle(props: {
                   {article.detailList.map((item, idx) => (
                     item.type !== 'text' ? (
                       <View key={idx} className='edit-item img'>
-                        <ImageUpload
-                          fileType={item.type === 'audio' ? FileType.audio : (props.hasMedia ? [FileType.image, FileType.video] : FileType.image)}
+                        <FileUpload
+                          fileType={item.type === 'audio' ? FileType.audio : (props.hasVideo ? [FileType.image, FileType.video] : FileType.image)}
                           fileList={item.content ? [{ url: item.content, type: FileType[item.type] }] : []}
                           length={1}
                           max={1}
                           center
                           multiple
+                          showClose={false}
                           onUploadSuccess={url => {
                             const list = url.map(i => ({
-                              type: 'image' as any,
-                              content: i
+                              type: FileType[i.type] as any,
+                              content: i.url
                             }))
                             article.detailList.splice(idx, 1, ...list)
                             setArticle({

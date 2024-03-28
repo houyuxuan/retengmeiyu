@@ -6,7 +6,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 10;
+    z-index: 20;
 
     .mask {
         width: 100%;
@@ -38,6 +38,7 @@
 
     .file-item {
         width: 100%;
+        position: relative;
 
         image, video, .audio {
             width: 100%;
@@ -45,6 +46,15 @@
 
         .custom-audio {
             margin-bottom: 20px;
+        }
+
+        .at-icon-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 50%;
+            background: #bbb;
+            padding: 6px;
         }
     }
 

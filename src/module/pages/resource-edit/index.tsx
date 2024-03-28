@@ -42,7 +42,8 @@ function Index() {
   return (
     <EditArticle
       titleText='资源标题'
-      hasMedia
+      hasAudio
+      hasVideo
       article={resourceDetail ? {
         ...resourceDetail,
         coverImg: resourceDetail.resourcesCoverUrl || '',

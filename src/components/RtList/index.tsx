@@ -40,7 +40,7 @@ function Index(props: {
       <AtMessage />
       {props.list.length ? props.list.map((item, index) => (
         <View className='list-item' key={index} onClick={() => toDetail(item.id)}>
-          <Image src={item.coverImg} />
+          <Image src={item.coverImg} mode='aspectFill' />
           <View className='text'>
             <View className='title'>{item.title}</View>
             <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm:ss')}</View>

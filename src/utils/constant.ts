@@ -71,7 +71,7 @@ export const menuInfoMap = {
       path: '/pages/resource-manage/index'
   },
   '用户管理': {
-      icon: 'https://media.retenggy.com/systemImage/user.svg',
+      icon: 'https://media.retenggy.com/systemImage/users.svg',
       path: '/pages/user-manage/index'
   },
 }

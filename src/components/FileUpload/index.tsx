@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Taro from '@tarojs/taro';
 import { View, Image, Video } from '@tarojs/components'
+import { AtIcon } from 'taro-ui';
 import { qiniuUpload } from '@/api';
 import { FileListItem, FileType } from '../../types';
 import './index.scss'
@@ -12,8 +13,12 @@ interface IProps {
   max?: number;
   fileList?: FileListItem[];
   center?: boolean;
-  onUploadSuccess: (url: string[]) => void
+  onUploadSuccess: (fileList: {
+    url: string;
+    type: FileType
+  }[]) => void
   fileType: FileType | FileType[];
+  showClose: boolean;
 }
 
 function Index(props: IProps) {
@@ -35,10 +40,15 @@ function Index(props: IProps) {
       return qiniuUpload({
         filePath: i.url,
         fileName: i.url.split('/').pop() || 'file',
-        fileType: FileType.image
+        fileType: i.type
+      }).then(res => {
+        return {
+          url: res.fileURL,
+          type: i.type
+        }
       })
     })).then(res => {
-      props.onUploadSuccess(res.map(i => i.fileURL))
+      props.onUploadSuccess(res)
     })
   }
 
@@ -98,7 +108,14 @@ function Index(props: IProps) {
           {fileList.map((item, index) => (
             <View className='file-item' key={item.url}>
               {item.type === FileType.image ? (
-                <Image onClick={() => onImageClick(item)} src={item.url} />
+                <>
+                  <Image onClick={() => onImageClick(item)} src={item.url} mode='scaleToFill' />
+                  {props.showClose && <AtIcon value='close' size='10' color='#fff' onClick={() => {
+                    fileList.splice(index, 1)
+                    setFiles([...fileList])
+                  }}
+                  />}
+                </>
               ) : item.type === FileType.video ? (
                 <Video
                   src={item.url}

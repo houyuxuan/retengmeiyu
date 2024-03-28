@@ -63,7 +63,7 @@ function Index() {
     <View className='post-container'>
       <AtMessage />
       {detail && <View className='post-title'>
-        <Image src={detail?.postCoverUrl || ''} />
+        <Image src={detail?.postCoverUrl || ''} mode='aspectFill' />
         <View className='title'>{detail?.postTitle}</View>
         <View className='date'>
           {moment(detail.createTime).format('YYYY-MM-DD HH:mm:ss')}

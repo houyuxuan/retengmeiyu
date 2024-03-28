@@ -46,6 +46,7 @@ function Index() {
         title: activityDetail.activityTitle || '',
         detailList: activityDetail.detailList || []
       } : undefined}
+      hasVideo
       onSave={onSave}
       showSchoolSelect
       headerTitle={currId ? '活动管理-编辑' : '活动管理-新增'}

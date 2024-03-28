@@ -8,7 +8,6 @@ import './index.scss'
 
 function Index() {
   const [userInfo, setUserInfo] = useState<UserManagement.UserInfo>()
-
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
 
   const [nameEditing, setEditing] = useState(false)
@@ -39,6 +38,9 @@ function Index() {
     }).catch(err => {
       console.log('err', err)
       if (err.code === 403) {
+        // 登录状态失效
+        Taro.setStorageSync('userInfo', undefined)
+        setUserInfo(undefined)
       }
     })
   }

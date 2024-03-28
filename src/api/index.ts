@@ -89,17 +89,10 @@ return request<Garden.SchoolDetail[]>({
 
 // 花园-获取学校详情
 export async function getSchoolDetail(params: { id: IdType }) {
-    return request<{
-        schoolInfo: Garden.SchoolDetail
-    }>({
+    return request<Garden.SchoolDetail>({
         url: '/rt/school/info',
         method: 'POST',
         data: params
-    }).then(res => {
-        return {
-            ...res,
-            data: res.data.schoolInfo
-        }
     })
 }
 
@@ -180,17 +173,10 @@ export function activityUpvote(params: {
 export function getActivityUpvote(params: {
     schoolActivityId: IdType;
 }) {
-    return request<{
-        zanInfo: Garden.ActivityUpvoteInfo
-    }>({
+    return request<Garden.ActivityUpvoteInfo>({
         url: '/rt/school/activity/zan/info',
         method: 'POST',
         data: params
-    }).then(res => {
-        return {
-            ...res,
-            data: res.data.zanInfo
-        }
     })
 }
 

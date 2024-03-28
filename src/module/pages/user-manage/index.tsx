@@ -68,7 +68,12 @@ function Index() {
   const changeStatus = (id, index) => {
     const status = userList[index].status
     userStatusChange({ id }).then(res => {
+      Taro.atMessage({
+        type: 'success',
+        message: res.msg
+      })
       userList[index].status = status === UserManagement.UserStatusEnum.Normal ? UserManagement.UserStatusEnum.Disabled : UserManagement.UserStatusEnum.Normal
+      setList([...userList])
     })
   }
 
@@ -99,7 +104,7 @@ function Index() {
         otherBtn={[{
           text: item => item.status === UserManagement.UserStatusEnum.Disabled ? '恢复正常' : '禁用',
           fun(item, index) {
-            changeStatus(item, index)
+            changeStatus(item.id, index)
           }
         }]}
         total={total}
