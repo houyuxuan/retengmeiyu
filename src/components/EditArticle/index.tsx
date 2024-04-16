@@ -117,7 +117,7 @@ export default function EditArticle(props: {
       Taro.atMessage({type: 'warning', message: '请输入介绍！'})
       return
     }
-    if (!props.hasIntro && !article.coverImg){
+    if (!article.coverImg){
       Taro.atMessage({type: 'warning', message: '请上传封面图！'})
       return
     }
@@ -193,7 +193,7 @@ export default function EditArticle(props: {
               </Picker>
             </View>
           )}
-          {props.hasIntro ? (
+          {props.hasIntro && (
             <View className='input-wrapper has-label'>
               <Label className='required'>学校简介</Label>
               <Textarea
@@ -201,25 +201,25 @@ export default function EditArticle(props: {
                 onInput={e => setArticle({...article, intro: e.detail.value})}
                 placeholder='请输入学校简介'
               />
-            </View>) : (
-            <View className='input-wrapper has-label'>
-              <Label className='required'>封面图上传(每张不超过10M)</Label>
-              <FileUpload
-                fileType={FileType.image}
-                length={2}
-                max={1}
-                showClose
-                fileList={article.coverImg? [{ url:
-                   article.coverImg, type: FileType.image }] : []}
-                onUploadSuccess={
-                  res => setArticle({
-                    ...article,
-                    coverImg: res[0].url
-                  })
-                }
-              />
             </View>)
           }
+          <View className='input-wrapper has-label'>
+            <Label className='required'>封面图上传(每张不超过10M)</Label>
+            <FileUpload
+              fileType={FileType.image}
+              length={2}
+              max={1}
+              showClose
+              fileList={article.coverImg? [{ url:
+                  article.coverImg, type: FileType.image }] : []}
+              onUploadSuccess={
+                res => setArticle({
+                  ...article,
+                  coverImg: res[0].url
+                })
+              }
+            />
+          </View>
         </View>
         {!props.hideDetail && (
           <View className='detail'>

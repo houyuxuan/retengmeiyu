@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Image, Button, ScrollView } from '@tarojs/components'
+import React, { useEffect, useState } from 'react'
+import { View, Image } from '@tarojs/components'
 import Taro, { useReachBottom } from '@tarojs/taro'
 import { IdType } from '@/types'
 import moment from 'moment'
@@ -28,12 +28,17 @@ function Index(props: {
 
   const [loading, setLoading] = useState(false)
   useReachBottom(() => {
-    console.log('reach bottom')
     if (props.list.length < props.total) {
       setLoading(true)
       props.onLoading()
     }
   })
+
+  useEffect(() => {
+    if (loading) {
+      setLoading(false)
+    }
+  }, [props.list, loading])
 
   return (
     <View className='list-content'>
@@ -43,6 +48,11 @@ function Index(props: {
           <Image src={item.coverImg} mode='aspectFill' />
           <View className='text'>
             <View className='title'>{item.title}</View>
+            {item.intro && (
+              <View className='intro'>
+                {item.intro}
+              </View>
+            )}
             <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm:ss')}</View>
           </View>
         </View>

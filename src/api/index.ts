@@ -20,9 +20,7 @@ export function login(params: { userInfo?: UserInfo; loginCode: string; phoneCod
 /**************************   关于我们  **************************/
 // 关于我们-获取列表
 export function getIntroList(params: { searchKeyWord: string } & PageParams) {
-    return request<{
-        list: AboutUs.IntroDetail[];
-    } & PageResult>({
+    return request<PageResult<AboutUs.IntroDetail>>({
         url: '/rt/aboutus/list',
         method: 'POST',
         data: params
@@ -69,9 +67,7 @@ export function introDelete(params: { id: IdType }) {
 
 // 花园-获取学校列表
 export function getSchoolList(params?: { searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: Garden.SchoolDetail[]
-    } & PageResult>({
+    return request<PageResult<Garden.SchoolDetail>>({
         url: '/rt/school/page',
         method: 'POST',
         data: params
@@ -98,9 +94,7 @@ export async function getSchoolDetail(params: { id: IdType }) {
 
 // 花园-获取学校下活动列表
 export function getSchoolActivity(params: { schoolId: IdType, searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: Garden.ActivityDetail[]
-    } & PageResult>({
+    return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/school/activity/public/page',
         method: 'POST',
         data: params
@@ -109,9 +103,7 @@ export function getSchoolActivity(params: { schoolId: IdType, searchKeyWord?: st
 
 // 花园-获取学校下活动列表
 export function getSchoolAdminActivity(params: { schoolId: IdType, searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: Garden.ActivityDetail[]
-    } & PageResult>({
+    return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/school/activity/admin/page',
         method: 'POST',
         data: params
@@ -120,9 +112,7 @@ export function getSchoolAdminActivity(params: { schoolId: IdType, searchKeyWord
 
 // 花园-获取学校下活动列表
 export function getActivityList(params: { searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: Garden.ActivityDetail[]
-    } & PageResult>({
+    return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/school/activity/public/page',
         method: 'POST',
         data: params
@@ -131,9 +121,7 @@ export function getActivityList(params: { searchKeyWord?: string } & PageParams)
 
 // 花园-获取学校下活动列表
 export function getActivityAdminList(params: { searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: Garden.ActivityDetail[]
-    } & PageResult>({
+    return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/school/activity/admin/page',
         method: 'POST',
         data: params
@@ -157,6 +145,39 @@ export function getActivityDetail(params: { id: IdType }) {
     })
 }
 
+// 活动-获取评论列表
+export function getRemarks(params: {
+    activityId: IdType;
+} & PageParams) {
+    return request<PageResult<Garden.ActivityRemarkItem>>({
+        url: '/rt/activity/comment/list',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 活动-发布评论
+export function submitRemark(params: {
+    activityId: IdType;
+    commentContent: string;
+    memberUserId: string;
+}) {
+    return request({
+        url: '/rt/activity/comment/public',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 删除评论
+export function deleteRemark(id: IdType) {
+    return request({
+        url: '/rt/activity/comment/delete',
+        method: 'POST',
+        data: { id }
+    })
+}
+
 // 活动-点赞
 export function activityUpvote(params: {
     schoolActivityId: IdType;
@@ -172,6 +193,7 @@ export function activityUpvote(params: {
 // 活动-点赞详情
 export function getActivityUpvote(params: {
     schoolActivityId: IdType;
+    memberUserId: IdType;
 }) {
     return request<Garden.ActivityUpvoteInfo>({
         url: '/rt/school/activity/zan/info',
@@ -225,9 +247,7 @@ export function getUserList(params: {
     searchKeyWord: string,
     status?: UserManagement.UserStatusEnum,
 } & PageParams) {
-    return request<{
-        list: UserManagement.UserInfo[]
-    } & PageResult>({
+    return request<PageResult<UserManagement.UserInfo>>({
         url: '/member/user/list',
         method: 'POST',
         data: params
@@ -276,9 +296,7 @@ export function userDelete(params: { id: IdType }) {
 
 // 用户角色列表
 export function getRoleList(params: { searchKeyWord?: string } & PageParams) {
-    return request<{
-        list: UserManagement.RoleInfo[];
-    } & PageResult>({
+    return request<PageResult<UserManagement.RoleInfo>>({
         url: '/rt/member/role/page',
         method: 'POST',
         data: params
@@ -300,6 +318,13 @@ export function getMenu() {
                 path: menuInfoMap[i.menuName]?.path,
             }))
         }
+    })
+}
+
+export function getScore() {
+    return request<{ total: number }>({
+        url: '/rt/member/credit/personCredit',
+        method: 'GET'
     })
 }
 
@@ -440,9 +465,7 @@ export function getPostList(params: {
     postType?: Community.PostType;
     searchKeyWord: string;
 } & PageParams) {
-    return request<{
-        list: Community.PostDetail[]
-    } & PageResult>({
+    return request<PageResult<Community.PostDetail>>({
         url: '/rt/post/public/page',
         method: 'POST',
         data: params
@@ -454,9 +477,7 @@ export function getPostAdminList(params: {
     postType?: Community.PostType;
     searchKeyWord: string;
 } & PageParams) {
-    return request<{
-        list: Community.PostDetail[]
-    } & PageResult>({
+    return request<PageResult<Community.PostDetail>>({
         url: '/rt/post/admin/page',
         method: 'POST',
         data: params
@@ -505,9 +526,7 @@ export function getPostDiscuss(params: {
     postId: IdType;
     createTime?: [string, string];
 } & PageParams) {
-    return request<{
-        list: Community.PostDiscussDetail[]
-    } & PageResult>({
+    return request<PageResult<Community.PostDiscussDetail>>({
         url: '/rt/post/discuss/list',
         method: 'POST',
         data: params
@@ -547,9 +566,7 @@ export function getResourceList(params: {
     if (params.resourcesType === Resource.ResourceType.All) {
         params.resourcesType = undefined as any
     }
-    return request<{
-        list: Resource.ResourceDetail[]
-    } & PageResult>({
+    return request<PageResult<Resource.ResourceDetail>>({
         url: '/rt/resources/public/page',
         method: 'POST',
         data: params
@@ -564,9 +581,7 @@ export function getResourceAdminList(params: {
     if (params.resourcesType === Resource.ResourceType.All) {
         params.resourcesType = undefined as any
     }
-    return request<{
-        list: Resource.ResourceDetail[]
-    } & PageResult>({
+    return request<PageResult<Resource.ResourceDetail>>({
         url: '/rt/resources/admin/page',
         method: 'POST',
         data: params

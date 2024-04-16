@@ -1,25 +1,31 @@
 import React, { useEffect } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import { AtIcon } from 'taro-ui'
+import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
   const enterList = [{
     pagePath: '../../module/pages/about-us/index',
     text: '关于我们',
-    icon: 'https://media.retenggy.com/systemImage/about-us.svg'
+    bg: 'aboutusBg.png',
+    icon: 'aboutus.png'
   }, {
     pagePath: '/pages/garden-school/index',
     text: '美育花园',
-    icon: 'https://media.retenggy.com/systemImage/home-garden.svg'
+    bg: 'gardenBg.png',
+    icon: 'garden.png'
   }, {
     pagePath: '/pages/community/index',
     text: '美育社区',
-    icon: 'https://media.retenggy.com/systemImage/home-community.svg'
+    bg: 'communityBg.png',
+    icon: 'community.png'
   }, {
     pagePath: '/pages/resource/index',
     text: '美育资源',
-    icon: 'https://media.retenggy.com/systemImage/home-resource.svg'
+    bg: 'resourceBg.png',
+    icon: 'resource.png'
   }]
 
   const redirectToPage = (url) => {
@@ -55,15 +61,19 @@ function Index() {
   return (
     <View className='home-container'>
       <View className="title">
-        <Text>热腾公益美育小程序</Text>
-        <Image src='https://media.retenggy.com/systemImage/bg.jpg' />
+        <Text>热腾美育</Text>
+        <Image src={systemImagePre + '/banner.png'} />
       </View>
       <View className="enter-list">
         {
           enterList.map(item => (
             <View className='item' key={item.pagePath} onClick={() => redirectToPage(item.pagePath)}>
-              <Image src={item.icon} />
-              <Text>{item.text}</Text>
+              <Image className='item-bg' src={`${systemImagePre}/${item.bg}`} />
+              <View className='item-text'>
+                <Image className='item-icon' src={`${systemImagePre}/${item.icon}`} />
+                <Text className='text'>{item.text}</Text>
+                <AtIcon value="chevron-right" size='20' color='#fff' />
+              </View>
             </View>
           ))
         }

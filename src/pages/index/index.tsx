@@ -7,7 +7,7 @@ import './index.scss'
 function Index() {
   useEffect(() => {
     Taro.reLaunch({
-      url: '/pages/home/index'
+      url: '/module/pages/admin-page/index'
     })
   }, [])
   return (

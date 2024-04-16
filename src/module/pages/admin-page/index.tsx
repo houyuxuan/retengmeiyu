@@ -46,8 +46,8 @@ function Index() {
   return (
     <View className='mine-container'>
       <View className='base-info'>
-        <AtAvatar image={userInfo?.avatar || defaultAvatarUrl} />
-        <Text className='name'>{userInfo?.nickname || '未登录'}</Text>
+        <AtAvatar circle image={userInfo?.avatar || defaultAvatarUrl} />
+        <Text className='name'>{userInfo?.nickname}</Text>
       </View>
       {stat && <View className='count'>
         <View className='count-item'>

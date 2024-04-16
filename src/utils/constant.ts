@@ -1,5 +1,6 @@
 import { Community, Resource, UserManagement } from "@/types";
 
+export const systemImagePre = 'https://media.retenggy.com/frontImages'
 export const resourceTabList = [{
   title: '全部',
   value: Resource.ResourceType.All
@@ -35,23 +36,23 @@ export const userTabList = [{
 
 export const menuInfoMap = {
   '发布活动': {
-      icon: 'https://media.retenggy.com/systemImage/publish.svg',
+      icon: '/activity-add.png',
       path: '/pages/activity-manage/index'
   },
-  '关于我们': {
+  '关于我们管理': {
       icon: 'https://media.retenggy.com/systemImage/fix.svg',
       path: '/pages/about-us-manage/index'
   },
   '发布资源': {
-      icon: 'https://media.retenggy.com/systemImage/book.svg',
+      icon: '/resource-add.png',
       path: '/pages/resource-manage/index'
   },
   '发布帖子': {
-      icon: 'https://media.retenggy.com/systemImage/edit.svg',
+      icon: '/post-add.png',
       path: '/pages/post-manage/index'
   },
   '后台管理': {
-      icon: 'https://media.retenggy.com/systemImage/setting.svg',
+      icon: '/setting.png',
       path: '/pages/admin-page/index'
   },
   '学校管理': {

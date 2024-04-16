@@ -16,25 +16,28 @@ input {
     padding: 10px 20px;
     border: 1px solid $color-border-base;
     border-radius: 10px;
+    background: #fff;
 }
 
 .input-wrapper {
     margin-bottom: 20px;
+    background: #fff;
 
     &.has-prefix {
         position: relative;
+        height: 60px;
         padding: 10px 20px 10px 60px;
-        border: 1px solid $color-border-base;
-        border-radius: 10px;
+        border-radius: 35px;
 
         .at-icon {
             font-size: 20px;
             position: absolute;
             left: 10px;
-            top: 14px;
+            top: 24px;
         }
 
         input {
+            height: 100%;
             padding: 0;
             border: 0;
         }
@@ -62,4 +65,19 @@ label.required::before {
 
 .at-avatar {
     background: transparent !important;
+}
+
+.at-tabs {
+    margin-bottom: 20px;
+
+    .at-tabs__item {
+        padding: 20px 0;
+
+        .at-tabs__item-underline {
+            background-color: #C0182F;
+        }
+    }
+    .at-tabs__item--active {
+        color: #C0182F;
+    }
 }

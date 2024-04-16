@@ -38,6 +38,12 @@ function ManageList(props: {
     }
   })
 
+  useEffect(() => {
+    if (loading) {
+      setLoading(false)
+    }
+  }, [props.list, loading])
+
   return (
       <View className='manage-list'>
         {props.list.length ? props.list.map((item, index) => (

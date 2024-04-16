@@ -49,7 +49,7 @@ function Index() {
   useEffect(refresh, [currTab, keyword])
 
   return (
-    <View className='community-container'>
+    <View className='resource-container'>
       <View className='input-wrapper has-prefix'>
         <AtIcon value='search' size='20' color='#aaa' />
         <Input

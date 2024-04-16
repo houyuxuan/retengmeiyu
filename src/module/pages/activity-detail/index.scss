@@ -1,10 +1,50 @@
 .activity-detail {
+    height: 100vh;
     padding-bottom: 50px;
-    .up-vote {
-        position: fixed;
-        bottom: 50px;
-        left: 50px;
-        width: 60px;
-        height: 60px;
+    overflow: auto;
+
+    .remark-title {
+        padding: 20px 30px;
+        font-size: 34px;
+    }
+
+    .publish {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px;
+
+        input {
+            width: 80%;
+            height: 56px;
+            border-radius: 38px;
+        }
+        .up-vote {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    .remark-item {
+        padding: 20px 0 20px 120px;
+        position: relative;
+        font-size: 30px;
+        color: #666;
+        margin-bottom: 20px;
+
+        image {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            border-radius: 40px;
+        }
+        
+        .content {
+            font-size: 36px;
+            color: #333;
+            margin: 14px 0;
+        }
     }
 }

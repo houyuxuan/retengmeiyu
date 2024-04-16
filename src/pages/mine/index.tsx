@@ -3,12 +3,14 @@ import { View, Text, Image, Button, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtAvatar, AtIcon } from 'taro-ui'
 import { FileType, UserManagement } from '@/types'
-import { getMenu, getMineInfo, login, qiniuUpload, updateMyInfo } from '@/api'
+import { getMenu, getMineInfo, getScore, login, qiniuUpload, updateMyInfo } from '@/api'
+import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
   const [userInfo, setUserInfo] = useState<UserManagement.UserInfo>()
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
+  const [manageItem, setManageItem] = useState<UserManagement.MenuListItem>()
 
   const [nameEditing, setEditing] = useState(false)
 
@@ -35,6 +37,7 @@ function Index() {
   const getMenuList = () => {
     getMenu().then(res => {
       setMenuList(res.data)
+      setManageItem(res.data.find(i => i.menuName === '后台管理'))
     }).catch(err => {
       console.log('err', err)
       if (err.code === 403) {
@@ -43,6 +46,7 @@ function Index() {
         setUserInfo(undefined)
       }
     })
+    getScore()
   }
 
   const defaultAvatarUrl = 'https://media.retenggy.com/systemImage/defaultAvatar.png'
@@ -58,9 +62,10 @@ function Index() {
   }
 
   const handleGetPhoneNumber = (res) => {
-    console.log('handleGetPhoneNumber', res)
     Taro.login({
       success: res1 => {
+        console.log('login code', res1.code)
+        console.log('phone code', res.detail.code)
         loginPage(res1.code, res.detail.code)
       }
     })
@@ -94,17 +99,16 @@ function Index() {
   }
 
   return (
-    <View className='mine-container'>
+    <View className='mine-container' style={{ backgroundImage: `url(${systemImagePre}/mine-bg.png)`}}>
       <View className='base-info'>
         <Button
           className='get-avatar'
           open-type="chooseAvatar"
           onChooseAvatar={onChooseAvatar}
         >
-          <AtAvatar image={userInfo?.avatar || defaultAvatarUrl} />
+          <AtAvatar circle image={userInfo?.avatar || defaultAvatarUrl} />
         </Button>
-        {userInfo ? (
-          nameEditing ? (
+        {nameEditing ? (
             <Input
               className='nickname-input'
               type='nickname'
@@ -112,36 +116,42 @@ function Index() {
               onBlur={(e) => changeInfo({nickname: e.detail.value})}
             />
           ) : (
-            <>
-              <Text className='name'>{userInfo?.nickname || '未登录'}</Text>
-              <AtIcon value='edit' size='16' color='#78A4F4' onClick={() => {
-                setEditing(true)
-              }}
-              />
-            </>
-          )
-        ) : (
-          <>
-            <Text className='name'>未登录</Text>
-            <Button
-              className='login-btn'
-              open-type='getPhoneNumber|agreePrivacyAuthorization'
-              onGetPhoneNumber={handleGetPhoneNumber}
-              onAgreePrivacyAuthorization={handleAgreePrivacyAuthorization}
-            >
-              登录/注册
-            </Button>
-          </>
-        )}
+            <View className='name'>
+              {!userInfo && <Button
+                className='login-btn'
+                open-type='getPhoneNumber|agreePrivacyAuthorization'
+                onGetPhoneNumber={handleGetPhoneNumber}
+                onAgreePrivacyAuthorization={handleAgreePrivacyAuthorization}
+              >
+                点击登录
+              </Button>}
+              <Text onClick={() => setEditing(true)}>{userInfo?.nickname || '未登录'}</Text>
+              {/* {userInfo.memberUserRoleDTOList[0].memberRoleName === '老师' && <View className='score'>
+
+              </View>} */}
+            </View>
+          )}
       </View>
       <View className='menu-list'>
-        {menuList.map(i => (
+        {!menuList.length ? (
+          <View className='empty'>
+            <Image src={`${systemImagePre}/empty.png`} />
+            <View>暂无内容</View>
+          </View>
+        ) : menuList.filter(i => i.menuName !== '后台管理').map(i => (
           <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `../../module${i.path}`})}>
-            <Image src={i.menuIconUrl} />
+            <Image src={`${systemImagePre}/${i.menuIconUrl}`} />
             <View>{i.menuName}</View>
           </View>
         ))}
       </View>
+      {manageItem && (
+        <View className='manage-item' onClick={() => Taro.navigateTo({url: `../../module${manageItem.path}`})}>
+          <Image src={`${systemImagePre}/${manageItem.menuIconUrl}`} />
+          <View>{manageItem.menuName}</View>
+          <AtIcon value="chevron-right" size='20' color='#999' />
+        </View>
+      )}
     </View>
   )
 }

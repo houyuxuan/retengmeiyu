@@ -5,8 +5,9 @@ interface PageParams {
     pageSize: number;
 }
 
-interface PageResult {
+interface PageResult<T> {
     total: number;
+    list: T[]
 }
 
 export enum FileType {
@@ -82,6 +83,17 @@ namespace Garden {
             nickname: string;
             avatar: string;
         }[]
+    }
+
+    export interface ActivityRemarkItem {
+        id: IdType;
+        commentContent: string;
+        memberUserId: IdType;
+        activityId: IdType;
+        nickname: string;
+        avatar: string;
+        owner: boolean; // 为true说明评论属于自己本人，可以删除
+        createTime: string;
     }
 }
 

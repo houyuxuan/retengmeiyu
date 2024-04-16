@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { getSchoolList } from '@/api'
 import { Garden, PageParams } from '@/types'
 import RtList from '@/components/RtList'
+import './index.scss'
 
 function Index() {
   const [schoolList, setList] = useState<Garden.SchoolDetail[]>([])
@@ -30,7 +31,8 @@ function Index() {
           title: i.schoolName,
           coverImg: i.schoolLogoUrl,
           id: i.id!,
-          date: i.createTime || ''
+          date: i.createTime || '',
+          intro: i.schoolIntroduction
         }))}
         detailUrl='../../module/pages/garden-activity/index'
         total={total}

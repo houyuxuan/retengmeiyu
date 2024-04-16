@@ -43,7 +43,7 @@ export default defineAppConfig({
   },
   tabBar: {
     color: '#000000',
-    selectedColor: '#79A1EB',
+    selectedColor: '#C0182F',
     backgroundColor: '#fff',
     list: [{
       pagePath: 'pages/home/index',
@@ -74,4 +74,5 @@ export default defineAppConfig({
   },
   __usePrivacyCheck__: true,
   lazyCodeLoading: 'requiredComponents',
+  onReachBottomDistance: 300
 })

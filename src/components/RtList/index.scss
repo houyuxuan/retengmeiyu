@@ -1,31 +1,31 @@
 @import '~@/app.scss';
 
 .list-content {
-    height: 500px;
-
     .list-item {
         display: flex;
         position: relative;
-        border: 1px solid $color-border-base;
-        border-radius: 20px;
         padding: 30px 20px;
-        margin: 20px;
+        margin-bottom: 20px;
+        background: #fff;
 
         image {
-            width: 30vw;
-            height: 30vw;
-            border-radius: 20px;
+            width: 180px;
+            height: 180px;
+            margin-right: 30px;
         }
 
         .text {
-            margin-left: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .intro {
+                color: #aaa;
+            }
 
             .date {
-                position: absolute;
-                bottom: 30px;
-                right: 30px;
                 color: #aaa;
-                font-size: 20px;
+                font-size: 26px;
             }
         }
     }
