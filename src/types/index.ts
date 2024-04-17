@@ -72,6 +72,7 @@ namespace Garden {
         activityDetails: string;
         detailList: ContentItem[];
         zanNumber: number;
+        memberUserInfo: UserManagement.UserInfo
     }
 
     // 活动-点赞详情
@@ -158,6 +159,7 @@ namespace UserManagement {
         creditValue: number;
         creditSourceType: string;
         creditSourceDesc: string;
+        sourceTitle: string;
         sourceId: number;
         memberUserId: IdType;
         publicStatus: any;

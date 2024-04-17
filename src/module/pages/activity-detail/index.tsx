@@ -105,6 +105,7 @@ function Index() {
           id: detail.id!,
           createTime: detail.createTime || ''
         } : undefined}
+        author={detail?.memberUserInfo!}
       />
       <View className='remarks'>
         <View className='remark-title'>

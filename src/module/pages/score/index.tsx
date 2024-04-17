@@ -51,7 +51,7 @@ function Index() {
         {scoreList.map(item => (
           <View className="score-item" key={item.id}>
             <View>{item.creditSourceDesc}</View>
-            {/* <View className='activity'>{item.creditSourceDesc}</View> */}
+            <View className='activity'>{item.sourceTitle}</View>
             <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
             <View className='number'>{item.creditValue}</View>
           </View>

@@ -8,7 +8,7 @@ import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
-  const [userInfo, setUserInfo] = useState<UserManagement.UserInfo>()
+  const [userInfo, setUserInfo] = useState<UserManagement.UserInfo & { roleCode: string }>()
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
   const [manageItem, setManageItem] = useState<UserManagement.MenuListItem>()
 
@@ -18,10 +18,14 @@ function Index() {
 
   useEffect(() => {
     const user = userInfo || Taro.getStorageSync('userInfo')
+    const loginInfo = Taro.getStorageSync('loginInfo')
     if (!user) {
       getUserInfo()
     } else {
-      setUserInfo(user)
+      setUserInfo({
+        ...user,
+        roleCode: loginInfo.roleCode
+      })
     }
   }, [userInfo])
 
@@ -31,7 +35,10 @@ function Index() {
 
   const getUserInfo = () => {
     getMineInfo().then(res => {
-      setUserInfo(res.data as any)
+      setUserInfo({
+        ...res.data,
+        roleCode: Taro.getStorageSync('loginInfo').roleCode
+      })
       Taro.setStorageSync('userInfo', res.data)
     })
   }
@@ -116,6 +123,7 @@ function Index() {
           className='get-avatar'
           open-type="chooseAvatar"
           onChooseAvatar={onChooseAvatar}
+          disabled={!userInfo}
         >
           <AtAvatar circle image={userInfo?.avatar || defaultAvatarUrl} />
         </Button>
@@ -137,7 +145,7 @@ function Index() {
                 点击登录
               </Button>}
               <Text onClick={() => setEditing(true)}>{userInfo?.nickname || '未登录'}</Text>
-              {(!!userInfo && score > 0) &&  (
+              {userInfo?.roleCode && (
                 <View className='score' onClick={toScorePage}>
                   总积分： {score}
                   <AtIcon value="chevron-right" size='20' color='#999' />

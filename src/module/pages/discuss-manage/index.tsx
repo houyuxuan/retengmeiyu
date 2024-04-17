@@ -15,7 +15,6 @@ function Index() {
     pageSize: 20
   })
 
-
   const [dateRange, setDateRange] = useState<[string, string]>(['', ''])
   const [discussList, setList] = useState([] as Community.PostDiscussDetail[])
   const [total, setTotal] = useState(0)
@@ -23,7 +22,7 @@ function Index() {
     getPostDiscuss({
       postId: currId,
       ...page,
-      createTime: [
+      createTime: (!dateRange[0] && !dateRange[1]) ? undefined : [
         dateRange[0] ? dateRange[0] + ' 00:00:00' : '',
         dateRange[1] ? dateRange[1] + ' 23:59:59' : '',
       ]

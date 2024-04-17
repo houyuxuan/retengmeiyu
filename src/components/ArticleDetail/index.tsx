@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image } from '@tarojs/components'
-import { ContentItem, IdType } from '@/types'
-import { AtActivityIndicator } from 'taro-ui'
+import { View, Image, Text } from '@tarojs/components'
+import { ContentItem, IdType, UserManagement } from '@/types'
+import { AtActivityIndicator, AtAvatar } from 'taro-ui'
 import moment from 'moment'
 import './index.scss'
 
@@ -13,6 +13,7 @@ export default function ArticleDetail(props: {
     detailList: ContentItem[];
   };
   showTitle?: boolean;
+  author?: UserManagement.UserInfo
 }) {
   const [titleVisible, setVisible] = useState(true)
 
@@ -28,9 +29,19 @@ export default function ArticleDetail(props: {
         <View className='detail'>
           {titleVisible && (<>
             <View className='title'>{props.detail.title}</View>
-            <View className='date'>
-              {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
-            </View>
+            {props.author ? (
+              <View className="author">
+                <AtAvatar circle image={props.author.avatar} size='small' />
+                <Text className='nickname'>{props.author.nickname}</Text>
+                <View className='date'>
+                  {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
+                </View>
+              </View>
+            ) : (
+              <View className='date'>
+                {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
+              </View>
+            )}
           </>)}
           <View className='content'>
             {props.detail.detailList.map((item, idx) => (
