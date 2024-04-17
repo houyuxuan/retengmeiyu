@@ -106,10 +106,10 @@ function Index() {
           createTime: detail.createTime || ''
         } : undefined}
       />
-      <View className='remark-title'>
+      <View className='remarks'>
+        <View className='remark-title'>
           评论{remarkList.length || ''}
         </View>
-      <View className='remarks'>
         <View className='publish'>
           <Input
             type='text'
@@ -121,16 +121,16 @@ function Index() {
           <Image className='up-vote' src={`${systemImagePre}/upvote${voteInfo?.zanFlag ? 'd' : ''}.png`} onClick={upVote} />
         </View>
         <Text>{voteInfo?.zanNumber}</Text>
-      </View>
-      <View className='remark-list'>
-        {remarkList.map(item => (
-          <View className='remark-item' key={item.id}>
-            <Image src={item.avatar} />
-            <View>{item.nickname}</View>
-            <View className='content'>{item.commentContent}</View>
-            <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
-          </View>
-        ))}
+        <View className='remark-list'>
+          {remarkList.map(item => (
+            <View className='remark-item' key={item.id}>
+              <Image src={item.avatar} />
+              <View>{item.nickname}</View>
+              <View className='content'>{item.commentContent}</View>
+              <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   )

@@ -35,7 +35,7 @@ export default function ArticleDetail(props: {
           <View className='content'>
             {props.detail.detailList.map((item, idx) => (
               item.type === 'image' ? (
-                <View key={idx} className='img'><Image src={item.content} /></View>
+                <View key={idx} className='img'><Image mode="widthFix" src={item.content} /></View>
               ) : (
                 <View className='text' key={idx}>
                   {item.content}

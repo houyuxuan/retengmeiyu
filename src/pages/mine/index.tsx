@@ -14,6 +14,8 @@ function Index() {
 
   const [nameEditing, setEditing] = useState(false)
 
+  const [score, setScore] = useState(0)
+
   useEffect(() => {
     const user = userInfo || Taro.getStorageSync('userInfo')
     if (!user) {
@@ -46,7 +48,10 @@ function Index() {
         setUserInfo(undefined)
       }
     })
-    getScore()
+    getScore().then(res => {
+      setScore(res.data.total)
+      Taro.setStorageSync('myScore', res.data.total)
+    })
   }
 
   const defaultAvatarUrl = 'https://media.retenggy.com/systemImage/defaultAvatar.png'
@@ -98,6 +103,12 @@ function Index() {
     })
   }
 
+  const toScorePage = () => {
+    Taro.navigateTo({
+      url: '../../module/pages/score/index'
+    })
+  }
+
   return (
     <View className='mine-container' style={{ backgroundImage: `url(${systemImagePre}/mine-bg.png)`}}>
       <View className='base-info'>
@@ -126,9 +137,12 @@ function Index() {
                 点击登录
               </Button>}
               <Text onClick={() => setEditing(true)}>{userInfo?.nickname || '未登录'}</Text>
-              {/* {userInfo.memberUserRoleDTOList[0].memberRoleName === '老师' && <View className='score'>
-
-              </View>} */}
+              {(!!userInfo && score > 0) &&  (
+                <View className='score' onClick={toScorePage}>
+                  总积分： {score}
+                  <AtIcon value="chevron-right" size='20' color='#999' />
+                </View>
+              )}
             </View>
           )}
       </View>

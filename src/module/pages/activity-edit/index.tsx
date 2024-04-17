@@ -25,6 +25,17 @@ function Index() {
   }, [currId])
 
   const onSave = async (activity: ArticleDetail & Garden.ActivityDetail) => {
+    const textCount = activity.detailList.reduce((pre, curr) => {
+      return pre + (curr.type === 'text' ? curr.content : '')
+    }, '')
+    const fileCount = activity.detailList.filter(i => i.type !== 'text')
+    if (textCount?.length < 300 || fileCount?.length < 9) {
+      Taro.atMessage({
+        type: 'warning',
+        message: textCount?.length < 300 ? '活动描述字数不得少于300字！' : '活动图片/视频总计不得少于9个文件！'
+      })
+      return false
+    }
     await activityEdit({
       ...activity,
       activityTitle: activity.title,

@@ -258,7 +258,7 @@ export default function EditArticle(props: {
                       </View>
                     ) : (
                     <View className='edit-item text' key={idx}>
-                      <Textarea value={item.content} onInput={e => handleContentChange(e, idx)} />
+                      <Textarea maxlength={-1} value={item.content} onInput={e => handleContentChange(e, idx)} />
                       {getButtons(idx)}
                     </View>
                     )

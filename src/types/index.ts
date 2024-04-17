@@ -147,10 +147,21 @@ namespace UserManagement {
         Normal = 0, // 正常
         All = 9, // 全部
     }
-    
+
     export enum UserGenderEnum {
         Male = 0, // 男
         Female = 1, // 女
+    }
+
+    export interface ScoreDetail {
+        id: IdType;
+        creditValue: number;
+        creditSourceType: string;
+        creditSourceDesc: string;
+        sourceId: number;
+        memberUserId: IdType;
+        publicStatus: any;
+        createTime: string;
     }
 }
 

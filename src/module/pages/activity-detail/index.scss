@@ -2,6 +2,12 @@
     height: 100vh;
     padding-bottom: 50px;
     overflow: auto;
+    background: #f4f4f4;
+
+    .remarks {
+        background: #fff;
+        padding: 20px 0;
+    }
 
     .remark-title {
         padding: 20px 30px;

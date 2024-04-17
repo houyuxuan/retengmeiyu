@@ -328,6 +328,14 @@ export function getScore() {
     })
 }
 
+export function getScoreDetail(page: PageParams) {
+    return request<PageResult<UserManagement.ScoreDetail>>({
+        url: '/rt/member/credit/page',
+        method: 'POST',
+        data: page
+    })
+}
+
 // 我的-获取我的信息
 export function getMineInfo() {
     return request({

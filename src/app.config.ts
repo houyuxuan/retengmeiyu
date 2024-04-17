@@ -31,7 +31,8 @@ export default defineAppConfig({
         'pages/activity-edit/index',
         'pages/school-edit/index',
         'pages/discuss-manage/index',
-        'pages/admin-page/index'
+        'pages/admin-page/index',
+        'pages/score/index',
       ],
     }
   ],

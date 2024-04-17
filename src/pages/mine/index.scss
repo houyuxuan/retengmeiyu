@@ -16,14 +16,22 @@
         margin-bottom: 40px;
 
         .name {
-            padding: 20px 20px 0;
+            padding: 14px 20px 0;
             vertical-align: middle;
+            font-size: 36px;
         }
 
-        .at-icon-edit {
-            height: 32px;
-            margin-top: 4px;
-            font-size: 40px;
+        .score {
+            margin-top: 10px;
+            line-height: 48px;
+            padding: 0 30px;
+            background: #fff;
+            border-radius: 23px;
+            font-size: 30px;
+
+            .at-icon {
+                margin-left: 20px;
+            }
         }
 
         .get-avatar {

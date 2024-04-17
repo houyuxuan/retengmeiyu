@@ -109,7 +109,7 @@ function Index(props: IProps) {
             <View className='file-item' key={item.url}>
               {item.type === FileType.image ? (
                 <>
-                  <Image onClick={() => onImageClick(item)} src={item.url} mode='scaleToFill' />
+                  <Image onClick={() => onImageClick(item)} src={item.url} mode='widthFix' />
                   {props.showClose && <AtIcon value='close' size='10' color='#fff' onClick={() => {
                     fileList.splice(index, 1)
                     setFiles([...fileList])
@@ -138,7 +138,7 @@ function Index(props: IProps) {
       </View>
       {showPreview && <View className='preview-content' onClick={() => setShowPreview(false)}>
         <View className='mask' />
-        <Image className='preview-img' src={previewUrl} />
+        <Image className='preview-img' mode='widthFix'  src={previewUrl} />
       </View>}
     </View>
   )
