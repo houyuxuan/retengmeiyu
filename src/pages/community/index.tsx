@@ -5,6 +5,8 @@ import { AtTabs, AtIcon } from 'taro-ui'
 import { getPostList } from '@/api'
 import RtList from '@/components/RtList'
 import { postTabList } from '@/utils/constant'
+import CheckLogin from '@/components/CheckLogin'
+import Taro from '@tarojs/taro'
 import './index.scss'
 
 function Index() {
@@ -22,14 +24,16 @@ function Index() {
   const [postList, setList] = useState<Community.PostDetail[]>([])
 
   const getList = () => {
-    getPostList({
-      postType: postTabList[currTab].value || undefined,
-      searchKeyWord: keyword,
-      ...page
-    }).then(res => {
-      setList([...postList, ...res.data.list])
-      setTotal(res.data.total)
-    })
+    if (Taro.getStorageSync('userInfo')) {
+      getPostList({
+        postType: postTabList[currTab].value || undefined,
+        searchKeyWord: keyword,
+        ...page
+      }).then(res => {
+        setList([...postList, ...res.data.list])
+        setTotal(res.data.total)
+      })
+    }
   }
 
   const refresh = () => {
@@ -79,6 +83,7 @@ function Index() {
           })
         }}
       />
+      <CheckLogin onSuccess={getList} />
     </View>
   )
 }

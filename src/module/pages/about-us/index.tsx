@@ -3,6 +3,8 @@ import { View } from '@tarojs/components'
 import { getIntroList } from '@/api'
 import { AboutUs, PageParams } from '@/types'
 import RtList from '@/components/RtList'
+import CheckLogin from '@/components/CheckLogin'
+import Taro from '@tarojs/taro'
 import './index.scss'
 
 function Index() {
@@ -16,16 +18,18 @@ function Index() {
   const [total, setTotal] = useState(0)
 
   const getList = () => {
-    getIntroList({
-      searchKeyWord: '',
-      ...page
-    }).then(res => {
-      setTotal(res.data.total)
-      setIntro([
-        ...introList,
-        ...res.data.list
-      ])
-    })
+    if (Taro.getStorageSync('userInfo')) {
+      getIntroList({
+        searchKeyWord: '',
+        ...page
+      }).then(res => {
+        setTotal(res.data.total)
+        setIntro([
+          ...introList,
+          ...res.data.list
+        ])
+      })
+    }
   }
 
   useEffect(getList, [page])
@@ -48,6 +52,7 @@ function Index() {
           })
         }}
       />
+      <CheckLogin onSuccess={getList} />
     </View>
   )
 }

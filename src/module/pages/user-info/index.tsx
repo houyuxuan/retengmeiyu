@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Input, View, Picker } from '@tarojs/components'
 import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfoChange } from '@/api'
@@ -21,8 +21,6 @@ function Index() {
 
   const [showSchool, setShowSchool] = useState(false)
 
-  const defaultAvatarUrl = 'https://media.retenggy.com/systemImage/defaultAvatar.png'
-
   const getInfo = () => {
     getUserDetail({
       id: currId
@@ -31,7 +29,7 @@ function Index() {
       const canShowSchool = res.data.memberUserRoleDTOList[0].code === UserManagement.RoleCodeEnum.Teacher
       setShowSchool(canShowSchool)
       if (canShowSchool) {
-        getUserSchool(res.data.schoolIds).then(schoolRes => {
+        getUserSchools(res.data.schoolIds).then(schoolRes => {
           setInfo({
             ...res.data as any,
             id: currId,
@@ -42,7 +40,7 @@ function Index() {
     })
   }
 
-  const getUserSchool = (ids: IdType[]) => {
+  const getUserSchools = (ids: IdType[]) => {
     return getSchoolListByIds({ ids })
   }
 
@@ -59,6 +57,17 @@ function Index() {
   }
 
   const [allSchoolList, setAllSchoolList] = useState<Garden.SchoolDetail[]>()
+
+  useEffect(() => {
+    if (showSchool) {
+      getAllSchool()
+    }
+  }, [showSchool])
+
+  useEffect(() => {
+    const canShowSchool = roleList?.[roleIndex].code === UserManagement.RoleCodeEnum.Teacher
+    setShowSchool(canShowSchool)
+  }, [roleIndex])
 
   const getAllSchool = () => {
     return allSchoolList || getSchoolList({
@@ -98,11 +107,11 @@ function Index() {
     <View className='user-detail'>
       <AtMessage />
       {userInfo && <View>
-        <AtAvatar size='large' image={userInfo.avatar || defaultAvatarUrl} />
+        <AtAvatar size='large' image={userInfo.avatar} />
         <View>
           <View>用户昵称：{userInfo.nickname}</View>
           <View>手机号码：{userInfo.mobile}</View>
-          <View>注册时间：{moment(userInfo.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+          <View>注册时间：{moment(userInfo.createTime).format('YYYY-MM-DD HH:mm')}</View>
           {/* <View>性别：{userInfo.sex === UserManagement.UserGenderEnum.Male ? '男' : '女'}</View> */}
           <View>
             用户角色：
@@ -110,11 +119,6 @@ function Index() {
               <Picker mode='selector' range={roleList || []} rangeKey='memberRoleName' value={roleIndex} onChange={e => {
                   const index = +e.detail.value
                   setRoleIndex(index)
-                  const canShowSchool = roleList?.[index].code === UserManagement.RoleCodeEnum.Teacher
-                  setShowSchool(canShowSchool)
-                  if (canShowSchool) {
-                    getAllSchool()
-                  }
                 }}
               >
                 <View className='select-wrapper'>

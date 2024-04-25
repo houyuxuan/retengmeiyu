@@ -27,9 +27,8 @@ export default function (props: {
         onConfirm={(e) => props.onConfirm && props.onConfirm(e.detail.value)}
       />
       </View>
-      {props.onAdd && <AtButton type='secondary' onClick={() => props.onAdd!()} size='small'>
-        <AtIcon value='add' size='20' />
-        {props.addText || '添加文章'}
+      {props.onAdd && <AtButton type='secondary' className="add-icon" onClick={() => props.onAdd!()} size='small'>
+        <AtIcon value='add' size='30' color='#fff' />
       </AtButton>}
     </View>
   )

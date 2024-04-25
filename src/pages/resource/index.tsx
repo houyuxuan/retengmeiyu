@@ -4,6 +4,8 @@ import { PageParams, Resource } from '@/types'
 import { AtTabs, AtIcon } from 'taro-ui'
 import { getResourceList } from '@/api'
 import RtList from '@/components/RtList'
+import CheckLogin from '@/components/CheckLogin'
+import Taro from '@tarojs/taro'
 import { resourceTabList } from '@/utils/constant'
 import './index.scss'
 
@@ -26,14 +28,16 @@ function Index() {
   const [total, setTotal] = useState(0)
 
   const getList = () => {
-    getResourceList({
-      resourcesType: resourceTabList[currTab].value,
-      searchKeyWord: keyword,
-      ...page
-    }).then(res => {
-      setTotal(res.data.total)
-      setList([...resourceList, ...res.data.list])
-    })
+    if (Taro.getStorageSync('userInfo')) {
+      getResourceList({
+        resourcesType: resourceTabList[currTab].value,
+        searchKeyWord: keyword,
+        ...page
+      }).then(res => {
+        setTotal(res.data.total)
+        setList([...resourceList, ...res.data.list])
+      })
+    }
   }
 
   const refresh = () => {
@@ -83,6 +87,7 @@ function Index() {
           })
         }}
       />
+      <CheckLogin onSuccess={getList} />
     </View>
   )
 }

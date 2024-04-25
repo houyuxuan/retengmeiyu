@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
 import { getIntroDetail } from '@/api'
 import { AboutUs } from '@/types'
 import ArticleDetail from '@/components/ArticleDetail'
+import { View } from '@tarojs/components'
+import './index.scss'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -33,14 +34,19 @@ function Index() {
     currId && getDetail()
   }, [currId])
 
-  return <ArticleDetail detail={
-    detail ? {
-      ...detail,
-      title: detail.title,
-      id: detail.id!,
-      createTime: detail.createTime || ''
-    } : undefined}
-  />
+  return (
+    <View className={(isPreview ? 'can-edit ' : '') + 'aboutus-detail'}>
+      <ArticleDetail detail={
+        detail ? {
+          ...detail,
+          title: detail.title,
+          id: detail.id!,
+          createTime: detail.createTime || ''
+        } : undefined}
+        editUrl={isPreview ? `/module/pages/about-us-edit/index?id=${currId}` : ''}
+      />
+    </View>
+  )
 }
 
 export default Index

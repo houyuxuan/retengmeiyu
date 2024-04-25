@@ -1,15 +1,51 @@
 .manage-list {
-    .at-card__content-info {
+    background: #f4f4f4;
+    .manage-item {
+        position: relative;
+        padding: 20px 0 20px 210px;
+        background: #fff;
+        min-height: 180px;
+        margin-bottom: 20px;
+
+        .title {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .cover-img {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 180px;
+            height: 180px;
+        }
+
         view {
             margin-bottom: 10px;
         }
     }
+
+    .delete-btn {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+    }
+
     .btn-group {
         display: flex;
+        justify-content: flex-end;
         margin-top: 20px;
+        height: 50px;
+        padding-right: 90px;
+        text-align: right;
 
         .at-button {
-            width: 25%;
+            padding: 0 16px;
+            border-color: #C0182F;
+            color: #C0182F;
+            margin: 0;
         }
     }
 

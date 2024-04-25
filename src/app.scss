@@ -81,3 +81,13 @@ label.required::before {
         color: #C0182F;
     }
 }
+
+.bottom-login-btn {
+    background: #fff;
+    border: 0;
+
+    &::after {
+        display: none;
+        border: 0;
+    }
+}

@@ -18,7 +18,6 @@ interface IProps {
     type: FileType
   }[]) => void
   fileType: FileType | FileType[];
-  showClose: boolean;
 }
 
 function Index(props: IProps) {
@@ -102,20 +101,13 @@ function Index(props: IProps) {
   }
 
   return (
-    <View>
+    <View className='file-uploader'>
       <View>
         <View className={`file-list ${props.center ? ' center' : ''}`} ref={ref}>
           {fileList.map((item, index) => (
             <View className='file-item' key={item.url}>
               {item.type === FileType.image ? (
-                <>
-                  <Image onClick={() => onImageClick(item)} src={item.url} mode='widthFix' />
-                  {props.showClose && <AtIcon value='close' size='10' color='#fff' onClick={() => {
-                    fileList.splice(index, 1)
-                    setFiles([...fileList])
-                  }}
-                  />}
-                </>
+                <Image onClick={() => onImageClick(item)} src={item.url} mode='widthFix' />
               ) : item.type === FileType.video ? (
                 <Video
                   src={item.url}
@@ -124,6 +116,11 @@ function Index(props: IProps) {
               ) : (
                 <CustomAudio src={item.url} />
               )}
+              <AtIcon value='close' size='10' color='#fff' onClick={() => {
+                fileList.splice(index, 1)
+                setFiles([...fileList])
+              }}
+              />
             </View>
           ))}
           {showAddBtn && (

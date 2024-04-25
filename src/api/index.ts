@@ -325,6 +325,9 @@ export function getScore() {
     return request<{ total: number }>({
         url: '/rt/member/credit/personCredit',
         method: 'GET'
+    }).then(res => {
+        Taro.setStorageSync('myScore', res.data.total)
+        return res
     })
 }
 
@@ -336,11 +339,29 @@ export function getScoreDetail(page: PageParams) {
     })
 }
 
+// 用户获取关联学校
+export function getMySchool() {
+    return request<Garden.SchoolDetail>({
+        url: '/rt/school/userSchool',
+        method: 'GET',
+    }).then(res => {
+        Taro.setStorageSync('mySchool', res.data)
+    })
+}
+
 // 我的-获取我的信息
 export function getMineInfo() {
+    const loginInfo = Taro.getStorageSync('loginInfo')
     return request({
         url: '/member/user/get',
         method: 'GET'
+    }).then(res => {
+        const userInfo = {
+            ...res.data,
+            ...loginInfo
+        }
+        Taro.setStorageSync('userInfo', userInfo)
+        return userInfo
     })
 }
 
@@ -630,5 +651,26 @@ export function resourceEdit(params: Resource.ResourceDetail & {
         url: '/rt/resources/public',
         method: 'POST',
         data: params
+    })
+}
+
+// 登录
+export function userLogin(res) {
+    return new Promise((resolve, rej) => Taro.login({
+      success: res1 => {
+        console.log('login code', res1.code)
+        console.log('phone code', res.detail.code)
+        resolve(loginPage(res1.code, res.detail.code))
+      },
+      fail: err => rej(err)
+    }))
+}
+
+export function loginPage(loginCode: string, phoneCode: string) {
+    return login({
+        loginCode,
+        phoneCode,
+    }).then(() => {
+        return getMineInfo()
     })
 }

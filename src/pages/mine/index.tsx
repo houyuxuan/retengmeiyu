@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image, Button, Input } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { AtAvatar, AtIcon } from 'taro-ui'
 import { FileType, UserManagement } from '@/types'
-import { getMenu, getMineInfo, getScore, login, qiniuUpload, updateMyInfo } from '@/api'
+import { getMenu, getMineInfo, getScore, getMySchool, qiniuUpload, updateMyInfo, userLogin } from '@/api'
 import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
-  const [userInfo, setUserInfo] = useState<UserManagement.UserInfo & { roleCode: string }>()
+  const [userInfo, setUserInfo] = useState<UserManagement.UserInfoStorage>()
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
   const [manageItem, setManageItem] = useState<UserManagement.MenuListItem>()
 
@@ -16,35 +16,38 @@ function Index() {
 
   const [score, setScore] = useState(0)
 
-  useEffect(() => {
-    const user = userInfo || Taro.getStorageSync('userInfo')
+  useDidShow(() => {
+    checkLogin()
+  })
+
+  const checkLogin = async () => {
+    let user = userInfo || Taro.getStorageSync('userInfo')
     const loginInfo = Taro.getStorageSync('loginInfo')
     if (!user) {
-      getUserInfo()
+      user = await getUserInfo()
     } else {
-      setUserInfo({
+      setUserInfo(loginInfo ? {
         ...user,
         roleCode: loginInfo.roleCode
-      })
+      } : undefined)
     }
-  }, [userInfo])
-
-  useEffect(() => {
-    getMenuList()
-  }, [])
+    user?.roleCode === UserManagement.RoleCodeEnum.Teacher && getMySchool()
+  }
 
   const getUserInfo = () => {
-    getMineInfo().then(res => {
-      setUserInfo({
-        ...res.data,
-        roleCode: Taro.getStorageSync('loginInfo').roleCode
-      })
-      Taro.setStorageSync('userInfo', res.data)
+    return getMineInfo().then(user => {
+      setUserInfo(user)
+      return user
     })
   }
 
-  const getMenuList = () => {
-    getMenu().then(res => {
+  useEffect(() => {
+    getPageInfo()
+  }, [])
+
+  // getPageInfo
+  const getPageInfo = async () => {
+    await getMenu().then(res => {
       setMenuList(res.data)
       setManageItem(res.data.find(i => i.menuName === '后台管理'))
     }).catch(err => {
@@ -57,29 +60,15 @@ function Index() {
     })
     getScore().then(res => {
       setScore(res.data.total)
-      Taro.setStorageSync('myScore', res.data.total)
     })
   }
 
-  const defaultAvatarUrl = 'https://media.retenggy.com/systemImage/defaultAvatar.png'
-
-  const loginPage = (loginCode: string, phoneCode: string) => {
-    return login({
-      loginCode,
-      phoneCode,
-    }).then(() => {
-      getUserInfo()
-      getMenuList()
-    })
-  }
+  const defaultAvatarUrl = `${systemImagePre}/defaultAvatar.png`
 
   const handleGetPhoneNumber = (res) => {
-    Taro.login({
-      success: res1 => {
-        console.log('login code', res1.code)
-        console.log('phone code', res.detail.code)
-        loginPage(res1.code, res.detail.code)
-      }
+    userLogin(res).then(async () => {
+      setUserInfo(Taro.getStorageSync('userInfo'))
+      getPageInfo()
     })
   }
 
@@ -145,7 +134,7 @@ function Index() {
                 点击登录
               </Button>}
               <Text onClick={() => setEditing(true)}>{userInfo?.nickname || '未登录'}</Text>
-              {userInfo?.roleCode && (
+              {(userInfo?.roleCode === 'teacher') && (
                 <View className='score' onClick={toScorePage}>
                   总积分： {score}
                   <AtIcon value="chevron-right" size='20' color='#999' />

@@ -1,8 +1,9 @@
-@import "~taro-ui/dist/style/index.scss";
-
 .post-container {
     padding: 30px;
+    background: #f4f4f4;
+    height: 100vh;
 }
+
 .post-title {
     padding: 30px;
 
@@ -24,37 +25,15 @@
 }
 
 .tab-container {
-    border: 1px solid $color-border-base;
     border-radius: 20px;
     overflow: hidden;
+    background: #fff;
 
-    .at-tabs__item {
-        padding: 0;
-        line-height: 80px;
-    }
-
-    .at-tabs__item:not(:last-child) {
-        border-right: 1px solid $color-border-base;
-    }
-
-    .at-tabs__item-underline {
-        display: none;
-    }
-
-    .at-tabs__underline {
-        background-color: $color-border-base;
-    }
-
-    .detail-wrapper .detail {
-        border: 0;
-    }
-    
     .discuss-list {
         padding: 30px;
 
         .discuss-item {
             padding: 30px 0;
-            border-bottom: 1px solid $color-border-base;
         }
 
         image {

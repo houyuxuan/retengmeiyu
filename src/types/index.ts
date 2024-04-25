@@ -113,6 +113,16 @@ namespace UserManagement {
         memberUserNum: number;
     }
 
+    // 登录信息
+    export interface LoginInfo {
+        accessToken: string;
+        expiresTime: number;
+        openid: string;
+        refreshToken: string;
+        roleCode: RoleCodeEnum;
+        userId: IdType
+    }
+
     // 用户详情
     export interface UserInfo {
         id: IdType;
@@ -127,6 +137,9 @@ namespace UserManagement {
         schoolNames?: string; // 自己拼接
         memberUserRoleDTOList: RoleInfo[]
     }
+
+    // 存储当前用户信息
+    export type UserInfoStorage = LoginInfo & UserInfo
 
     export interface RoleInfo {
         id: IdType;

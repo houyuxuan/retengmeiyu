@@ -33,6 +33,7 @@ export default defineAppConfig({
         'pages/discuss-manage/index',
         'pages/admin-page/index',
         'pages/score/index',
+        'pages/news/index'
       ],
     }
   ],

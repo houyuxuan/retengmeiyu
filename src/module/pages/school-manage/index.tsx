@@ -74,11 +74,12 @@ function Index() {
         list={schoolList.map(i => ({
             ...i,
             id: i.id!,
-            title: i.schoolName
+            title: i.schoolName,
+            coverImg: i.schoolLogoUrl
         }))}
         cardContent={(item: Garden.SchoolDetail) => (<>
             <View>简介：{item.schoolIntroduction}</View>
-            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
         </>)}
         editFun={goEdit}
         deleteFun={deleteItem}

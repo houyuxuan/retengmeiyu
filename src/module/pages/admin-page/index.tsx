@@ -4,23 +4,22 @@ import Taro from '@tarojs/taro'
 import { AtAvatar } from 'taro-ui'
 import { UserManagement } from '@/types'
 import { getManageMenu, getStatistic } from '@/api'
+import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
-  const [userInfo, setUserInfo] = useState<UserManagement.UserInfo>()
+  const [userInfo, setUserInfo] = useState<UserManagement.UserInfoStorage>()
 
   const [menuList, setMenuList] = useState<UserManagement.MenuListItem[]>([])
 
   const [stat, setStat] = useState<UserManagement.StatisticData>()
 
   useEffect(() => {
-    const user = userInfo || Taro.getStorageSync('userInfo')
-    setUserInfo(user)
-  }, [userInfo])
-
-  useEffect(() => {
-    const loginInfo = Taro.getStorageSync('loginInfo')
-    if (loginInfo && ['admin', 'super_admin'].includes(loginInfo.roleCode)) {
+    const user = Taro.getStorageSync('userInfo')
+    if (!userInfo) {
+      setUserInfo(user)
+    }
+    if (user?.roleCode && [UserManagement.RoleCodeEnum.Admin, UserManagement.RoleCodeEnum.SuperAdmin].includes(user?.roleCode)) {
       getStatistic().then(res => {
         setStat(res.data)
       })
@@ -41,24 +40,22 @@ function Index() {
     })
   }
 
-  const defaultAvatarUrl = 'https://media.retenggy.com/systemImage/defaultAvatar.png'
+  const defaultAvatarUrl = systemImagePre + '/noLoginAvatar.png'
 
   return (
     <View className='mine-container'>
       <View className='base-info'>
-        <AtAvatar circle image={userInfo?.avatar || defaultAvatarUrl} />
+        <AtAvatar circle size='large' image={userInfo?.avatar || defaultAvatarUrl} />
         <Text className='name'>{userInfo?.nickname}</Text>
+        {stat && <View>
+          <Text className='count-item'>
+            用户数：{stat.memberUserNum}
+          </Text>
+          <Text className='count-item'>
+            活动数：{stat.activityNum}
+          </Text>
+        </View>}
       </View>
-      {stat && <View className='count'>
-        <View className='count-item'>
-          <View>{stat.memberUserNum}</View>
-          <View>用户数</View>
-        </View>
-        <View className='count-item'>
-          <View>{stat.activityNum}</View>
-          <View>活动数</View>
-        </View>
-      </View>}
       {menuList.length ? (
         <View className='function-title'>
           <Text>功能管理</Text>
@@ -67,7 +64,7 @@ function Index() {
       <View className='menu-list'>
         {menuList.map(i => (
           <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `..${i.path.split('/pages')[1]}?from=admin`})}>
-            <Image src={i.menuIconUrl} />
+            <Image src={`${systemImagePre}${i.menuIconUrl}`} />
             <View>{i.menuName}</View>
           </View>
         ))}

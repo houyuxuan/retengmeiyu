@@ -52,7 +52,7 @@ function Index() {
           <View className="score-item" key={item.id}>
             <View>{item.creditSourceDesc}</View>
             <View className='activity'>{item.sourceTitle}</View>
-            <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
             <View className='number'>{item.creditValue}</View>
           </View>
         ))}

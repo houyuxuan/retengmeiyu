@@ -94,10 +94,11 @@ function Index() {
         list={userList.map(i => ({
             ...i,
             title: i.nickname,
+            coverImg: i.avatar
         }))}
         cardContent={(item: UserManagement.UserInfo) => (<>
             <View>手机：{item.mobile}</View>
-            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
         </>)}
         editFun={goDetail}
         deleteFun={deleteItem}

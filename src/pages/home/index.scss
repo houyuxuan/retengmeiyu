@@ -1,7 +1,14 @@
 @import '~@/app.scss';
 
 .home-container {
-    padding: 0 30px;
+    padding: 30px;
+    background: #f4f4f4;
+
+    .logo-top {
+        width: 188px;
+        margin-bottom: 20px;
+    }
+
     .title {
         position: relative;
         margin-bottom: 30px;
@@ -17,6 +24,18 @@
             color: #fff;
             z-index: 1;
             font-size: 50px;
+        }
+    }
+
+    .link-title {
+        margin: 40px 0 30px;
+        font-size: 34px;
+        font-weight: 500;
+    }
+
+    .list-content {
+        .title {
+            margin-bottom: 10px;
         }
     }
 

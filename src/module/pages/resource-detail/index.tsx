@@ -3,6 +3,8 @@ import Taro from '@tarojs/taro'
 import { getResourceDetail } from '@/api'
 import { Resource } from '@/types'
 import ArticleDetail from '@/components/ArticleDetail'
+import { View } from '@tarojs/components'
+import './index.scss'
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -32,15 +34,20 @@ function Index() {
     currId && getDetail()
   }, [currId])
 
-  return <ArticleDetail detail={
-    detail ? {
-      ...detail,
-      title: detail.resourcesTitle,
-      id: detail.id!,
-      createTime: detail.createTime || '',
-      detailList: detail.detailList
-    } : undefined}
-  />
+  return (
+    <View className={(isPreview ? 'can-edit ' : '') + 'resource-detail'}>
+      <ArticleDetail detail={
+        detail ? {
+          ...detail,
+          title: detail.resourcesTitle,
+          id: detail.id!,
+          createTime: detail.createTime || '',
+          detailList: detail.detailList
+        } : undefined}
+        editUrl={isPreview ? `/module/pages/resource-edit/index?id=${currId}` : ''}
+      />
+    </View>
+  )
 }
 
 export default Index

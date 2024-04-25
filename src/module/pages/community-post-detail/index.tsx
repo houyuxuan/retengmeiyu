@@ -66,7 +66,7 @@ function Index() {
         <Image src={detail?.postCoverUrl || ''} mode='aspectFill' />
         <View className='title'>{detail?.postTitle}</View>
         <View className='date'>
-          {moment(detail.createTime).format('YYYY-MM-DD HH:mm:ss')}
+          {moment(detail.createTime).format('YYYY-MM-DD HH:mm')}
         </View>
       </View>}
       <View className='tab-container'>
@@ -86,16 +86,16 @@ function Index() {
           </AtTabsPane>
           <AtTabsPane current={currTab} index={1}>
             <View className='discuss-list'>
-              {discussList.map(item => (
-              <View className='discuss-item' key={item.id}>
-                <Image src={item.avatar} />
-                <View className='text-content'>
-                  <Text className='nickname'>{item.nickname}</Text>
-                  <Text className='date'>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
-                  <View>{item.discussContent}</View>
+              {discussList.length ? discussList.map(item => (
+                <View className='discuss-item' key={item.id}>
+                  <Image src={item.avatar} />
+                  <View className='text-content'>
+                    <Text className='nickname'>{item.nickname}</Text>
+                    <Text className='date'>{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</Text>
+                    <View>{item.discussContent}</View>
+                  </View>
                 </View>
-              </View>
-            ))}
+              )) : '无内容'}
             </View>
           </AtTabsPane>
         </AtTabs>

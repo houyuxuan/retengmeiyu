@@ -101,11 +101,12 @@ function Index() {
         list={postList.map(i => ({
             ...i,
             id: i.id,
-            title: i.postTitle
+            title: i.postTitle,
+            coverImg: i.postCoverUrl
         }))}
-        cardContent={(item: Garden.ActivityDetail) => (<>
-          <View>点赞数：{item.zanNumber}</View>
-          <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+        cardContent={(item: Community.PostDetail) => (<>
+          <View>分类：{postTabList.find(i => i.value === item.postType)?.title}</View>
+          <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
         </>)}
         editFun={goEdit}
         deleteFun={deleteItem}

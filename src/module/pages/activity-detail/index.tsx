@@ -96,7 +96,7 @@ function Index() {
   }
 
   return (
-    <View className='activity-detail'>
+    <View className={(isPreview ? 'can-edit ' : '') + 'activity-detail'}>
       <AtMessage />
       <ArticleDetail detail={
         detail ? {
@@ -106,8 +106,9 @@ function Index() {
           createTime: detail.createTime || ''
         } : undefined}
         author={detail?.memberUserInfo!}
+        editUrl={isPreview ? `/module/pages/activity-edit/index?id=${currId}` : ''}
       />
-      <View className='remarks'>
+      {!isPreview && <View className='remarks'>
         <View className='remark-title'>
           评论{remarkList.length || ''}
         </View>
@@ -119,7 +120,7 @@ function Index() {
             onInput={(e) => handleChange(e)}
             onConfirm={(e) => submit(e)}
           />
-          <Image className='up-vote' src={`${systemImagePre}/upvote${voteInfo?.zanFlag ? 'd' : ''}.png`} onClick={upVote} />
+          <Image className='up-vote' src={`${systemImagePre}/upvot${voteInfo?.zanFlag ? 'ed' : 'ing'}.png`} onClick={upVote} />
         </View>
         <Text>{voteInfo?.zanNumber}</Text>
         <View className='remark-list'>
@@ -128,11 +129,11 @@ function Index() {
               <Image src={item.avatar} />
               <View>{item.nickname}</View>
               <View className='content'>{item.commentContent}</View>
-              <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+              <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
             </View>
           ))}
         </View>
-      </View>
+      </View>}
     </View>
   )
 }

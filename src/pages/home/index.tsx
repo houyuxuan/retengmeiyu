@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
-import { systemImagePre } from '@/utils/constant'
+import { linkList, systemImagePre } from '@/utils/constant'
+import RtList from '@/components/RtList'
 import './index.scss'
 
 function Index() {
@@ -56,10 +57,30 @@ function Index() {
       fail: () => {},
       complete: () => {}
     })
+    // getList()
   }, [])
 
+  // const getList = () => {
+  //   Taro.request({
+  //     url: 'https://api.weixin.qq.com/cgi-bin/stable_token',
+  //     method: 'POST',
+  //     data: {
+  //       grant_type: 'client_credential',
+  //       appid: 'wxa688e0cca18e3f1f',
+  //       secret: 'af8f54bd690ad6ff849c364449331fe1'
+  //     }
+  //   }).then(res => {
+  //     Taro.request({
+  //       url: `https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=${res.data.access_token}`
+  //     })
+  //   })
+  // }
+
+  const rect = Taro.getMenuButtonBoundingClientRect()
+
   return (
-    <View className='home-container'>
+    <View className='home-container' style={{ paddingTop: rect.top }}>
+      <Image className='logo-top' mode='widthFix' src={`${systemImagePre}/logo-top.png`} />
       <View className="title">
         <Text>热腾美育</Text>
         <Image src={systemImagePre + '/banner.png'} />
@@ -77,6 +98,15 @@ function Index() {
             </View>
           ))
         }
+      </View>
+      <View className='link'>
+        <View className="link-title">资讯推荐</View>
+          <RtList
+            list={linkList}
+            detailUrl='/module/pages/news/index'
+            onLoading={() => null}
+            total={linkList.length}
+          />
       </View>
     </View>
   )

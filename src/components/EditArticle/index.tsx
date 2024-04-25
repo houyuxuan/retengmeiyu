@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea, Picker } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
-import { ContentItem, FileType, Garden } from '@/types'
+import { ContentItem, FileType, Garden, IdType } from '@/types'
 import Taro from '@tarojs/taro'
 import { getSchoolList } from '@/api'
 import FileUpload from '../FileUpload'
@@ -15,7 +15,7 @@ export interface ArticleDetail {
 }
 
 export default function EditArticle(props: {
-  article?: ArticleDetail;
+  article?: ArticleDetail & { schoolId?: IdType };
   onSave: (info: any) => any;
   hideDetail?: boolean;
   headerTitle?: string;
@@ -28,10 +28,8 @@ export default function EditArticle(props: {
   const [article, setArticle] = useState(props.article || {
     title: '',
     coverImg: '',
-    detailList: []
+    detailList: [],
   })
-
-  const [contentOpen, setContentOpen] = useState(true)
 
   const addContent = (type: ContentItem['type'], index) => {
     article.detailList.splice(index + 1, 0, {
@@ -46,6 +44,8 @@ export default function EditArticle(props: {
   const [schoolIndex, setSchoolIndex] = useState<number>(-1)
   const [schoolList, setSchoolList] = useState<Garden.SchoolDetail[]>([])
 
+  const mySchool = Taro.getStorageSync('mySchool') as Garden.SchoolDetail
+
   useEffect(() => {
     if (props.showSchoolSelect) {
       getSchoolList({
@@ -58,9 +58,15 @@ export default function EditArticle(props: {
   }, [props.showSchoolSelect])
 
   useEffect(() => {
-    if ((props.article as any)?.schoolId) {
-      const index = schoolList.findIndex(i => i.id === (props.article as any).schoolId)
+    if (props.article?.schoolId || mySchool?.id) {
+      const index = schoolList.findIndex(i => i.id === props.article?.schoolId)
       setSchoolIndex(index)
+      if (mySchool) {
+        setArticle({
+          ...article,
+          schoolId: mySchool.id
+        })
+      }
     }
   }, [schoolList, props.article])
 
@@ -110,7 +116,7 @@ export default function EditArticle(props: {
       Taro.atMessage({type: 'warning', message: '请输入标题！'})
       return
     }
-    if (props.showSchoolSelect && schoolIndex < 0) {
+    if (props.showSchoolSelect && !article.schoolId) {
       Taro.atMessage({type: 'warning', message: '请选择所属学校！'})
     }
     if (props.hasIntro && !article.intro) {
@@ -132,7 +138,7 @@ export default function EditArticle(props: {
   const getButtons = (index: number) => {
     return (
       <View className='btn-group'>
-        {index > -1 && <AtIcon value='subtract' size={20} color='#fff' className='minus-icon' onClick={() => {
+        {index > -1 && <AtIcon value='close' size={20} color='#333' className='minus-icon' onClick={() => {
             article.detailList.splice(index, 1)
             setArticle({
               ...article,
@@ -141,15 +147,12 @@ export default function EditArticle(props: {
           }}
         />}
         <AtButton type='secondary' size='small' onClick={() => addContent('text', index)}>
-          <AtIcon value='add' size='16' />
           添加文本
         </AtButton>
         <AtButton type='secondary' size='small' onClick={() => addContent('image', index)}>
-          <AtIcon value='edit' size='16' />
           添加图片{props.hasVideo && '/视频'}
         </AtButton>
         {props.hasAudio && <AtButton type='secondary' size='small' onClick={() => addContent('audio', index)}>
-          <AtIcon value='file-audio' size='16' />
           添加音频
         </AtButton>}
       </View>
@@ -173,9 +176,10 @@ export default function EditArticle(props: {
             />
           </View>
           {props.showSchoolSelect && (
-            <View className='select-wrapper'>
+            <View className='select-wrapper input-wrapper'>
               <Label className='required'>学校</Label>
-              <Picker mode='selector' range={schoolList} rangeKey='schoolName' value={schoolIndex} onChange={e => {
+              {mySchool?.schoolName || (
+                <Picker mode='selector' range={schoolList} rangeKey='schoolName' value={schoolIndex} onChange={e => {
                 const index = +e.detail.value
                 setSchoolIndex(index)
                 setArticle({
@@ -183,7 +187,7 @@ export default function EditArticle(props: {
                   schoolId: schoolList[index].id!
                 } as any)
               }}
-              >
+                >
                 <Input
                   value={schoolList[schoolIndex]?.schoolName}
                   placeholder='请选择'
@@ -191,6 +195,7 @@ export default function EditArticle(props: {
                 />
                 <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
               </Picker>
+              )}
             </View>
           )}
           {props.hasIntro && (
@@ -204,12 +209,12 @@ export default function EditArticle(props: {
             </View>)
           }
           <View className='input-wrapper has-label'>
-            <Label className='required'>封面图上传(每张不超过10M)</Label>
+            <Label className='required'>封面上传</Label>
+            <View className="tips">每张不超过10M</View>
             <FileUpload
               fileType={FileType.image}
               length={2}
               max={1}
-              showClose
               fileList={article.coverImg? [{ url:
                   article.coverImg, type: FileType.image }] : []}
               onUploadSuccess={
@@ -225,8 +230,7 @@ export default function EditArticle(props: {
           <View className='detail'>
             <AtAccordion
               title={`${article.title} 详细内容`}
-              open={contentOpen}
-              onClick={setContentOpen}
+              open
               note={props.article?.detailList.length ? `${contentCount[0]}段文字，${contentCount[0]}张图片` : ''}
             >
               {article.detailList.length ? (
@@ -237,11 +241,10 @@ export default function EditArticle(props: {
                         <FileUpload
                           fileType={item.type === 'audio' ? FileType.audio : (props.hasVideo ? [FileType.image, FileType.video] : FileType.image)}
                           fileList={item.content ? [{ url: item.content, type: FileType[item.type] }] : []}
-                          length={1}
+                          length={2}
                           max={1}
                           center
                           multiple
-                          showClose={false}
                           onUploadSuccess={url => {
                             const list = url.map(i => ({
                               type: FileType[i.type] as any,
@@ -258,7 +261,7 @@ export default function EditArticle(props: {
                       </View>
                     ) : (
                     <View className='edit-item text' key={idx}>
-                      <Textarea maxlength={-1} value={item.content} onInput={e => handleContentChange(e, idx)} />
+                      <Textarea placeholder='请输入内容，输入下一段内容请点击添加文本' maxlength={-1} value={item.content} onInput={e => handleContentChange(e, idx)} />
                       {getButtons(idx)}
                     </View>
                     )
@@ -271,7 +274,7 @@ export default function EditArticle(props: {
       </View>
       <View className='fixed-buttons'>
         <AtButton onClick={cancel}>取消</AtButton>
-        <AtButton onClick={() => handleSave()}>保存</AtButton>
+        <AtButton className='save-btn' onClick={() => handleSave()}>保存</AtButton>
       </View>
       <AtModal
         title='请确认'

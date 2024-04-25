@@ -76,11 +76,12 @@ function Index() {
         list={introList.map(i => ({
           ...i,
           id: i.id!,
-          title: i.title
+          title: i.title,
+          coverImg: i.coverUrl
         }))}
         cardContent={(item) => (<>
             <View>序号：{item.id}</View>
-            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
         </>)}
         editFun={goEdit}
         previewFun={goPreview}

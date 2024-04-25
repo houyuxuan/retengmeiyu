@@ -16,7 +16,7 @@ function Index() {
 
   const [keyword, setKeyword] = useState('');
 
-  const [schoolList, setList] = useState<Garden.ActivityDetail[]>([])
+  const [activityList, setList] = useState<Garden.ActivityDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
@@ -31,7 +31,7 @@ function Index() {
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setList([...schoolList, ...res.data.list])
+        setList([...activityList, ...res.data.list])
       })
     } else {
       getActivityList({
@@ -39,7 +39,7 @@ function Index() {
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setList([...schoolList, ...res.data.list])
+        setList([...activityList, ...res.data.list])
       })
     }
   }
@@ -86,14 +86,16 @@ function Index() {
         addText='添加新活动'
       />
       <ManageList
-        list={schoolList.map(i => ({
+        list={activityList.map(i => ({
             ...i,
             id: i.id!,
-            title: i.activityTitle
+            title: i.activityTitle,
+            coverImg: i.activityCoverUrl,
+            detailList: JSON.parse(i.activityDetails)
         }))}
         cardContent={(item: Garden.ActivityDetail) => (<>
-            <View>点赞数：{item.zanNumber}</View>
-            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View className='detail-text'>{item.detailList?.filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)}...</View>
+            <View>{moment(item.createTime).format('YYYY-MM-DD HH:mm')} {item.zanNumber || 0}点赞</View>
         </>)}
         editFun={goEdit}
         previewFun={goPreview}

@@ -1,8 +1,13 @@
 .activity-detail {
     height: 100vh;
-    padding-bottom: 50px;
+    padding: 30px 0;
     overflow: auto;
     background: #f4f4f4;
+
+    &.can-edit {
+        height: calc(100vh - 106rpx);
+        padding-bottom: 0;
+    }
 
     .remarks {
         background: #fff;
@@ -46,7 +51,7 @@
             left: 30px;
             border-radius: 40px;
         }
-        
+
         .content {
             font-size: 36px;
             color: #333;

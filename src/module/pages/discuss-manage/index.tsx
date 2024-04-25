@@ -109,7 +109,7 @@ function Index() {
             <View className='text'>
               <View className='title'>
                 <Text>{item.nickname}</Text>
-                <Text className='date'>{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
+                <Text className='date'>{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</Text>
               </View>
               <View className='discuss-content'>
                 {item.discussContent}

@@ -1,8 +1,6 @@
 @import '~@/app.scss';
 
 .detail-wrapper {
-    padding: 30px 0;
-
     .detail {
         padding: 20px;
         background: #fff;
@@ -51,5 +49,29 @@
         display: flex;
         justify-content: center;
         margin: 50px 0;
+    }
+
+    .btn-group {
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .at-button {
+            border: 1px solid #C0182F;
+            color: #C0182F;
+            width: 47%;
+            border-radius: 0;
+            height: 80px;
+            line-height: 80px;
+        }
+
+        .at-button.edit-btn {
+            margin-left: 10px;
+            color: #fff;
+            background: #C0182F;
+        }
     }
 }

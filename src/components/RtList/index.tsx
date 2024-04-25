@@ -53,7 +53,7 @@ function Index(props: {
                 {item.intro}
               </View>
             )}
-            <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm:ss')}</View>
+            <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm')}</View>
           </View>
         </View>
       )) : <View className='empty'>无内容</View>}
