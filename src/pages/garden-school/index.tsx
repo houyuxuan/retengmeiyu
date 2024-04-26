@@ -26,7 +26,7 @@ function Index() {
       setUserInfo(userInfo)
       getSchoolList(page).then(res => {
         setTotal(res.data.total)
-        setList([...schoolList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...schoolList, ...res.data.list])
       })
     }
   }

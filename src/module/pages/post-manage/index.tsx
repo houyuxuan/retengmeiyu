@@ -35,7 +35,7 @@ function Index() {
         ...pageParams
       }).then(res => {
         setTotal(res.data.total)
-        setList([...postList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...postList, ...res.data.list])
       })
     } else {
       getPostList({
@@ -45,7 +45,7 @@ function Index() {
         ...pageParams
       }).then(res => {
         setTotal(res.data.total)
-        setList([...postList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...postList, ...res.data.list])
       })
     }
   }

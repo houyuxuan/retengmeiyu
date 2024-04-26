@@ -35,7 +35,7 @@ function Index() {
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setList([...resourceList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
     }
   }

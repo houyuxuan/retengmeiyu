@@ -30,8 +30,8 @@ function Index() {
         searchKeyWord: keyword,
         ...page
       }).then(res => {
-        setList([...postList, ...res.data.list])
         setTotal(res.data.total)
+        setList(page.pageNo === 1 ? res.data.list : [...postList, ...res.data.list])
       })
     }
   }

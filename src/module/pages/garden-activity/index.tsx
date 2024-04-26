@@ -23,7 +23,7 @@ function Index() {
   const getList = () => {
     getSchoolActivity({ schoolId, ...page }).then(res => {
       setTotal(res.data.total)
-      setList([...activityList,...res.data.list])
+      setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
     })
   }
 
