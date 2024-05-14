@@ -30,10 +30,6 @@ function Index() {
     }
   }, [isPreview])
 
-  useEffect(() => {
-    currId && getDetail()
-  }, [currId])
-
   return (
     <View className={(isPreview ? 'can-edit ' : '') + 'resource-detail'}>
       <ArticleDetail detail={
@@ -45,6 +41,7 @@ function Index() {
           detailList: detail.detailList
         } : undefined}
         editUrl={isPreview ? `/module/pages/resource-edit/index?id=${currId}` : ''}
+        getDetail={getDetail}
       />
     </View>
   )

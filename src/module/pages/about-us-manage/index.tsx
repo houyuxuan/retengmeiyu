@@ -12,7 +12,7 @@ import './index.scss'
 function Index() {
   const [keyword, setKeyword] = useState('');
 
-  const [introList, setIntro] = useState<AboutUs.IntroDetail[]>([])
+  const [introList, setList] = useState<AboutUs.IntroDetail[]>([])
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
@@ -26,12 +26,12 @@ function Index() {
       ...page
     }).then(res => {
       setTotal(res.data.total)
-      setIntro([...introList, ...res.data.list])
+      setList(page.pageNo === 1 ? res.data.list : [...introList, ...res.data.list])
     })
   }
 
   const refresh = () => {
-    setIntro([])
+    setList([])
     setPage({
       ...page,
       pageNo: 1,

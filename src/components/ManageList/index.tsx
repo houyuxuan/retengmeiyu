@@ -60,7 +60,8 @@ function ManageList(props: {
             <View className='title'>{item.title}</View>
             {props.cardContent(item)}
             {props.deleteFun && (
-              <Image className='delete-btn' onClick={() => {
+              <Image className='delete-btn' onClick={e => {
+                e.stopPropagation()
                 setShowConfirm(true);
                 setDeleteId(item.id)
               }} src='https://media.retenggy.com/frontImages/delete-icon.png'
@@ -68,9 +69,13 @@ function ManageList(props: {
             )}
             {props.otherBtn && <View className='btn-group'>
               {props.otherBtn.map((i, idx) => (
-                <AtButton key={idx} size="small" type='secondary' onClick={() => i.fun(item, index)}>
+                <AtButton key={idx} size="small" type='secondary' onClick={(e) => {
+                  e.stopPropagation()
+                  i.fun(item, index)
+                }}
+                >
                   {i.text(item)}
-              </AtButton>
+                </AtButton>
               ))}
             </View>}
           </View>

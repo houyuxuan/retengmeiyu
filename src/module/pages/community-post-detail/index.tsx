@@ -27,7 +27,7 @@ function Index() {
 
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
-    pageSize: 20
+    pageSize: 100
   })
 
   const [discussList, setDiscussList] = useState<Community.PostDiscussDetail[]>([])
@@ -82,6 +82,7 @@ function Index() {
                 } : undefined
               }
               showTitle={false}
+              getDetail={getDetail}
             />
           </AtTabsPane>
           <AtTabsPane current={currTab} index={1}>

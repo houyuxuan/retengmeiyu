@@ -5,6 +5,7 @@ import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfo
 import { Garden, IdType, UserManagement } from '@/types'
 import { AtAvatar, AtButton, AtIcon, AtMessage } from 'taro-ui'
 import moment from 'moment'
+import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
@@ -103,11 +104,13 @@ function Index() {
     getInfo()
   })
 
+  const defaultAvatarUrl = systemImagePre + '/noLoginAvatar.png'
+
   return (
     <View className='user-detail'>
       <AtMessage />
       {userInfo && <View>
-        <AtAvatar size='large' image={userInfo.avatar} />
+        <AtAvatar size='large' image={userInfo.avatar || defaultAvatarUrl} />
         <View>
           <View>用户昵称：{userInfo.nickname}</View>
           <View>手机号码：{userInfo.mobile}</View>

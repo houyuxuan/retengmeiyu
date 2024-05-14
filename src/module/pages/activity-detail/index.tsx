@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { AtMessage } from 'taro-ui'
 import { activityUpvote, getActivityDetail, getActivityUpvote, getRemarks, submitRemark } from '@/api'
 import ArticleDetail from '@/components/ArticleDetail'
-import { Garden, IdType } from '@/types'
+import { Garden } from '@/types'
 import { View, Image, Input, Text } from '@tarojs/components'
 import { systemImagePre } from '@/utils/constant'
 import moment from 'moment'
@@ -25,7 +25,8 @@ function Index() {
       id: currId
     }).then(res => {
       setDetail(res.data)
-      getVoteCount(res.data.schoolId)
+      getVoteCount()
+      getRemarkList()
     })
   }
 
@@ -37,20 +38,13 @@ function Index() {
     }
   }, [isPreview])
 
-  useEffect(() => {
-    if (currId) {
-      getDetail()
-      getRemarkList()
-    }
-  }, [currId])
-
   const handleChange = (e: any) => {
     setRemark(e.detail.value)
   }
 
-  const getVoteCount = (schoolActivityId: IdType) => {
+  const getVoteCount = () => {
     getActivityUpvote({
-      schoolActivityId,
+      schoolActivityId: currId,
       memberUserId: Taro.getStorageSync('loginInfo')?.userId
     }).then(res => {
       setVoteInfo(res.data)
@@ -72,6 +66,7 @@ function Index() {
       commentContent: e.detail.value,
       memberUserId: Taro.getStorageSync('loginInfo')?.userId
     }).then(res => {
+      setRemark('')
       Taro.atMessage({
         type: 'success',
         message: '发表成功'
@@ -81,16 +76,15 @@ function Index() {
   }
 
   const upVote = () => {
-    if (voteInfo?.zanFlag) {
-      return
-    }
-    activityUpvote({
+    const status = !voteInfo?.zanFlag
+    activityUpvote(status, {
       schoolActivityId: currId,
       memberUserId: Taro.getStorageSync('loginInfo')?.userId
     }).then(() => {
+      getVoteCount()
       Taro.atMessage({
         type: 'success',
-        message: '操作成功'
+        message: status ? '点赞成功' : '取消成功'
       })
     })
   }
@@ -107,6 +101,7 @@ function Index() {
         } : undefined}
         author={detail?.memberUserInfo!}
         editUrl={isPreview ? `/module/pages/activity-edit/index?id=${currId}` : ''}
+        getDetail={getDetail}
       />
       {!isPreview && <View className='remarks'>
         <View className='remark-title'>

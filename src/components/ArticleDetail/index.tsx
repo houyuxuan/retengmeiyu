@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import { ContentItem, IdType, UserManagement } from '@/types'
 import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import './index.scss'
 
 export default function ArticleDetail(props: {
@@ -14,10 +14,15 @@ export default function ArticleDetail(props: {
     detailList: ContentItem[];
   };
   showTitle?: boolean;
-  author?: UserManagement.UserInfo
-  editUrl?: string
+  author?: UserManagement.UserInfo;
+  editUrl?: string;
+  getDetail: () => void
 }) {
   const [titleVisible, setVisible] = useState(true)
+
+  useDidShow(() => {
+    props.getDetail()
+  })
 
   useEffect(() => {
     if (props.showTitle === false) {

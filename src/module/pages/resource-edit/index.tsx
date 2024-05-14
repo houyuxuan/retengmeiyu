@@ -28,6 +28,7 @@ function Index() {
     await resourceEdit({
       ...resource,
       id: resource.id,
+      resourcesTitle: resource.title,
       resourcesCoverUrl: resource.coverImg,
       resourcesDetails: JSON.stringify(resource.detailList),
       memberUserId: Taro.getStorageSync('loginInfo')?.userId

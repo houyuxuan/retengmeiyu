@@ -17,7 +17,7 @@ function Index() {
 
   const [keyword, setKeyword] = useState('');
 
-  const [resourceList, setResourceList] = useState<Resource.ResourceDetail[]>([])
+  const [resourceList, setList] = useState<Resource.ResourceDetail[]>([])
   const [currTab, setTab] = useState(0)
 
   const [page, setPage] = useState<PageParams>({
@@ -34,7 +34,7 @@ function Index() {
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setResourceList([...resourceList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
     } else {
       getResourceList({
@@ -43,13 +43,13 @@ function Index() {
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setResourceList([...resourceList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
     }
   }
 
   const refresh = () => {
-    setResourceList([])
+    setList([])
     setPage({
       ...page,
       pageNo: 1,

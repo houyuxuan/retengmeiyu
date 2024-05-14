@@ -178,13 +178,13 @@ export function deleteRemark(id: IdType) {
     })
 }
 
-// 活动-点赞
-export function activityUpvote(params: {
+// 活动-点赞/取消
+export function activityUpvote(status: boolean, params: {
     schoolActivityId: IdType;
     memberUserId: IdType;
 }) {
     return request({
-        url: '/rt/school/activity/zan/save',
+        url: status ? '/rt/school/activity/zan/save' : '/rt/school/activity/zan/cancel',
         method: 'POST',
         data: params
     })

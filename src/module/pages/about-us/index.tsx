@@ -25,7 +25,7 @@ function Index() {
       }).then(res => {
         setTotal(res.data.total)
         setIntro([
-          ...introList,
+          ...(page.pageNo === 1 ? [] : introList),
           ...res.data.list
         ])
       })

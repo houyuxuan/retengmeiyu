@@ -27,7 +27,7 @@ export default function (props: {
         onConfirm={(e) => props.onConfirm && props.onConfirm(e.detail.value)}
       />
       </View>
-      {props.onAdd && <AtButton type='secondary' className="add-icon" onClick={() => props.onAdd!()} size='small'>
+      {props.onAdd && <AtButton type='secondary' className="add-btn" onClick={() => props.onAdd!()} size='small'>
         <AtIcon value='add' size='30' color='#fff' />
       </AtButton>}
     </View>

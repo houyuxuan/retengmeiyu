@@ -69,10 +69,6 @@ function Index() {
     Taro.navigateTo({url: `../post-edit/index${id ? '?id=' + id : ''}`})
   }
 
-  const goPreview = (id: IdType) => {
-    Taro.navigateTo({url: `../community-post-detail/index?id=${id}&preview=1`})
-  }
-
   const deleteItem = (id: IdType) => {
     postDelete({ id }).then(res => {
       Taro.atMessage({
@@ -110,12 +106,12 @@ function Index() {
         </>)}
         editFun={goEdit}
         deleteFun={deleteItem}
-        otherBtn={[{
+        otherBtn={isAdmin ? [{
           text: () => '讨论管理',
           fun(item) {
             Taro.navigateTo({url: `../discuss-manage/index?id=${item.id}`})
           }
-        }]}
+        }] : undefined}
         total={total}
         onLoading={() => {
           setPage({

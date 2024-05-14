@@ -49,7 +49,7 @@ function Index() {
       } : undefined}
       onSave={onSave}
       headerTitle={currId ? '编辑帖子' : '发布帖子'}
-      titleText='活动标题'
+      titleText='帖子标题'
     />
   )
 }

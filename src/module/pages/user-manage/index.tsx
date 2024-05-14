@@ -6,7 +6,7 @@ import { getUserList, userDelete, userStatusChange } from '@/api'
 import { IdType, PageParams, UserManagement } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
-import { userTabList } from '@/utils/constant'
+import { systemImagePre, userTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
@@ -77,6 +77,8 @@ function Index() {
     })
   }
 
+  const defaultAvatarUrl = `${systemImagePre}/defaultAvatar.png`
+
   return (
     <View className='manage-container'>
       <AtMessage />
@@ -94,7 +96,7 @@ function Index() {
         list={userList.map(i => ({
             ...i,
             title: i.nickname,
-            coverImg: i.avatar
+            coverImg: i.avatar || defaultAvatarUrl
         }))}
         cardContent={(item: UserManagement.UserInfo) => (<>
             <View>手机：{item.mobile}</View>

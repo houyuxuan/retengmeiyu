@@ -3,6 +3,7 @@
     height: 100vh;
     overflow: auto;
     background: #f4f4f4;
+    box-sizing: border-box;
 
     &.can-edit {
         height: calc(100vh - 106rpx);

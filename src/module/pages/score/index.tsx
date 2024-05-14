@@ -19,8 +19,8 @@ function Index() {
 
   const getList = () => {
     getScoreDetail(page).then(res => {
-      setList(res.data.list)
       setTotal(res.data.total)
+      setList(page.pageNo === 1 ? res.data.list : [...scoreList, ...res.data.list])
       setLoading(false)
     })
   }
