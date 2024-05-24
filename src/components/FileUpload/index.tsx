@@ -73,10 +73,18 @@ function Index(props: IProps) {
         count: 1,
         type: 'file',
         success: res => {
-          const list = res.tempFiles.map(i => ({
-            url: i.path,
-            type: FileType.audio
-          }))
+          const list = res.tempFiles
+            .filter(i => i.size <= 104857600)
+            .map(i => ({
+              url: i.path,
+              type: FileType.audio
+            }))
+          if (list.length < res.tempFiles.length) {
+            Taro.atMessage({
+              type: 'warning',
+              message: '音频文件不得超过100M'
+            })
+          }
           setFiles(list)
           handleUpload(list)
         },
@@ -88,10 +96,18 @@ function Index(props: IProps) {
         count: props.multiple ? 9 : 1,
         maxDuration: 60,
         success: res => {
-          const list = res.tempFiles.map(i => ({
-            url: i.tempFilePath,
-            type: FileType[i.fileType]
-          }))
+          const list = res.tempFiles
+            .filter(i => i.size <= 1024 * 1024 * (i.fileType === 'image' ? 10485760 : 31457280))
+            .map(i => ({
+              url: i.tempFilePath,
+              type: FileType[i.fileType]
+            }))
+          if (list.length < res.tempFiles.length) {
+            Taro.atMessage({
+              type: 'warning',
+              message: '视频文件不得超过300M，图片文件不得超过10M'
+            })
+          }
           setFiles(list)
           handleUpload(list)
         },

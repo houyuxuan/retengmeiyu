@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Video } from '@tarojs/components'
 import { ContentItem, IdType, UserManagement } from '@/types'
 import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
 import Taro, { useDidShow } from '@tarojs/taro'
+import CustomAudio from '@/components/CustomAudio'
 import './index.scss'
 
 export default function ArticleDetail(props: {
@@ -54,6 +55,10 @@ export default function ArticleDetail(props: {
             {props.detail?.detailList?.map((item, idx) => (
               item.type === 'image' ? (
                 <View key={idx} className='img'><Image mode="widthFix" src={item.content} /></View>
+              ) : item.type === 'video' ? (
+                <View key={idx} className='img'><Video src={item.content} /></View>
+              ) : item.type === 'audio' ? (
+                <CustomAudio src={item.content} />
               ) : (
                 <View className='text' key={idx}>
                   {item.content}
