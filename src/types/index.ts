@@ -53,6 +53,15 @@ namespace AboutUs {
 
 // 美育花园
 namespace Garden {
+    export enum GardenType {
+        ACTIVITY = 0,
+        SCHOOL = 1
+    }
+    export enum ActivityType {
+        Art = 3,
+        Music = 2,
+        Theater = 1
+    }
     // 学校列表
     export interface SchoolDetail {
         id?: IdType; // 有：编辑/获取详情 无：新增

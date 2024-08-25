@@ -1,4 +1,4 @@
-import { Community, Resource, UserManagement } from "@/types";
+import { Community, Resource, Garden, UserManagement } from "@/types";
 
 export const systemImagePre = 'https://media.retenggy.com/frontImages'
 export const resourceTabList = [{
@@ -10,6 +10,14 @@ export const resourceTabList = [{
 }, {
   title: '音乐素材',
   value: Resource.ResourceType.Music
+}]
+
+export const gardenTabList = [{
+  title: '美育活动',
+  value: Garden.GardenType.ACTIVITY,
+}, {
+  title: '项目学校',
+  value: Garden.GardenType.SCHOOL
 }]
 
 export const postTabList = [{

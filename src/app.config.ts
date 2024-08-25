@@ -2,16 +2,19 @@ export default defineAppConfig({
    pages: [
     'pages/index/index',
     'pages/home/index',
-    'pages/garden-school/index',
-    'pages/community/index',
-    'pages/resource/index',
+    'pages/art/index',
+    'pages/music/index',
+    'pages/theater/index',
     'pages/mine/index',
   ],
   subPackages: [
     {
       root: "module",
       pages: [
+        
+        'pages/garden/index',
         'pages/garden-activity/index',
+        'pages/resource/index',
         'pages/resource-detail/index',
         'pages/resource-manage/index',
         'pages/resource-edit/index',
@@ -22,6 +25,7 @@ export default defineAppConfig({
         'pages/activity-detail/index',
         'pages/post-manage/index',
         'pages/post-edit/index',
+        'pages/community/index',
         'pages/community-post-detail/index',
         'pages/community-discuss-post/index',
         'pages/school-manage/index',
@@ -53,18 +57,18 @@ export default defineAppConfig({
       iconPath: './assets/icon/home.png',
       selectedIconPath: './assets/icon/home_selected.png'
     }, {
-      pagePath: 'pages/garden-school/index',
-      text: '花园',
+      pagePath: 'pages/art/index',
+      text: '美术',
       iconPath: './assets/icon/garden.png',
       selectedIconPath: './assets/icon/garden_selected.png'
     }, {
-      pagePath: 'pages/community/index',
-      text: '社区',
+      pagePath: 'pages/music/index',
+      text: '音乐',
       iconPath: './assets/icon/community.png',
       selectedIconPath: './assets/icon/community_selected.png'
     }, {
-      pagePath: 'pages/resource/index',
-      text: '资源',
+      pagePath: 'pages/theater/index',
+      text: '戏剧',
       iconPath: './assets/icon/resource.png',
       selectedIconPath: './assets/icon/resource_selected.png'
     }, {

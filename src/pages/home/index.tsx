@@ -13,29 +13,21 @@ function Index() {
     bg: 'aboutusBg.png',
     icon: 'aboutus.png'
   }, {
-    pagePath: '/pages/garden-school/index',
+    pagePath: '../../module/pages/garden/index',
     text: '美育花园',
     bg: 'gardenBg.png',
     icon: 'garden.png'
   }, {
-    pagePath: '/pages/community/index',
-    text: '美育社区',
+    pagePath: '../../module/pages/community/index',
+    text: '美育论坛',
     bg: 'communityBg.png',
     icon: 'community.png'
   }, {
-    pagePath: '/pages/resource/index',
+    pagePath: '../../module/pages/resource/index',
     text: '美育资源',
     bg: 'resourceBg.png',
     icon: 'resource.png'
   }]
-
-  const redirectToPage = (url) => {
-    if (url.includes('module')) {
-      Taro.navigateTo({ url })
-    } else {
-      Taro.switchTab({ url })
-    }
-  }
 
   useEffect(() => {
     Taro.getPrivacySetting({
@@ -88,7 +80,7 @@ function Index() {
       <View className="enter-list">
         {
           enterList.map(item => (
-            <View className='item' key={item.pagePath} onClick={() => redirectToPage(item.pagePath)}>
+            <View className='item' key={item.pagePath} onClick={() => Taro.navigateTo({ url: item.pagePath })}>
               <Image className='item-bg' src={`${systemImagePre}/${item.bg}`} />
               <View className='item-text'>
                 <Image className='item-icon' src={`${systemImagePre}/${item.icon}`} />

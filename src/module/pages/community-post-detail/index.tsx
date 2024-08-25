@@ -20,7 +20,7 @@ function Index() {
   useEffect(() => {
     if (isPreview) {
       Taro.setNavigationBarTitle({
-        title: '美育社区-帖子预览'
+        title: '美育论坛-帖子预览'
       })
     }
   }, [isPreview])

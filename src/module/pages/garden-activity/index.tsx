@@ -28,6 +28,16 @@ function Index() {
   }
 
   useEffect(getList, [page])
+  useEffect(() => {
+    // 假设你通过 URL 参数传递了标题
+    const titleParam = Taro.getCurrentInstance() && Taro.getCurrentInstance().router?.params.title
+    if (titleParam) {
+      // 设置导航栏标题
+      Taro.setNavigationBarTitle({
+        title: decodeURIComponent(titleParam)
+      });
+    }
+  }, []);
 
   return (
     <View className='activity-container'>
