@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '社团活动-戏剧'
+  navigationBarTitleText: '戏剧活动'
 })
