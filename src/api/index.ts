@@ -93,7 +93,7 @@ export async function getSchoolDetail(params: { id: IdType }) {
 }
 
 // 花园-获取学校下活动列表
-export function getSchoolActivity(params: { schoolId: IdType, searchKeyWord?: string } & PageParams) {
+export function getSchoolActivity(params:  {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams) {
     return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/school/activity/public/page',
         method: 'POST',
@@ -277,6 +277,7 @@ export function userInfoChange(params: {
     memberUserId: IdType;
     schoolId?: IdType;
     roleId?: IdType;
+    name?: string // 用户备注名称
 }) {
     return request({
         url: '/member/user/details/update',
@@ -491,7 +492,7 @@ export function uploadFile(params: {
 
 // 获取社区帖子列表
 export function getPostList(params: {
-    postType?: Community.PostType;
+    // postType?: Community.PostType;
     searchKeyWord: string;
 } & PageParams) {
     return request<PageResult<Community.PostDetail>>({
@@ -503,7 +504,7 @@ export function getPostList(params: {
 
 // 管理-获取社区帖子列表
 export function getPostAdminList(params: {
-    postType?: Community.PostType;
+    // postType?: Community.PostType;
     searchKeyWord: string;
 } & PageParams) {
     return request<PageResult<Community.PostDetail>>({

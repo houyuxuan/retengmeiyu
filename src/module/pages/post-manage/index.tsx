@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtMessage, AtTabs } from 'taro-ui'
+import { AtMessage } from 'taro-ui'
 import { getPostAdminList, getPostList, postDelete } from '@/api'
-import { Community, Garden, IdType, PageParams } from '@/types'
+import { Community, IdType, PageParams } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
-import { postTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
@@ -19,7 +18,6 @@ function Index() {
 
   const [postList, setList] = useState<Community.PostDetail[]>([])
 
-  const [currTab, setTab] = useState(0)
   const [page, setPage] = useState<PageParams>({
     pageNo: 1,
     pageSize: 20
@@ -29,7 +27,6 @@ function Index() {
   const getList = (pageParams?: PageParams) => {
     if (isAdmin) {
       getPostAdminList({
-        postType: postTabList[currTab].value || undefined,
         searchKeyWord: keyword,
         ...page,
         ...pageParams
@@ -39,7 +36,6 @@ function Index() {
       })
     } else {
       getPostList({
-        postType: postTabList[currTab].value || undefined,
         searchKeyWord: keyword,
         ...page,
         ...pageParams
@@ -61,7 +57,7 @@ function Index() {
 
   useEffect(() => {
     refresh()
-  }, [currTab, keyword])
+  }, [keyword])
 
   useDidShow(() => refresh())
 
@@ -88,11 +84,6 @@ function Index() {
         onChange={setKeyword}
         addText='发布新贴'
       />
-      <AtTabs
-        current={currTab}
-        tabList={postTabList}
-        onClick={item => setTab(item)}
-      />
       <ManageList
         list={postList.map(i => ({
             ...i,
@@ -101,7 +92,6 @@ function Index() {
             coverImg: i.postCoverUrl
         }))}
         cardContent={(item: Community.PostDetail) => (<>
-          <View>分类：{postTabList.find(i => i.value === item.postType)?.title}</View>
           <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
         </>)}
         editFun={goEdit}

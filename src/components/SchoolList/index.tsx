@@ -45,7 +45,7 @@ function Index() {
             date: i.createTime || '',
             intro: i.schoolIntroduction
           }))}
-          detailUrl='../../module/pages/garden-activity/index'
+          detailUrl='/module/pages/garden-activity/index'
           total={total}
           onLoading={() => {
             setPage({

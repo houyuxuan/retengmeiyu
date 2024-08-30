@@ -5,7 +5,7 @@ import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfo
 import { Garden, IdType, UserManagement } from '@/types'
 import { AtAvatar, AtButton, AtIcon, AtMessage } from 'taro-ui'
 import moment from 'moment'
-import { systemImagePre } from '@/utils/constant'
+import { systemImagePre, communityList } from '@/utils/constant'
 import './index.scss'
 
 function Index() {
@@ -16,7 +16,9 @@ function Index() {
   const [isModify, setIsModify] = useState(false)
 
   const [userInfo, setInfo] = useState<UserManagement.UserInfo>()
-
+  const [userName, setName] = useState('')
+  const [remarkName, setRemarkName] = useState('')
+  const [communityIndex, setCommunityIndex] = useState(-1)
   const [schoolIndex, setSchoolIndex] = useState(-1)
   const [roleIndex, setRoleIndex] = useState(-1)
 
@@ -27,6 +29,9 @@ function Index() {
       id: currId
     }).then(res => {
       setInfo({...res.data, id: currId})
+      setName(res.data.nickname)
+      setRemarkName(res.data?.name || '')
+      setCommunityIndex(res.data?.communityId || -1)
       const canShowSchool = res.data.memberUserRoleDTOList[0].code === UserManagement.RoleCodeEnum.Teacher
       setShowSchool(canShowSchool)
       if (canShowSchool) {
@@ -80,7 +85,6 @@ function Index() {
       currSchool > -1 && setSchoolIndex(currSchool)
     })
   }
-
   const changeUser = () => {
     if (showSchool && schoolIndex < 0) {
       Taro.atMessage({type: 'warning', message: '请选择学校！'})
@@ -89,10 +93,20 @@ function Index() {
     if (roleIndex < 0) {
       Taro.atMessage({type: 'warning', message: '请选择角色！'})
     }
+    if (!userName) {
+      Taro.atMessage({type: 'warning', message: '请填写用户昵称！'})
+    }
+    if (!remarkName) {
+      Taro.atMessage({type: 'warning', message: '请填写备注名称！'})
+    }
+    if (communityIndex < 0) {
+      Taro.atMessage({type: 'warning', message: '请选择社团！'})
+    }
     userInfoChange({
       memberUserId: userInfo!.id,
       schoolId: allSchoolList?.[schoolIndex]?.id,
-      roleId: roleList?.[roleIndex]?.id
+      roleId: roleList?.[roleIndex]?.id,
+      nickname: userName
     }).then(res => {
       Taro.atMessage({type: 'success', message: res.msg})
       setIsModify(false)
@@ -103,6 +117,13 @@ function Index() {
   useDidShow(() => {
     getInfo()
   })
+  
+  const handleChange = (e: any) => {
+    setName(e.detail.value)
+  }
+  const handleChangeRemarkName = (e: any) => {
+    setRemarkName(e.detail.value)
+  }
 
   const defaultAvatarUrl = systemImagePre + '/noLoginAvatar.png'
 
@@ -112,7 +133,15 @@ function Index() {
       {userInfo && <View>
         <AtAvatar size='large' image={userInfo.avatar || defaultAvatarUrl} />
         <View>
-          <View>用户昵称：{userInfo.nickname}</View>
+          <View>用户昵称：
+            {isModify ? (
+              <Input
+                value={userName}
+                placeholder='请填写'
+                onInput={(text) => handleChange(text)}
+              />
+            ) : userInfo.nickname}
+          </View>
           <View>手机号码：{userInfo.mobile}</View>
           <View>注册时间：{moment(userInfo.createTime).format('YYYY-MM-DD HH:mm')}</View>
           {/* <View>性别：{userInfo.sex === UserManagement.UserGenderEnum.Male ? '男' : '女'}</View> */}
@@ -154,6 +183,34 @@ function Index() {
                 </Picker>
             ) : userInfo.schoolNames}
           </View>}
+          <View>备注名称：
+            {isModify ? (
+              <Input
+                value={remarkName}
+                placeholder='请填写'
+                onInput={(text) => handleChangeRemarkName(text)}
+              />
+            ) : remarkName}
+          </View>
+          <View>
+            所属社团：
+            {isModify ? (
+              <Picker mode='selector' range={communityList || []} rangeKey='title' value={communityIndex} onChange={e => {
+                  const index = +e.detail.value
+                  setCommunityIndex(index)
+                }}
+              >
+                <View className='select-wrapper'>
+                  <Input
+                    value={communityIndex > 0 ? communityList.filter(c => c.value === communityIndex)[0].title : ''}
+                    placeholder='请选择'
+                    disabled
+                  />
+                  <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+                </View>
+              </Picker>
+            ) : communityIndex > 0 ? communityList.filter(c => c.value === communityIndex)?.[0].title : ''}
+          </View>
         </View>
         <AtButton onClick={async () => {
           if (isModify) {

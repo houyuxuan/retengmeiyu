@@ -144,7 +144,11 @@ namespace UserManagement {
         // role: UserRoleEnum
         schoolIds: IdType[];
         schoolNames?: string; // 自己拼接
-        memberUserRoleDTOList: RoleInfo[]
+        memberUserRoleDTOList: RoleInfo[],
+        // TODO: 待对接
+        name?: string, // 备注名称
+        communityId?: number[] // 社团编码
+        communityName?: string[] // 社团名称
     }
 
     // 存储当前用户信息
@@ -190,17 +194,17 @@ namespace UserManagement {
 }
 
 namespace Community {
-    export enum PostType {
-        All = 0,
-        Discuss = 1,
-        Share = 2
-    }
+    // export enum PostType {
+    //     All = 0,
+    //     Discuss = 1,
+    //     Share = 2
+    // }
 
     export interface PostDetail {
         id: IdType;
         postTitle: string;
         postCoverUrl: string;
-        postType: PostType;
+        // postType: PostType;
         resourceLink: string;
         memberUserId: IdType;
         createTime: string;
@@ -223,6 +227,7 @@ namespace Resource {
     export enum ResourceType {
         Theater = 1,
         Music = 2,
+        Art = 3,
         All = 100
     }
 

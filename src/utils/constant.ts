@@ -1,4 +1,4 @@
-import { Community, Resource, Garden, UserManagement } from "@/types";
+import { Resource, Garden, UserManagement } from "@/types";
 
 export const systemImagePre = 'https://media.retenggy.com/frontImages'
 export const resourceTabList = [{
@@ -10,7 +10,23 @@ export const resourceTabList = [{
 }, {
   title: '音乐素材',
   value: Resource.ResourceType.Music
+}, {
+  title: '美术素材',
+  value: Resource.ResourceType.Art
 }]
+
+export const communityList = [
+  {
+    title: '戏剧',
+    value: Garden.ActivityType.Theater
+  }, {
+    title: '音乐',
+    value: Garden.ActivityType.Music
+  }, {
+    title: '美术',
+    value: Garden.ActivityType.Art
+  }
+]
 
 export const gardenTabList = [{
   title: '美育活动',
@@ -20,27 +36,39 @@ export const gardenTabList = [{
   value: Garden.GardenType.SCHOOL
 }]
 
-export const postTabList = [{
-  title: '全部',
-  value: Community.PostType.All
-}, {
-  title: '分享帖',
-  value: Community.PostType.Share
-}, {
-  title: '讨论帖',
-  value: Community.PostType.Discuss
-}]
-
 export const userTabList = [{
   title: '全部',
   value: UserManagement.UserStatusEnum.All
 }, {
-  title: '正常',
-  value: UserManagement.UserStatusEnum.Normal
-}, {
-  title: '禁用',
-  value: UserManagement.UserStatusEnum.Disabled
-}]
+  // TODO: 这里需要传递角色参数, 而不是用户状态参数
+    title: '管理员',
+    value: UserManagement.UserStatusEnum.Normal
+  }, {
+    title: '老师',
+    value: UserManagement.UserStatusEnum.Disabled
+  }
+// {
+//   title: '正常',
+//   value: UserManagement.UserStatusEnum.Normal
+// }, {
+//   title: '禁用',
+//   value: UserManagement.UserStatusEnum.Disabled
+// }
+]
+
+export const gradeList = [
+  { title: '一年级', value: 1 },
+  { title: '二年级', value: 2 },
+  { title: '三年级', value: 3 },
+  { title: '四年级', value: 4 },
+  { title: '五年级', value: 5 },
+  { title: '六年级', value: 6 }
+]
+
+export const bookVolumesList = [
+  { title: '上册', value: 1 },
+  { title: '下册', value: 2 },
+]
 
 export const menuInfoMap = {
   '发布活动': {
@@ -82,6 +110,15 @@ export const menuInfoMap = {
   '用户管理': {
       icon: '/user-manage-icon.png',
       path: '/pages/user-manage/index'
+  },
+  // v3 新增模块
+  '社团管理': {
+      icon: '/user-manage-icon.png',
+      path: '/pages/community-manage/index'
+  },
+  '资讯配置': {
+      icon: '/user-manage-icon.png',
+      path: '/pages/info-config/index'
   },
 }
 

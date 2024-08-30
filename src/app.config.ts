@@ -59,18 +59,18 @@ export default defineAppConfig({
     }, {
       pagePath: 'pages/art/index',
       text: '美术',
-      iconPath: './assets/icon/garden.png',
-      selectedIconPath: './assets/icon/garden_selected.png'
+      iconPath: './assets/icon/art.png',
+      selectedIconPath: './assets/icon/art_selected.png'
     }, {
       pagePath: 'pages/music/index',
       text: '音乐',
-      iconPath: './assets/icon/community.png',
-      selectedIconPath: './assets/icon/community_selected.png'
+      iconPath: './assets/icon/music.png',
+      selectedIconPath: './assets/icon/music_selected.png'
     }, {
       pagePath: 'pages/theater/index',
       text: '戏剧',
-      iconPath: './assets/icon/resource.png',
-      selectedIconPath: './assets/icon/resource_selected.png'
+      iconPath: './assets/icon/theater.png',
+      selectedIconPath: './assets/icon/theater_selected.png'
     }, {
       pagePath: 'pages/mine/index',
       text: '我的',
