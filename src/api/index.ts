@@ -286,7 +286,9 @@ export function userInfoChange(params: {
     memberUserId: IdType;
     schoolId?: IdType;
     roleId?: IdType;
-    name?: string // 用户备注名称
+    nickname?: string; // 用户名字
+    name?: string; // 用户备注名称
+    clubIds: IdType[]; // 社团名字
 }) {
     return request({
         url: '/member/user/details/update',
@@ -323,7 +325,7 @@ export function getMenu() {
             ...res,
             data: res.data.map(i => ({
                 id: i.id,
-                menuName: i.menuName,
+                menuName: i.menuName === '发布帖子' ? '讨论发帖' : i.menuName === '发布活动' ? '活动打卡' : i.menuName, // v3改名字,
                 menuIconUrl: menuInfoMap[i.menuName]?.icon,
                 path: menuInfoMap[i.menuName]?.path,
             }))
@@ -406,7 +408,7 @@ export function getManageMenu() {
             ...res,
             data: res.data.map(i => ({
                 id: i.id,
-                menuName: i.menuName,
+                menuName: i.menuName === '发布帖子' ? '讨论发帖' : i.menuName === '发布活动' ? '活动打卡' : i.menuName, // v3改名字
                 menuIconUrl: menuInfoMap[i.menuName]?.icon,
                 path: menuInfoMap[i.menuName]?.path,
             }))

@@ -34,7 +34,6 @@ function Index() {
     getManageMenu().then(res => {
       setMenuList(res.data)
     }).catch(err => {
-      console.log('err', err)
       if (err.code === 403) {
       }
     })

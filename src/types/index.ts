@@ -156,8 +156,7 @@ namespace UserManagement {
         memberUserRoleDTOList: RoleInfo[],
         // TODO: 待对接
         name?: string, // 备注名称
-        communityId?: number[] // 社团编码
-        communityName?: string[] // 社团名称
+        clubIds?: IdType[] // 社团编码
     }
 
     // 存储当前用户信息

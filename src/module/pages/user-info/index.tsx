@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { Input, View, Picker } from '@tarojs/components'
+import { Input, View, Picker, Checkbox, CheckboxGroup } from '@tarojs/components'
 import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfoChange } from '@/api'
 import { Garden, IdType, UserManagement } from '@/types'
 import { AtAvatar, AtButton, AtIcon, AtMessage } from 'taro-ui'
@@ -18,20 +18,39 @@ function Index() {
   const [userInfo, setInfo] = useState<UserManagement.UserInfo>()
   const [userName, setName] = useState('')
   const [remarkName, setRemarkName] = useState('')
-  const [communityIndex, setCommunityIndex] = useState(-1)
   const [schoolIndex, setSchoolIndex] = useState(-1)
   const [roleIndex, setRoleIndex] = useState(-1)
-
+  const [clubList, setClubList] = useState([...communityList])
+  const [clubs, setClubs] = useState<IdType[]>([])
+  const [clubNames, setClubNames] = useState('')
   const [showSchool, setShowSchool] = useState(false)
-
+  const cloneDeep = (list: any) => {
+    return JSON.parse(JSON.stringify(list))
+  }
   const getInfo = () => {
     getUserDetail({
       id: currId
     }).then(res => {
       setInfo({...res.data, id: currId})
-      setName(res.data.nickname)
-      setRemarkName(res.data?.name || '')
-      setCommunityIndex(res.data?.communityId || -1)
+      const { data: {nickname, name = '', clubIds = []} } = res;
+      setName(nickname)
+      setRemarkName(name)
+        // 实现勾选的回显
+      const list = cloneDeep(clubList)
+      const ids: IdType[] = []
+      let names: string = ''
+      list.forEach(club => {
+        if(clubIds.includes(Number(club.value))) {
+          club.checked = true
+          ids.push(Number(club.value))
+          names = name.length ? names + club.title + ',' : names + club.title
+        } else {
+          club.checked = false
+        }
+      });
+      setClubs(ids)
+      setClubList(list)
+      setClubNames(names)
       const canShowSchool = res.data.memberUserRoleDTOList[0].code === UserManagement.RoleCodeEnum.Teacher
       setShowSchool(canShowSchool)
       if (canShowSchool) {
@@ -99,14 +118,16 @@ function Index() {
     if (!remarkName) {
       Taro.atMessage({type: 'warning', message: '请填写备注名称！'})
     }
-    if (communityIndex < 0) {
-      Taro.atMessage({type: 'warning', message: '请选择社团！'})
-    }
+    // if (communityIndex) {
+    //   Taro.atMessage({type: 'warning', message: '请选择社团！'})
+    // }
     userInfoChange({
       memberUserId: userInfo!.id,
       schoolId: allSchoolList?.[schoolIndex]?.id,
       roleId: roleList?.[roleIndex]?.id,
-      nickname: userName
+      nickname: userName,
+      name: remarkName,
+      clubIds: clubs
     }).then(res => {
       Taro.atMessage({type: 'success', message: res.msg})
       setIsModify(false)
@@ -117,6 +138,9 @@ function Index() {
   useDidShow(() => {
     getInfo()
   })
+  useEffect(() => {
+    getInfo()
+  }, [isModify])
   
   const handleChange = (e: any) => {
     setName(e.detail.value)
@@ -124,16 +148,32 @@ function Index() {
   const handleChangeRemarkName = (e: any) => {
     setRemarkName(e.detail.value)
   }
-
+  
+  const getClubs = (e) => {
+    const list = e.detail.value
+    const ids: IdType[] = []
+    const clubArrr = cloneDeep(communityList)
+    clubArrr.forEach(club => {
+      if(list.includes(String(club.value))) {
+        club.checked = true
+        ids.push(Number(club.value))
+      } else {
+        club.checked = false
+      }
+    });
+    setClubs(ids)
+    setClubList(clubArrr)
+  }
   const defaultAvatarUrl = systemImagePre + '/noLoginAvatar.png'
 
   return (
     <View className='user-detail'>
       <AtMessage />
-      {userInfo && <View>
+      {userInfo && <View className={ isModify ? 'is-modify' : '' }>
         <AtAvatar size='large' image={userInfo.avatar || defaultAvatarUrl} />
         <View>
-          <View>用户昵称：
+          <View className='line'>
+            用户昵称：
             {isModify ? (
               <Input
                 value={userName}
@@ -142,10 +182,10 @@ function Index() {
               />
             ) : userInfo.nickname}
           </View>
-          <View>手机号码：{userInfo.mobile}</View>
-          <View>注册时间：{moment(userInfo.createTime).format('YYYY-MM-DD HH:mm')}</View>
+          <View className='line'>手机号码：{userInfo.mobile}</View>
+          <View className='line'>注册时间：{moment(userInfo.createTime).format('YYYY-MM-DD HH:mm')}</View>
           {/* <View>性别：{userInfo.sex === UserManagement.UserGenderEnum.Male ? '男' : '女'}</View> */}
-          <View>
+          <View className='line'>
             用户角色：
             {isModify ? (
               <Picker mode='selector' range={roleList || []} rangeKey='memberRoleName' value={roleIndex} onChange={e => {
@@ -164,7 +204,7 @@ function Index() {
               </Picker>
             ) : userInfo.memberUserRoleDTOList[0]?.memberRoleName}
           </View>
-          {showSchool && <View>
+          {showSchool && <View  className='line'>
             所属学校：
             {isModify ? (
               <Picker mode='selector' range={allSchoolList || []} rangeKey='schoolName' value={schoolIndex} onChange={e => {
@@ -183,7 +223,8 @@ function Index() {
                 </Picker>
             ) : userInfo.schoolNames}
           </View>}
-          <View>备注名称：
+          <View className='line'>
+            备注名称：
             {isModify ? (
               <Input
                 value={remarkName}
@@ -192,24 +233,17 @@ function Index() {
               />
             ) : remarkName}
           </View>
-          <View>
+          <View className='line'>
             所属社团：
             {isModify ? (
-              <Picker mode='selector' range={communityList || []} rangeKey='title' value={communityIndex} onChange={e => {
-                  const index = +e.detail.value
-                  setCommunityIndex(index)
-                }}
-              >
-                <View className='select-wrapper'>
-                  <Input
-                    value={communityIndex > 0 ? communityList.filter(c => c.value === communityIndex)[0].title : ''}
-                    placeholder='请选择'
-                    disabled
-                  />
-                  <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
-                </View>
-              </Picker>
-            ) : communityIndex > 0 ? communityList.filter(c => c.value === communityIndex)?.[0].title : ''}
+              <CheckboxGroup className='checkbox-list' onChange={getClubs}>
+                {clubList.map((item, i) => {
+                  return (
+                      <Checkbox className='checkbox-list__checkbox' key={i} value={String(item.value)} checked={item.checked}>{item.title}</Checkbox>
+                  )
+                })}
+              </CheckboxGroup>
+            ) : clubNames}
           </View>
         </View>
         <AtButton onClick={async () => {

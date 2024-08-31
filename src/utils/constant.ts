@@ -18,13 +18,16 @@ export const resourceTabList = [{
 export const communityList = [
   {
     title: '戏剧',
-    value: Garden.ActivityType.Theater
+    value: Garden.ActivityType.Theater,
+    checked: false
   }, {
     title: '音乐',
-    value: Garden.ActivityType.Music
+    value: Garden.ActivityType.Music,
+    checked: false
   }, {
     title: '美术',
-    value: Garden.ActivityType.Art
+    value: Garden.ActivityType.Art,
+    checked: false
   }
 ]
 

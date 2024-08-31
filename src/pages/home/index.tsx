@@ -42,12 +42,12 @@ function Index() {
           //   showPrivacy: true
           // })
         } else {
-          getArticleList().then(res => {
-            const { data } = res;
-            if (data) {
-              setList(data);
-            }
-          })
+          // getArticleList().then(res => {
+          //   const { data } = res;
+          //   if (data) {
+          //     setList(data);
+          //   }
+          // })
           // 用户已经同意过隐私协议，所以不需要再弹出隐私协议，也能调用已声明过的隐私接口
           // wx.getUserProfile()
           // wx.chooseMedia()
