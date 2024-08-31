@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
 import { linkList, systemImagePre } from '@/utils/constant'
 import RtList from '@/components/RtList'
+import { Article } from '@/types/index'
 import './index.scss'
+import { getArticleList } from '@/api'
 
 function Index() {
+  const [articleList, setList] = useState<Article[]>([...linkList])
   const enterList = [{
     pagePath: '../../module/pages/about-us/index',
     text: '关于我们',
@@ -39,6 +42,12 @@ function Index() {
           //   showPrivacy: true
           // })
         } else {
+          getArticleList().then(res => {
+            const { data } = res;
+            if (data) {
+              setList(data);
+            }
+          })
           // 用户已经同意过隐私协议，所以不需要再弹出隐私协议，也能调用已声明过的隐私接口
           // wx.getUserProfile()
           // wx.chooseMedia()
@@ -94,10 +103,10 @@ function Index() {
       <View className='link'>
         <View className="link-title">资讯推荐</View>
           <RtList
-            list={linkList}
+            list={articleList}
             detailUrl='/module/pages/news/index'
             onLoading={() => null}
-            total={linkList.length}
+            total={articleList.length}
           />
       </View>
     </View>

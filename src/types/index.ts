@@ -38,6 +38,15 @@ export enum PublicStatus {
     Published = 1
 }
 
+export interface Article {
+    id: number,
+    title: string,
+    coverImg: string,
+    intro: string,
+    date: string,
+    url: string
+}
+
 // 关于我们
 namespace AboutUs {
     // 关于我们-新增介绍

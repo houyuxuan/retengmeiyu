@@ -1,5 +1,5 @@
 import Taro, { UserInfo } from "@tarojs/taro";
-import { AboutUs, Community, FileType, Garden, IdType, PageParams, PageResult, Resource, UploadFileResponse, UserManagement } from "@/types";
+import { AboutUs, Community, FileType, Garden, IdType, PageParams, PageResult, Resource, UploadFileResponse, UserManagement, Article } from "@/types";
 import { menuInfoMap } from "@/utils/constant";
 import request from "./request";
 import { upload } from './qiniuUploader'
@@ -14,6 +14,15 @@ export function login(params: { userInfo?: UserInfo; loginCode: string; phoneCod
         Taro.setStorageSync('loginInfo', res.data)
         Taro.setStorageSync('token', res.data.accessToken)
         return res
+    })
+}
+
+/**************************   首页: 获取公众号文章列表  **************************/
+
+export function getArticleList() {
+    return request<Article[]>({
+        url: '/rt/index/material/list',
+        method: 'POST'
     })
 }
 
