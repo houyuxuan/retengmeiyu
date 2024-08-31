@@ -31,8 +31,8 @@ function Index() {
       const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams = {...page};
       if (schoolId) params.schoolId = schoolId;
       if (clubId) params.clubId = clubId;
-      if (cludGradeId) params.cludGradeId = cludGradeId;
-      if (cludGradeVolumeId) params.cludGradeVolumeId = cludGradeVolumeId;
+      if (cludGradeId.length) params.cludGradeId = cludGradeId;
+      if (cludGradeVolumeId.length) params.cludGradeVolumeId = cludGradeVolumeId;
       getSchoolActivity(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
@@ -72,7 +72,7 @@ function Index() {
     if (titleParam) {
       // 设置导航栏标题
       Taro.setNavigationBarTitle({
-        title: decodeURIComponent(titleParam)
+        title: decodeURIComponent(`美育花园-${titleParam}`)
       });
     }
   }, []);

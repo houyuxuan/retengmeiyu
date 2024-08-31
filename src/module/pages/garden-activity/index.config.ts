@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: ''
+  navigationBarTitleText: '美育花园-活动管理'
 })
