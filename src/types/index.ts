@@ -90,7 +90,10 @@ namespace Garden {
         activityDetails: string;
         detailList: ContentItem[];
         zanNumber: number;
-        memberUserInfo: UserManagement.UserInfo
+        memberUserInfo: UserManagement.UserInfo;
+        clubId?: IdType;
+        cludGradeId?: IdType;
+        cludGradeVolumeId?: IdType;
     }
 
     // 活动-点赞详情

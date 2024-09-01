@@ -5,6 +5,8 @@ import { ContentItem, FileType, Garden, IdType } from '@/types'
 import Taro from '@tarojs/taro'
 import { getSchoolList } from '@/api'
 import FileUpload from '../FileUpload'
+import { gradeList, bookVolumesList, communityList } from '@/utils/constant'
+
 import './index.scss'
 
 export interface ArticleDetail {
@@ -12,6 +14,9 @@ export interface ArticleDetail {
   coverImg: string;
   detailList: ContentItem[];
   intro?: string;
+  clubId?: IdType;
+  cludGradeId?: IdType;
+  cludGradeVolumeId?: IdType;
 }
 
 export default function EditArticle(props: {
@@ -24,6 +29,7 @@ export default function EditArticle(props: {
   showSchoolSelect?: boolean
   hasVideo?: boolean
   hasAudio?: boolean
+  hasClub?: boolean
 }) {
   const [article, setArticle] = useState(props.article || {
     title: '',
@@ -43,6 +49,10 @@ export default function EditArticle(props: {
 
   const [schoolIndex, setSchoolIndex] = useState<number>(-1)
   const [schoolList, setSchoolList] = useState<Garden.SchoolDetail[]>([])
+
+  const [clubIndex, setClubIndex] = useState<number>()
+  const [gradeIndex, setGradeIndex] = useState<number>()
+  const [volumeIndex, setVolumeIndex] = useState<number>()
 
   const mySchool = Taro.getStorageSync('mySchool') as Garden.SchoolDetail
 
@@ -68,7 +78,20 @@ export default function EditArticle(props: {
         })
       }
     }
+    if (props.article?.clubId) {
+      const index = communityList.findIndex(i => i.value === props.article?.clubId)
+      setClubIndex(index)
+    }
+    if (props.article?.cludGradeVolumeId) {
+      const index = bookVolumesList.findIndex(i => i.value === props.article?.cludGradeVolumeId)
+      setVolumeIndex(index)
+    }
+    if (props.article?.cludGradeId) {
+      const index = gradeList.findIndex(i => i.value === props.article?.cludGradeId)
+      setGradeIndex(index)
+    }
   }, [schoolList, props.article])
+
 
   useEffect(() => {
     if (props.headerTitle) {
@@ -113,24 +136,41 @@ export default function EditArticle(props: {
 
   const handleSave = () => {
     if (!article.title) {
-      Taro.atMessage({type: 'warning', message: '请输入标题！'})
+      Taro.atMessage({ type: 'warning', message: '请输入标题！' })
       return
     }
     if (props.showSchoolSelect && !article.schoolId) {
-      Taro.atMessage({type: 'warning', message: '请选择所属学校！'})
+      Taro.atMessage({ type: 'warning', message: '请选择所属学校！' })
+    }
+    if (props.hasClub && !article.clubId) {
+      Taro.atMessage({ type: 'warning', message: '请选择所属社团！' })
     }
     if (props.hasIntro && !article.intro) {
-      Taro.atMessage({type: 'warning', message: '请输入介绍！'})
+      Taro.atMessage({ type: 'warning', message: '请输入介绍！' })
       return
     }
-    if (!article.coverImg){
-      Taro.atMessage({type: 'warning', message: '请上传封面图！'})
+    if (!article.coverImg) {
+      Taro.atMessage({ type: 'warning', message: '请上传封面图！' })
       return
     }
     article.detailList = article.detailList.filter(i => !!i.content)
     if (!props.hasIntro && !article.detailList.length) {
-      Taro.atMessage({type: 'warning', message: '请填写内容！'})
+      Taro.atMessage({ type: 'warning', message: '请填写内容！' })
       return
+    }
+    if (props.hasClub && !article.clubId) {
+      Taro.atMessage({ type: 'warning', message: '请填写社团！' })
+      return
+    }
+    if (props.hasClub && article.clubId === Garden.ActivityType.Art) {
+      if (!article.cludGradeId) {
+        Taro.atMessage({ type: 'warning', message: '请填写年级！' })
+        return
+      }
+      if (!article.cludGradeVolumeId) {
+        Taro.atMessage({ type: 'warning', message: '请填写上下册！' })
+        return
+      }
     }
     props.onSave(article)
   }
@@ -139,12 +179,12 @@ export default function EditArticle(props: {
     return (
       <View className='btn-group'>
         {index > -1 && <AtIcon value='close' size={20} color='#333' className='minus-icon' onClick={() => {
-            article.detailList.splice(index, 1)
-            setArticle({
-              ...article,
-              detailList: article.detailList
-            })
-          }}
+          article.detailList.splice(index, 1)
+          setArticle({
+            ...article,
+            detailList: article.detailList
+          })
+        }}
         />}
         <AtButton type='secondary' size='small' onClick={() => addContent('text', index)}>
           添加文本
@@ -180,21 +220,21 @@ export default function EditArticle(props: {
               <Label className='required'>学校</Label>
               {mySchool?.schoolName || (
                 <Picker mode='selector' range={schoolList} rangeKey='schoolName' value={schoolIndex} onChange={e => {
-                const index = +e.detail.value
-                setSchoolIndex(index)
-                setArticle({
-                  ...article,
-                  schoolId: schoolList[index].id!
-                } as any)
-              }}
+                  const index = +e.detail.value
+                  setSchoolIndex(index)
+                  setArticle({
+                    ...article,
+                    schoolId: schoolList[index].id!
+                  } as any)
+                }}
                 >
-                <Input
-                  value={schoolList[schoolIndex]?.schoolName}
-                  placeholder='请选择'
-                  disabled
-                />
-                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
-              </Picker>
+                  <Input
+                    value={schoolList[schoolIndex]?.schoolName}
+                    placeholder='请选择'
+                    disabled
+                  />
+                  <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+                </Picker>
               )}
             </View>
           )}
@@ -203,9 +243,72 @@ export default function EditArticle(props: {
               <Label className='required'>学校简介</Label>
               <Textarea
                 value={article.intro}
-                onInput={e => setArticle({...article, intro: e.detail.value})}
+                onInput={e => setArticle({ ...article, intro: e.detail.value })}
                 placeholder='请输入学校简介'
               />
+            </View>)
+          }
+          {props.hasClub && (
+            <View className='select-wrapper input-wrapper'>
+              <Label className='required'>社团</Label>
+              <Picker mode='selector' range={communityList} rangeKey='title' value={clubIndex} onChange={e => {
+                const index = +e.detail.value
+                setClubIndex(index)
+                setArticle({
+                  ...article,
+                  clubId: communityList[index].value
+                } as any)
+              }}
+              >
+                <Input
+                  value={clubIndex || clubIndex === 0 ? communityList[clubIndex]?.title : ''}
+                  placeholder='请选择'
+                  disabled
+                />
+                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+              </Picker>
+            </View>)
+          }
+          {props.hasClub && article.clubId === Garden.ActivityType.Art  && (
+            <View className='select-wrapper input-wrapper'>
+              <Label className='required'>年级</Label>
+              <Picker mode='selector' range={gradeList} rangeKey='title' value={gradeIndex} onChange={e => {
+                const index = +e.detail.value
+                setGradeIndex(index)
+                setArticle({
+                  ...article,
+                  cludGradeId: gradeList[index].value
+                } as any)
+              }}
+              >
+                <Input
+                  value={gradeIndex || gradeIndex === 0 ? gradeList[gradeIndex]?.title : ''}
+                  placeholder='请选择'
+                  disabled
+                />
+                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+              </Picker>
+            </View>)
+          }
+          {props.hasClub && article.clubId === Garden.ActivityType.Art  && (
+            <View className='select-wrapper input-wrapper'>
+              <Label className='required'>上下册</Label>
+              <Picker mode='selector' range={bookVolumesList} rangeKey='title' value={volumeIndex} onChange={e => {
+                const index = +e.detail.value
+                setVolumeIndex(index)
+                setArticle({
+                  ...article,
+                  cludGradeVolumeId: bookVolumesList[index].value
+                } as any)
+              }}
+              >
+                <Input
+                  value={volumeIndex || volumeIndex === 0 ? bookVolumesList[volumeIndex]?.title : ''}
+                  placeholder='请选择'
+                  disabled
+                />
+                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+              </Picker>
             </View>)
           }
           <View className='input-wrapper has-label'>
@@ -215,8 +318,10 @@ export default function EditArticle(props: {
               fileType={FileType.image}
               length={2}
               max={1}
-              fileList={article.coverImg? [{ url:
-                  article.coverImg, type: FileType.image }] : []}
+              fileList={article.coverImg ? [{
+                url:
+                  article.coverImg, type: FileType.image
+              }] : []}
               onUploadSuccess={
                 res => setArticle({
                   ...article,
@@ -260,10 +365,10 @@ export default function EditArticle(props: {
                         {getButtons(idx)}
                       </View>
                     ) : (
-                    <View className='edit-item text' key={idx}>
-                      <Textarea placeholder='请输入内容，输入下一段内容请点击添加文本' maxlength={-1} value={item.content} onInput={e => handleContentChange(e, idx)} />
-                      {getButtons(idx)}
-                    </View>
+                      <View className='edit-item text' key={idx}>
+                        <Textarea placeholder='请输入内容，输入下一段内容请点击添加文本' maxlength={-1} value={item.content} onInput={e => handleContentChange(e, idx)} />
+                        {getButtons(idx)}
+                      </View>
                     )
                   ))}
                 </View>
@@ -282,7 +387,7 @@ export default function EditArticle(props: {
         cancelText='取消'
         confirmText='确认'
         content='取消后编辑的内容会丢失，是否确认？'
-        onConfirm={() => {Taro.navigateBack()}}
+        onConfirm={() => { Taro.navigateBack() }}
         onCancel={() => setShowConfirm(false)}
       />
     </View>

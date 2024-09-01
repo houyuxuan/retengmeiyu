@@ -4,6 +4,7 @@ import { activityEdit, getActivityDetail } from '@/api'
 import Taro from '@tarojs/taro'
 import EditArticle, { ArticleDetail } from '@/components/EditArticle'
 
+
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
@@ -19,7 +20,6 @@ function Index() {
       })
     }
   }
-
   useEffect(() => {
     getDetail()
   }, [currId])
@@ -36,12 +36,18 @@ function Index() {
       })
       return false
     }
-    await activityEdit({
+    const params: Garden.ActivityDetail = {
       ...activity,
       activityTitle: activity.title,
       activityCoverUrl: activity.coverImg,
-      activityDetails: JSON.stringify(activity.detailList)
-    })
+      activityDetails: JSON.stringify(activity.detailList),
+      clubId: activity.clubId,
+    }
+    if (Garden.ActivityType.Art === activity.clubId) {
+      params.cludGradeId = activity.cludGradeId
+      params.cludGradeVolumeId = activity.cludGradeVolumeId
+    }
+    await activityEdit(params)
     Taro.atMessage({
       message: '保存成功',
       type: 'success',
@@ -60,6 +66,7 @@ function Index() {
       hasVideo
       onSave={onSave}
       showSchoolSelect
+      hasClub
       headerTitle={currId ? '活动管理-编辑' : '活动管理-新增'}
       titleText='活动标题'
     />

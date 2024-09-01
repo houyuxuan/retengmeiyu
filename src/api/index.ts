@@ -254,7 +254,7 @@ export function schoolDelete(params: { id: IdType }) {
 // 用户-获取用户列表 (超管权限)
 export function getUserList(params: {
     searchKeyWord: string,
-    status?: UserManagement.UserStatusEnum,
+    memberRoleId?: UserManagement.RoleIdEnum,
 } & PageParams) {
     return request<PageResult<UserManagement.UserInfo>>({
         url: '/member/user/list',
@@ -408,7 +408,7 @@ export function getManageMenu() {
             ...res,
             data: res.data.map(i => ({
                 id: i.id,
-                menuName: i.menuName === '发布帖子' ? '讨论发帖' : i.menuName === '发布活动' ? '活动打卡' : i.menuName, // v3改名字
+                menuName: i.menuName, // v3改名字
                 menuIconUrl: menuInfoMap[i.menuName]?.icon,
                 path: menuInfoMap[i.menuName]?.path,
             }))

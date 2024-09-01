@@ -11,7 +11,6 @@ export default defineAppConfig({
     {
       root: "module",
       pages: [
-        
         'pages/garden/index',
         'pages/garden-activity/index',
         'pages/resource/index',
@@ -28,6 +27,7 @@ export default defineAppConfig({
         'pages/community/index',
         'pages/community-post-detail/index',
         'pages/community-discuss-post/index',
+        'pages/community-manage/index',
         'pages/school-manage/index',
         'pages/activity-manage/index',
         'pages/user-manage/index',
@@ -35,6 +35,7 @@ export default defineAppConfig({
         'pages/activity-edit/index',
         'pages/school-edit/index',
         'pages/discuss-manage/index',
+        'pages/info-config/index',
         'pages/admin-page/index',
         'pages/score/index',
         'pages/news/index'
