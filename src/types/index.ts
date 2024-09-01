@@ -180,8 +180,8 @@ namespace UserManagement {
         SuperAdmin = 'super_admin'
     }
     export enum RoleIdEnum {
-        Teacher = 1, // 老师
-        Admin = 0, // 管理员
+        Teacher = 3, // 老师
+        Admin = 1, // 管理员
         All = 9, // 全部
     }
 
