@@ -25,14 +25,15 @@ function Index() {
   }, [currId])
 
   const onSave = async (resource: ArticleDetail & Resource.ResourceDetail) => {
-    await resourceEdit({
+    const params = {
       ...resource,
       id: resource.id,
       resourcesTitle: resource.title,
       resourcesCoverUrl: resource.coverImg,
       resourcesDetails: JSON.stringify(resource.detailList),
       memberUserId: Taro.getStorageSync('loginInfo')?.userId
-    })
+    }
+    await resourceEdit(params)
     Taro.atMessage({
       message: '保存成功',
       type: 'success',
@@ -45,6 +46,7 @@ function Index() {
       titleText='资源标题'
       hasAudio
       hasVideo
+      hasClub
       article={resourceDetail ? {
         ...resourceDetail,
         coverImg: resourceDetail.resourcesCoverUrl || '',

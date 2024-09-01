@@ -129,7 +129,7 @@ namespace UserManagement {
     }
 
     // 我的-统计数据
-    export interface StatisticData{
+    export interface StatisticData {
         activityNum: number;
         memberUserNum: number;
     }
@@ -257,7 +257,34 @@ namespace Resource {
         createTime: string;
         resourcesDetails: string;
         detailList: ContentItem[]
-      }
+    }
+}
+
+namespace ClubManage {
+    export interface Club {
+        id: IdType,
+        clubTitle: string,
+        clubCoverUrl: string,
+        clubDetails: string,
+        createTime: string
+    }
+
+    export interface Tag {
+        id?: IdType,
+        clubId?: IdType,
+        clubTagName: string
+    }
+    export interface ClubDetail {
+        id: IdType;
+        clubTitle: string;
+        clubCoverUrl: string;
+        publicStatus: PublicStatus;
+        memberUserId: IdType;
+        createTime: string;
+        clubDetails: string;
+        detailList: ContentItem[];
+        clubTagList: Tag[];
+    }
 }
 
 export {
@@ -268,5 +295,6 @@ export {
     PageParams,
     PageResult,
     Community,
-    Resource
+    Resource,
+    ClubManage
 }

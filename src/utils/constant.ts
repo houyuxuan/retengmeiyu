@@ -117,7 +117,7 @@ export const menuInfoMap = {
   // v3 新增模块
   '社团管理': {
       icon: '/user-manage-icon.png',
-      path: '/pages/community-manage/index'
+      path: '/pages/club-manage/index'
   },
   '资讯配置': {
       icon: '/user-manage-icon.png',

@@ -1,0 +1,60 @@
+.post-container {
+    padding: 30px;
+    background: #f4f4f4;
+    height: 100vh;
+}
+
+.post-title {
+    padding: 30px;
+
+    image {
+        float: left;
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+    }
+    .title {
+        margin-left: 120px;
+        font-size: 36px;
+    }
+    .date {
+        margin: 15px 0 0 120px;
+        color: #aaa;
+        font-size: 20px;
+    }
+}
+
+.tab-container {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+
+    .discuss-list {
+        padding: 30px;
+
+        .discuss-item {
+            padding: 30px 0;
+        }
+
+        image {
+            float: left;
+            width: 70px;
+            height: 70px;
+            border-radius: 6px;
+        }
+
+        .text-content {
+            padding-left: 80px;
+            color: #aaa;
+
+            .nickname {
+                color: #666;
+                line-height: 40px;
+            }
+            .date {
+                float: right;
+                font-size: 20px;
+            }
+        }
+    }
+}
