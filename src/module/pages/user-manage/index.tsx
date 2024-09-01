@@ -24,10 +24,10 @@ function Index() {
 
   const [total, setTotal] = useState(0)
   const getList = () => {
-    const status = userTabList[currTab].value
+    const member = userTabList[currTab].value
     getUserList({
       searchKeyWord: keyword,
-      status: status === UserManagement.UserStatusEnum.All ? undefined : status,
+      memberRoleId: member === UserManagement.RoleIdEnum.All ? undefined : member,
       ...page
     }).then(res => {
       setTotal(res.data.total)

@@ -41,14 +41,14 @@ export const gardenTabList = [{
 
 export const userTabList = [{
   title: '全部',
-  value: UserManagement.UserStatusEnum.All
+  value: UserManagement.RoleIdEnum.All
 }, {
   // TODO: 这里需要传递角色参数, 而不是用户状态参数
     title: '管理员',
-    value: UserManagement.UserStatusEnum.Normal
+    value: UserManagement.RoleIdEnum.Admin
   }, {
     title: '老师',
-    value: UserManagement.UserStatusEnum.Disabled
+    value: UserManagement.RoleIdEnum.Teacher
   }
 // {
 //   title: '正常',

@@ -176,6 +176,11 @@ namespace UserManagement {
         Admin = 'admin',
         SuperAdmin = 'super_admin'
     }
+    export enum RoleIdEnum {
+        Teacher = 1, // 老师
+        Admin = 0, // 管理员
+        All = 9, // 全部
+    }
 
     export enum UserStatusEnum {
         Disabled = 1, // 禁用状态
