@@ -30,7 +30,8 @@ function Index() {
     // if (Taro.getStorageSync('userInfo')) {
       const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams = {...page};
       if (schoolId) params.schoolId = schoolId;
-      if (clubId) params.clubId = clubId;
+      const club = clubId || Number(Taro.getCurrentInstance().router?.params.clubId);
+      if (club) params.clubId = club
       if (cludGradeId.length) params.cludGradeId = cludGradeId;
       if (cludGradeVolumeId.length) params.cludGradeVolumeId = cludGradeVolumeId;
       getSchoolActivity(params).then(res => {
@@ -63,7 +64,7 @@ function Index() {
       getList()
     }
   }
-  useEffect(getList, [page, clubId])
+  useEffect(getList, [page])
   useEffect(() => {
     // 假设你通过 URL 参数传递了标题、社团类型
     const titleParam = Taro.getCurrentInstance() && Taro.getCurrentInstance().router?.params.title
