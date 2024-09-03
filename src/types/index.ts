@@ -287,6 +287,33 @@ namespace ClubManage {
     }
 }
 
+namespace InfoManage {
+    export interface Info {
+        id: IdType,
+        infoTitle: string,
+        infoCoverUrl: string,
+        infoDetails: string,
+        createTime: string
+    }
+
+    export interface Tag {
+        id?: IdType,
+        infoId?: IdType,
+        infoTagName: string
+    }
+    export interface InfoDetail {
+        id: IdType;
+        infoTitle: string;
+        infoCoverUrl: string;
+        publicStatus: PublicStatus;
+        memberUserId: IdType;
+        createTime: string;
+        infoDetails: string;
+        detailList: ContentItem[];
+        infoTagList: Tag[];
+    }
+}
+
 export {
     IdType,
     AboutUs,
@@ -296,5 +323,6 @@ export {
     PageResult,
     Community,
     Resource,
-    ClubManage
+    ClubManage,
+    InfoManage
 }

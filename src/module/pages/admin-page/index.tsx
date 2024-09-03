@@ -32,7 +32,21 @@ function Index() {
 
   const getMenuList = () => {
     getManageMenu().then(res => {
-      setMenuList(res.data)
+      const menus = [
+        {
+          id: 99,
+          menuName: '社团管理', // v3改名字
+          menuIconUrl: '/user-manage-icon.png',
+          path: '/pages/club-manage/index'
+        },
+        {
+          id: 199,
+          menuName: '资讯配置', // v3改名字
+          menuIconUrl: '/user-manage-icon.png',
+          path: '/pages/info-config/index'
+        }
+      ]
+      setMenuList(res.data.concat(menus))
     }).catch(err => {
       if (err.code === 403) {
       }
