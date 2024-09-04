@@ -37,3 +37,30 @@ export function getClubDetail(params: { id: IdType }) {
     data: params
   })
 }
+
+// 新增社团标签
+export function addTag(params: ClubManage.Tag) {
+  return request({
+    url: '/rt/v2/club/tag/save',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 删除社团标签
+export function deleteTag(params: { id: IdType }) {
+  return request({
+    url: '/rt/v2/club/tag/delete',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取社团标签列表
+export function getTagList(params: { clubId: IdType }) {
+  return request({
+    url: '/rt/v2/club/tag/list',
+    method: 'POST',
+    data: params
+  })
+}

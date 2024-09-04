@@ -28,8 +28,8 @@ function Index() {
     <View className='post-container'>
       <AtMessage />
       {detail && <View className='post-title'>
-        <Image src={detail?.infoCoverUrl || ''} mode='aspectFill' />
-        <View className='title'>{detail?.infoTitle}</View>
+        <Image src={detail?.informationCoverUrl || ''} mode='aspectFill' />
+        <View className='title'>{detail?.informationTitle}</View>
         <View className='date'>
           {moment(detail.createTime).format('YYYY-MM-DD HH:mm')}
         </View>
@@ -38,10 +38,10 @@ function Index() {
         detail={
           detail ? {
           ...detail,
-          title: detail.infoTitle,
+          title: detail.informationTitle,
           id: detail.id!,
           createTime: detail.createTime || '',
-          detailList: detail.infoDetails && JSON.parse(detail.infoDetails)
+          detailList: detail.informationDetails && JSON.parse(detail.informationDetails)
           } : undefined
         }
         showTitle={false}

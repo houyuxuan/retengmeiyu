@@ -38,9 +38,9 @@ function Index() {
     // }
     const params: InfoManage.InfoDetail = {
       ...info,
-      infoTitle: info.title,
-      infoCoverUrl: info.coverImg,
-      infoDetails: JSON.stringify(info.detailList),
+      informationTitle: info.title,
+      informationCoverUrl: info.coverImg,
+      informationDetails: JSON.stringify(info.detailList),
     }
     await infoEdit(params)
     Taro.atMessage({
@@ -54,8 +54,8 @@ function Index() {
     <EditInfo
       article={clubDetail ? {
         ...clubDetail,
-        coverImg: clubDetail.infoCoverUrl || '',
-        title: clubDetail.infoTitle || '',
+        coverImg: clubDetail.informationCoverUrl || '',
+        title: clubDetail.informationTitle || '',
         detailList: clubDetail.detailList || []
       } : undefined}
       onSave={onSave}

@@ -30,6 +30,7 @@ export default function EditArticle(props: {
   hasVideo?: boolean
   hasAudio?: boolean
   hasClub?: boolean
+  hasSourceType?: boolean
 }) {
   const [article, setArticle] = useState(props.article || {
     title: '',
@@ -248,9 +249,9 @@ export default function EditArticle(props: {
               />
             </View>)
           }
-          {props.hasClub && (
+          {props.hasClub || props.hasSourceType && (
             <View className='select-wrapper input-wrapper'>
-              <Label className='required'>社团</Label>
+              <Label className='required'>{props.hasSourceType ? '资源类型' : '社团'}</Label>
               <Picker mode='selector' range={communityList} rangeKey='title' value={clubIndex} onChange={e => {
                 const index = +e.detail.value
                 setClubIndex(index)
@@ -262,27 +263,6 @@ export default function EditArticle(props: {
               >
                 <Input
                   value={clubIndex || clubIndex === 0 ? communityList[clubIndex]?.title : ''}
-                  placeholder='请选择'
-                  disabled
-                />
-                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
-              </Picker>
-            </View>)
-          }
-          {props.hasClub && article.clubId === Garden.ActivityType.Art  && (
-            <View className='select-wrapper input-wrapper'>
-              <Label className='required'>年级</Label>
-              <Picker mode='selector' range={gradeList} rangeKey='title' value={gradeIndex} onChange={e => {
-                const index = +e.detail.value
-                setGradeIndex(index)
-                setArticle({
-                  ...article,
-                  cludGradeId: gradeList[index].value
-                } as any)
-              }}
-              >
-                <Input
-                  value={gradeIndex || gradeIndex === 0 ? gradeList[gradeIndex]?.title : ''}
                   placeholder='请选择'
                   disabled
                 />

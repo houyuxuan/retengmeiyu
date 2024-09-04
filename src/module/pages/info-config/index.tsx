@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { View, Input } from '@tarojs/components'
-import { Community, PageParams } from '@/types'
-import { AtIcon } from 'taro-ui'
-import { getPostList } from '@/api'
-import RtList from '@/components/RtList'
+import { View } from '@tarojs/components'
+import { InfoManage, PageParams, IdType } from '@/types'
+import { AtMessage } from 'taro-ui'
+import SearchAndAdd from '@/components/SearchAndAdd'
+import { getInfoList, infoDelete } from '@/api/info'
+import ManageList from '@/components/ManageList'
 import CheckLogin from '@/components/CheckLogin'
+
 import Taro from '@tarojs/taro'
 import './index.scss'
 
@@ -19,18 +21,30 @@ function Index() {
 
   const [total, setTotal] = useState(0)
 
-  const [postList, setList] = useState<Community.PostDetail[]>([])
+  const [infoList, setList] = useState<InfoManage.Info[]>([])
 
   const getList = () => {
     if (Taro.getStorageSync('userInfo')) {
-      getPostList({
+      getInfoList({
         searchKeyWord: keyword,
         ...page
       }).then(res => {
         setTotal(res.data.total)
-        setList(page.pageNo === 1 ? res.data.list : [...postList, ...res.data.list])
+        setList(page.pageNo === 1 ? res.data.list : [...infoList, ...res.data.list])
       })
     }
+  }
+  const goEdit = (id?: IdType) => {
+    Taro.navigateTo({url: `../info-edit/index${id ? '?id=' + id : ''}`})
+  }
+  const deleteItem = (id: IdType) => {
+    infoDelete({ id }).then(res => {
+      Taro.atMessage({
+          type: 'success',
+          message: res.msg
+      })
+      refresh()
+    })
   }
 
   const refresh = () => {
@@ -46,27 +60,25 @@ function Index() {
   useEffect(refresh, [keyword])
 
   return (
-    <View className='community-container'>
-      <View className='input-wrapper has-prefix'>
-        <AtIcon value='search' size='20' color='#aaa' />
-        <Input
-          name='value'
-          type='text'
-          placeholder='搜索标题'
-          value={keyword}
-          onInput={e => setKeyword(e.detail.value)}
-          onConfirm={refresh}
-        />
-      </View>
-      <RtList
-        list={postList.map(i => ({
+    <View className='club-container'>
+      <AtMessage />
+      <SearchAndAdd
+        onAdd={() => goEdit()}
+        onConfirm={refresh}
+        onChange={setKeyword}
+        addText='新增资讯'
+      />
+      <ManageList
+        list={infoList.map(i => ({
           ...i,
           id: i.id!,
-          coverImg: i.postCoverUrl,
-          title: i.postTitle,
+          coverImg: i.informationCoverUrl,
+          title: i.informationTitle,
           date: i.createTime || ''
         }))}
-        detailUrl='../../module/pages/community-post-detail/index'
+        cardContent={() => (<></>)}
+        editFun={goEdit}
+        deleteFun={deleteItem}
         total={total}
         onLoading={() => {
           setPage({

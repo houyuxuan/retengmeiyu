@@ -38,6 +38,8 @@ export default defineAppConfig({
         'pages/school-edit/index',
         'pages/discuss-manage/index',
         'pages/info-config/index',
+        'pages/info-edit/index',
+        'pages/info-detail/index',
         'pages/admin-page/index',
         'pages/score/index',
         'pages/news/index'

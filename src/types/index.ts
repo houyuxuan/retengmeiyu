@@ -157,9 +157,9 @@ namespace UserManagement {
         schoolIds: IdType[];
         schoolNames?: string; // 自己拼接
         memberUserRoleDTOList: RoleInfo[],
-        // TODO: 待对接
         name?: string, // 备注名称
-        clubIds?: IdType[] // 社团编码
+        clubIds?: IdType[], // 社团编码
+        creditTotalValue?: IdType // 积分
     }
 
     // 存储当前用户信息
@@ -290,27 +290,27 @@ namespace ClubManage {
 namespace InfoManage {
     export interface Info {
         id: IdType,
-        infoTitle: string,
-        infoCoverUrl: string,
-        infoDetails: string,
+        informationTitle: string,
+        informationCoverUrl: string,
+        informationDetails: string,
         createTime: string
     }
 
     export interface Tag {
         id?: IdType,
-        infoId?: IdType,
-        infoTagName: string
+        informationId?: IdType,
+        informationTagName: string
     }
     export interface InfoDetail {
         id: IdType;
-        infoTitle: string;
-        infoCoverUrl: string;
+        informationTitle: string;
+        informationCoverUrl: string;
         publicStatus: PublicStatus;
         memberUserId: IdType;
         createTime: string;
-        infoDetails: string;
+        informationDetails: string;
         detailList: ContentItem[];
-        infoTagList: Tag[];
+        informationTagList: Tag[];
     }
 }
 

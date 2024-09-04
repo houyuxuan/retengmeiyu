@@ -40,7 +40,7 @@ function Index() {
       const ids: IdType[] = []
       let names: string = ''
       list.forEach(club => {
-        if(clubIds.includes(Number(club.value))) {
+        if((clubIds || []).includes(Number(club.value))) {
           club.checked = true
           ids.push(Number(club.value))
           names = name.length ? names + club.title + ',' : names + club.title

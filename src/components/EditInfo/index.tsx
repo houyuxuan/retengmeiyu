@@ -7,7 +7,7 @@ import FileUpload from '../FileUpload'
 import './index.scss'
 
 export interface InfoDetail {
-  infoId?: IdType;
+  informationId?: IdType;
   title: string;
   coverImg: string;
   detailList: ContentItem[];
@@ -43,8 +43,8 @@ export default function EditArticle(props: {
   const addTag = () => {
     tagList.push({
       id: '',
-      infoId: article?.infoId || '',
-      infoTagName: currentTag
+      informationId: article?.informationId || '',
+      informationTagName: currentTag
     })
     setTags(tagList)
     setCurrentTag('')
@@ -179,7 +179,7 @@ export default function EditArticle(props: {
             {tagList.map(
               (tag, index) => (
                 <View key={index} className="tag">
-                  {tag.infoTagName}
+                  {tag.informationTagName}
                   <AtIcon className='delete-icon' value='close' size={14} color='#C0182F' onClick={() => deleteTag(index)} />
                 </View>
               ) 

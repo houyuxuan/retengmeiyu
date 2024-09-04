@@ -46,7 +46,7 @@ function Index() {
       titleText='资源标题'
       hasAudio
       hasVideo
-      hasClub
+      hasSourceType
       article={resourceDetail ? {
         ...resourceDetail,
         coverImg: resourceDetail.resourcesCoverUrl || '',

@@ -101,6 +101,7 @@ function Index() {
         cardContent={(item: UserManagement.UserInfo) => (<>
             <View>手机：{item.mobile}</View>
             <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
+            {item.creditTotalValue ? <View>积分：{item.creditTotalValue}</View> : ''}
         </>)}
         editFun={goDetail}
         deleteFun={deleteItem}

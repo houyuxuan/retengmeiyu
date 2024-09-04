@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '资讯配置'
+  navigationBarTitleText: '美育资讯管理'
 })

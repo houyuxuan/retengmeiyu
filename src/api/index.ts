@@ -104,7 +104,7 @@ export async function getSchoolDetail(params: { id: IdType }) {
 // 花园-获取学校下活动列表
 export function getSchoolActivity(params:  {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams) {
     return request<PageResult<Garden.ActivityDetail>>({
-        url: '/rt/school/activity/public/page',
+        url: '/rt/v2/school/activity/public/page',
         method: 'POST',
         data: params
     })
@@ -122,7 +122,7 @@ export function getSchoolAdminActivity(params: { schoolId: IdType, searchKeyWord
 // 花园-获取学校下活动列表
 export function getActivityList(params: { searchKeyWord?: string } & PageParams) {
     return request<PageResult<Garden.ActivityDetail>>({
-        url: '/rt/school/activity/public/page',
+        url: '/rt/v2/school/activity/public/page',
         method: 'POST',
         data: params
     })
@@ -257,7 +257,7 @@ export function getUserList(params: {
     memberRoleId?: UserManagement.RoleIdEnum,
 } & PageParams) {
     return request<PageResult<UserManagement.UserInfo>>({
-        url: '/member/user/list',
+        url: '/member/v2/user/list',
         method: 'POST',
         data: params
     })
@@ -291,7 +291,7 @@ export function userInfoChange(params: {
     clubIds: IdType[]; // 社团名字
 }) {
     return request({
-        url: '/member/user/details/update',
+        url: '/member/v2/user/details/update',
         method: 'POST',
         data: params
     })
@@ -608,7 +608,7 @@ export function getResourceList(params: {
         params.resourcesType = undefined as any
     }
     return request<PageResult<Resource.ResourceDetail>>({
-        url: '/rt/resources/public/page',
+        url: '/rt/v2/resources/public/page',
         method: 'POST',
         data: params
     })
