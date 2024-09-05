@@ -39,7 +39,7 @@ export function getClubDetail(params: { id: IdType }) {
 }
 
 // 新增社团标签
-export function addTag(params: ClubManage.Tag) {
+export function addTagAPI(params: ClubManage.Tag) {
   return request({
     url: '/rt/v2/club/tag/save',
     method: 'POST',
@@ -48,7 +48,7 @@ export function addTag(params: ClubManage.Tag) {
 }
 
 // 删除社团标签
-export function deleteTag(params: { id: IdType }) {
+export function deleteTagAPI(params: { id: IdType }) {
   return request({
     url: '/rt/v2/club/tag/delete',
     method: 'POST',

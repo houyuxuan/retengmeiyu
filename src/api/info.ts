@@ -14,7 +14,7 @@ export function getInfoList(params: { searchKeyWord: string } & PageParams) {
 // 删除资讯
 export function infoDelete(params: { id: IdType }) {
   return request({
-      url: '/rt/information/delete',
+      url: '/rt/v2/information/delete',
       method: 'POST',
       data: params
   })

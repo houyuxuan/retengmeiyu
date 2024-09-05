@@ -2,36 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
 import { ClubManage, ContentItem, FileType, IdType } from '@/types'
+import { addTagAPI, deleteTagAPI } from '@/api/club'
 import Taro from '@tarojs/taro'
 import FileUpload from '../FileUpload'
 import './index.scss'
 
 export interface ClubDetail {
+  id: IdType;
+  clubTitle: string;
+  clubCoverUrl: string;
   clubId?: IdType;
-  title: string;
-  coverImg: string;
-  detailList: ContentItem[];
-  tagList?: ClubManage.Tag[];
+  clubDetails: ContentItem[];
 }
-
+type Tags = ClubManage.Tag[];
 export default function EditArticle(props: {
   article?: ClubDetail;
   onSave: (info: any) => any;
   headerTitle?: string;
   titleText?: string
+  tagList?: Tags
 }) {
   const [article, setArticle] = useState(props.article || {
-    title: '',
-    coverImg: '',
-    detailList: [],
+    id: '',
+    clubTitle: '',
+    clubCoverUrl: '',
+    clubDetails: [],
   })
 
   const [currentTag, setCurrentTag] = useState('')
 
-  const [tagList, setTags] = useState<ClubManage.Tag[]>([])
+  const [tagList, setTags] = useState<Tags>([])
 
   const addContent = (type: ContentItem['type'], index) => {
-    article.detailList.splice(index + 1, 0, {
+    article.clubDetails.splice(index + 1, 0, {
       type,
       content: ''
     })
@@ -40,19 +43,31 @@ export default function EditArticle(props: {
     })
   }
 
-  const addTag = () => {
-    tagList.push({
+  const addTag = async () => {
+    await addTagAPI({
       id: '',
-      clubId: article?.clubId || '',
+      clubId: article.id,
       clubTagName: currentTag
+    }).then(() => {
+      tagList.push({
+        id: '',
+        clubId: article.id,
+        clubTagName: currentTag
+      })
+      setTags(tagList)
+      setCurrentTag('')
     })
-    setTags(tagList)
-    setCurrentTag('')
+    
   }
-  const deleteTag = (i) => {
-    const list = [...tagList]
-    list.splice(i, 1)
-    setTags(list)
+  const deleteTag = async (i) => {
+    await deleteTagAPI({
+      id: tagList[i].id as string
+    }).then(() => {
+      const list = [...tagList]
+      list.splice(i, 1)
+      setTags(list)
+    })
+    
   }
 
   useEffect(() => {
@@ -70,19 +85,20 @@ export default function EditArticle(props: {
   }, [props.article])
 
   useEffect(() => {
-    if (article.detailList.length) {
-      const textCount = article.detailList.filter(i => i.type === 'text').length
-      setCount([textCount, article.detailList.length - textCount])
-    }
-    if (article.tagList && article.tagList.length) {
-      setTags(article.tagList)
+    setTags(props.tagList || [])
+  }, [props.tagList])
+
+  useEffect(() => {
+    if (article.clubDetails.length) {
+      const textCount = article.clubDetails.filter(i => i.type === 'text').length
+      setCount([textCount, article.clubDetails.length - textCount])
     }
   }, [article])
 
   const handleChange = (e: any) => {
     setArticle({
       ...article!,
-      title: e.detail.value
+      clubTitle: e.detail.value
     })
   }
 
@@ -91,7 +107,7 @@ export default function EditArticle(props: {
   }
 
   const handleContentChange = (e: any, index) => {
-    article.detailList[index].content = e.detail.value
+    article.clubDetails[index].content = e.detail.value
     setArticle({
       ...article
     })
@@ -104,16 +120,16 @@ export default function EditArticle(props: {
   }
 
   const handleSave = () => {
-    if (!article.title) {
+    if (!article.clubTitle) {
       Taro.atMessage({ type: 'warning', message: '请输入标题！' })
       return
     }
-    if (!article.coverImg) {
+    if (!article.clubCoverUrl) {
       Taro.atMessage({ type: 'warning', message: '请上传封面图！' })
       return
     }
-    article.detailList = article.detailList.filter(i => !!i.content)
-    article.tagList = tagList;
+    article.clubDetails = article.clubDetails.filter(i => !!i.content)
+    // article.tagList = tagList;
     props.onSave(article)
   }
 
@@ -121,10 +137,10 @@ export default function EditArticle(props: {
     return (
       <View className='btn-group'>
         {index > -1 && <AtIcon value='close' size={20} color='#333' className='minus-icon' onClick={() => {
-          article.detailList.splice(index, 1)
+          article.clubDetails.splice(index, 1)
           setArticle({
             ...article,
-            detailList: article.detailList
+            clubDetails: article.clubDetails
           })
         }}
         />}
@@ -150,7 +166,7 @@ export default function EditArticle(props: {
               type='text'
               placeholder={`请输入${props.titleText || '标题'}`}
               maxlength={20}
-              value={article.title}
+              value={article.clubTitle}
               onInput={(text) => handleChange(text)}
             />
           </View>
@@ -161,20 +177,20 @@ export default function EditArticle(props: {
               fileType={FileType.image}
               length={2}
               max={1}
-              fileList={article.coverImg ? [{
+              fileList={article.clubCoverUrl ? [{
                 url:
-                  article.coverImg, type: FileType.image
+                  article.clubCoverUrl, type: FileType.image
               }] : []}
               onUploadSuccess={
                 res => setArticle({
                   ...article,
-                  coverImg: res[0].url
+                  clubCoverUrl: res[0].url
                 })
               }
             />
           </View>
           <View className='input-wrapper has-label'>
-          <Label>资源标签</Label>
+          <Label>社团标签</Label>
           <View className='tag-box'>
             {tagList.map(
               (tag, index) => (
@@ -202,13 +218,13 @@ export default function EditArticle(props: {
         
         <View className='detail'>
           <AtAccordion
-            title={`${article.title} 详细内容`}
+            title={`${article.clubTitle} 详细内容`}
             open
-            note={props.article?.detailList.length ? `${contentCount[0]}段文字，${contentCount[0]}张图片` : ''}
+            note={props.article?.clubDetails.length ? `${contentCount[0]}段文字，${contentCount[0]}张图片` : ''}
           >
-            {article.detailList.length ? (
+            {article.clubDetails.length ? (
               <View className='content-list'>
-                {article.detailList.map((item, idx) => (
+                {article.clubDetails.map((item, idx) => (
                   item.type !== 'text' ? (
                     <View key={idx} className='edit-item img'>
                       <FileUpload
@@ -223,10 +239,10 @@ export default function EditArticle(props: {
                             type: FileType[i.type] as any,
                             content: i.url
                           }))
-                          article.detailList.splice(idx, 1, ...list)
+                          article.clubDetails.splice(idx, 1, ...list)
                           setArticle({
                             ...article,
-                            detailList: [...article.detailList]
+                            clubDetails: [...article.clubDetails]
                           })
                         }}
                       />

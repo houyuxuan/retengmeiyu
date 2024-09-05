@@ -278,12 +278,10 @@ namespace ClubManage {
         id: IdType;
         clubTitle: string;
         clubCoverUrl: string;
-        publicStatus: PublicStatus;
-        memberUserId: IdType;
-        createTime: string;
         clubDetails: string;
-        detailList: ContentItem[];
-        clubTagList: Tag[];
+        // createTime: string;
+        // publicStatus: PublicStatus;
+        // memberUserId: IdType;
     }
 }
 

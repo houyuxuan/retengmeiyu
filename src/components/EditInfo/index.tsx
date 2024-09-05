@@ -26,10 +26,6 @@ export default function EditArticle(props: {
     detailList: [],
   })
 
-  const [currentTag, setCurrentTag] = useState('')
-
-  const [tagList, setTags] = useState<InfoManage.Tag[]>([])
-
   const addContent = (type: ContentItem['type'], index) => {
     article.detailList.splice(index + 1, 0, {
       type,
@@ -38,21 +34,6 @@ export default function EditArticle(props: {
     setArticle({
       ...article,
     })
-  }
-
-  const addTag = () => {
-    tagList.push({
-      id: '',
-      informationId: article?.informationId || '',
-      informationTagName: currentTag
-    })
-    setTags(tagList)
-    setCurrentTag('')
-  }
-  const deleteTag = (i) => {
-    const list = [...tagList]
-    list.splice(i, 1)
-    setTags(list)
   }
 
   useEffect(() => {
@@ -74,9 +55,6 @@ export default function EditArticle(props: {
       const textCount = article.detailList.filter(i => i.type === 'text').length
       setCount([textCount, article.detailList.length - textCount])
     }
-    if (article.tagList && article.tagList.length) {
-      setTags(article.tagList)
-    }
   }, [article])
 
   const handleChange = (e: any) => {
@@ -85,11 +63,7 @@ export default function EditArticle(props: {
       title: e.detail.value
     })
   }
-
-  const tagchange = (e: any) => {
-    setCurrentTag(e.detail.value)
-  }
-
+  
   const handleContentChange = (e: any, index) => {
     article.detailList[index].content = e.detail.value
     setArticle({
@@ -113,7 +87,6 @@ export default function EditArticle(props: {
       return
     }
     article.detailList = article.detailList.filter(i => !!i.content)
-    article.tagList = tagList;
     props.onSave(article)
   }
 
@@ -172,31 +145,6 @@ export default function EditArticle(props: {
                 })
               }
             />
-          </View>
-          <View className='input-wrapper has-label'>
-          <Label>资源标签</Label>
-          <View className='tag-box'>
-            {tagList.map(
-              (tag, index) => (
-                <View key={index} className="tag">
-                  {tag.informationTagName}
-                  <AtIcon className='delete-icon' value='close' size={14} color='#C0182F' onClick={() => deleteTag(index)} />
-                </View>
-              ) 
-            )}
-          </View>
-          <View className="input-btn">
-            <Input
-              className='input'
-              value={currentTag}
-              type='text'
-              placeholder='请输入'
-              maxlength={10}
-              onInput={(text) => tagchange(text)} />
-              <View className={`abb-btn ${currentTag ? '' : 'disabled'}`} onClick={() => {
-                currentTag && addTag()
-              }}>新增</View>
-            </View>
           </View>
         </View>
         
