@@ -81,7 +81,6 @@ export default function EditArticle(props: {
     }
     if (props.article?.cludId) {
       const index = communityList.findIndex(i => i.value === props.article?.cludId)
-      console.log('返回的id', props.article?.cludId, 'list index', index)
       setClubIndex(index)
     }
     if (props.article?.cludGradeVolumeId) {
@@ -160,7 +159,6 @@ export default function EditArticle(props: {
       Taro.atMessage({ type: 'warning', message: '请填写内容！' })
       return
     }
-    console.log('shetuan', article)
     if (props.hasClub && !article.cludId) {
       Taro.atMessage({ type: 'warning', message: '请填写社团！' })
       return

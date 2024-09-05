@@ -67,12 +67,10 @@ function Index() {
   })
 
   const goEdit = (id?: IdType) => {
-    console.log('goEdit')
     Taro.navigateTo({url: `../resource-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    console.log('goPreview')
     Taro.navigateTo({ url: `../resource-detail/index?id=${id}&preview=1` })
   }
 
