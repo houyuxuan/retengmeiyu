@@ -14,7 +14,7 @@ export interface ArticleDetail {
   coverImg: string;
   detailList: ContentItem[];
   intro?: string;
-  clubId?: IdType;
+  cludId?: IdType;
   cludGradeId?: IdType;
   cludGradeVolumeId?: IdType;
 }
@@ -79,8 +79,9 @@ export default function EditArticle(props: {
         })
       }
     }
-    if (props.article?.clubId) {
-      const index = communityList.findIndex(i => i.value === props.article?.clubId)
+    if (props.article?.cludId) {
+      const index = communityList.findIndex(i => i.value === props.article?.cludId)
+      console.log('返回的id', props.article?.cludId, 'list index', index)
       setClubIndex(index)
     }
     if (props.article?.cludGradeVolumeId) {
@@ -143,7 +144,7 @@ export default function EditArticle(props: {
     if (props.showSchoolSelect && !article.schoolId) {
       Taro.atMessage({ type: 'warning', message: '请选择所属学校！' })
     }
-    if (props.hasClub && !article.clubId) {
+    if (props.hasClub && !article.cludId) {
       Taro.atMessage({ type: 'warning', message: '请选择所属社团！' })
     }
     if (props.hasIntro && !article.intro) {
@@ -159,11 +160,12 @@ export default function EditArticle(props: {
       Taro.atMessage({ type: 'warning', message: '请填写内容！' })
       return
     }
-    if (props.hasClub && !article.clubId) {
+    console.log('shetuan', article)
+    if (props.hasClub && !article.cludId) {
       Taro.atMessage({ type: 'warning', message: '请填写社团！' })
       return
     }
-    if (props.hasClub && article.clubId === Garden.ActivityType.Art) {
+    if (props.hasClub && article.cludId === Garden.ActivityType.Art) {
       if (!article.cludGradeId) {
         Taro.atMessage({ type: 'warning', message: '请填写年级！' })
         return
@@ -172,6 +174,10 @@ export default function EditArticle(props: {
         Taro.atMessage({ type: 'warning', message: '请填写上下册！' })
         return
       }
+    } else {
+      // 不是美术的话要清除不必要的传参
+      delete article.cludGradeId
+      delete article.cludGradeVolumeId
     }
     props.onSave(article)
   }
@@ -249,20 +255,20 @@ export default function EditArticle(props: {
               />
             </View>)
           }
-          {props.hasClub || props.hasSourceType && (
+          {(props.hasClub || props.hasSourceType) && (
             <View className='select-wrapper input-wrapper'>
-              <Label className='required'>{props.hasSourceType ? '资源类型' : '社团'}</Label>
+              <Label className='required'>{props.hasSourceType ? '资源类型' : '美育社团'}</Label>
               <Picker mode='selector' range={communityList} rangeKey='title' value={clubIndex} onChange={e => {
                 const index = +e.detail.value
                 setClubIndex(index)
                 setArticle({
                   ...article,
-                  clubId: communityList[index].value
+                  cludId: communityList[index].value
                 } as any)
               }}
               >
                 <Input
-                  value={clubIndex || clubIndex === 0 ? communityList[clubIndex]?.title : ''}
+                  value={(clubIndex || clubIndex === 0) ? communityList[clubIndex]?.title : ''}
                   placeholder='请选择'
                   disabled
                 />
@@ -270,26 +276,49 @@ export default function EditArticle(props: {
               </Picker>
             </View>)
           }
-          {props.hasClub && article.clubId === Garden.ActivityType.Art  && (
-            <View className='select-wrapper input-wrapper'>
-              <Label className='required'>上下册</Label>
-              <Picker mode='selector' range={bookVolumesList} rangeKey='title' value={volumeIndex} onChange={e => {
-                const index = +e.detail.value
-                setVolumeIndex(index)
-                setArticle({
-                  ...article,
-                  cludGradeVolumeId: bookVolumesList[index].value
-                } as any)
-              }}
-              >
-                <Input
-                  value={volumeIndex || volumeIndex === 0 ? bookVolumesList[volumeIndex]?.title : ''}
-                  placeholder='请选择'
-                  disabled
-                />
-                <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
-              </Picker>
-            </View>)
+          {props.hasClub && article.cludId === Garden.ActivityType.Art  && (
+            <View>
+              <View className='select-wrapper input-wrapper'>
+                <Label className='required'>年级</Label>
+                <Picker mode='selector' range={gradeList} rangeKey='title' value={gradeIndex} onChange={e => {
+                  const index = +e.detail.value
+                  setGradeIndex(index)
+                  setArticle({
+                    ...article,
+                    cludGradeId: gradeList[index].value
+                  } as any)
+                }}
+                >
+                  <Input
+                    value={gradeIndex || gradeIndex === 0 ? gradeList[gradeIndex]?.title : ''}
+                    placeholder='请选择'
+                    disabled
+                  />
+                  <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+                </Picker>
+              </View>
+              <View className='select-wrapper input-wrapper'>
+                <Label className='required'>上下册</Label>
+                <Picker mode='selector' range={bookVolumesList} rangeKey='title' value={volumeIndex} onChange={e => {
+                  const index = +e.detail.value
+                  setVolumeIndex(index)
+                  setArticle({
+                    ...article,
+                    cludGradeVolumeId: bookVolumesList[index].value
+                  } as any)
+                }}
+                >
+                  <Input
+                    value={volumeIndex || volumeIndex === 0 ? bookVolumesList[volumeIndex]?.title : ''}
+                    placeholder='请选择'
+                    disabled
+                  />
+                  <AtIcon value='chevron-right' size='20' color='#aaa'></AtIcon>
+                </Picker>
+              </View>
+            </View>
+            
+            )
           }
           <View className='input-wrapper has-label'>
             <Label className='required'>封面上传</Label>

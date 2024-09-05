@@ -41,9 +41,9 @@ function Index() {
       activityTitle: activity.title,
       activityCoverUrl: activity.coverImg,
       activityDetails: JSON.stringify(activity.detailList),
-      clubId: activity.clubId,
+      cludId: activity.cludId,
     }
-    if (Garden.ActivityType.Art === activity.clubId) {
+    if (Garden.ActivityType.Art === activity.cludId) {
       params.cludGradeId = activity.cludGradeId
       params.cludGradeVolumeId = activity.cludGradeVolumeId
     }

@@ -91,7 +91,7 @@ namespace Garden {
         detailList: ContentItem[];
         zanNumber: number;
         memberUserInfo: UserManagement.UserInfo;
-        clubId?: IdType;
+        cludId?: IdType;
         cludGradeId?: IdType;
         cludGradeVolumeId?: IdType;
     }
@@ -158,7 +158,7 @@ namespace UserManagement {
         schoolNames?: string; // 自己拼接
         memberUserRoleDTOList: RoleInfo[],
         name?: string, // 备注名称
-        clubIds?: IdType[], // 社团编码
+        clubIds?: string, // 社团编码
         creditTotalValue?: IdType // 积分
     }
 
@@ -181,7 +181,7 @@ namespace UserManagement {
     }
     export enum RoleIdEnum {
         Teacher = 3, // 老师
-        Admin = 1, // 管理员
+        Admin = 2, // 管理员
         All = 9, // 全部
     }
 

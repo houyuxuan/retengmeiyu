@@ -102,7 +102,7 @@ export async function getSchoolDetail(params: { id: IdType }) {
 }
 
 // 花园-获取学校下活动列表
-export function getSchoolActivity(params:  {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams) {
+export function getSchoolActivity(params:  {schoolId?: IdType, cludId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams) {
     return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/v2/school/activity/public/page',
         method: 'POST',
@@ -140,7 +140,7 @@ export function getActivityAdminList(params: { searchKeyWord?: string } & PagePa
 // 花园-获取活动详情
 export function getActivityDetail(params: { id: IdType }) {
     return request<Garden.ActivityDetail>({
-        url: '/rt/school/activity/info',
+        url: '/rt/v2/school/activity/info',
         method: 'POST',
         data: params
     }).then(res => {
@@ -215,7 +215,7 @@ export function getActivityUpvote(params: {
 export function activityEdit(params: Garden.ActivityDetail) {
     // params.id 有：编辑 无：新增
     return request({
-        url: '/rt/school/activity/public',
+        url: '/rt/v2/school/activity/public',
         method: 'POST',
         data: params
     })
@@ -288,7 +288,7 @@ export function userInfoChange(params: {
     roleId?: IdType;
     nickname?: string; // 用户名字
     name?: string; // 用户备注名称
-    clubIds: IdType[]; // 社团名字
+    clubIds: string; // 社团名字 Json数组
 }) {
     return request({
         url: '/member/v2/user/details/update',

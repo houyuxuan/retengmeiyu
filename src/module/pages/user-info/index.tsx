@@ -32,18 +32,25 @@ function Index() {
       id: currId
     }).then(res => {
       setInfo({...res.data, id: currId})
-      const { data: {nickname, name = '', clubIds = []} } = res;
+      const { data: {nickname, name = '', clubIds = "[]"} } = res;
       setName(nickname)
       setRemarkName(name)
         // 实现勾选的回显
       const list = cloneDeep(clubList)
       const ids: IdType[] = []
       let names: string = ''
+      let clubIdsList;
+      try {
+        const arr = JSON.parse(clubIds)
+        if(Array.isArray(arr)) clubIdsList = arr
+      } catch (error) {
+        clubIdsList = []
+      }
       list.forEach(club => {
-        if((clubIds || []).includes(Number(club.value))) {
+        if(clubIdsList.includes(Number(club.value))) {
           club.checked = true
           ids.push(Number(club.value))
-          names = name.length ? names + club.title + ',' : names + club.title
+          names = names.length ? names + '/' + club.title : club.title
         } else {
           club.checked = false
         }
@@ -127,7 +134,7 @@ function Index() {
       roleId: roleList?.[roleIndex]?.id,
       nickname: userName,
       name: remarkName,
-      clubIds: clubs
+      clubIds: JSON.stringify(clubs)
     }).then(res => {
       Taro.atMessage({type: 'success', message: res.msg})
       setIsModify(false)

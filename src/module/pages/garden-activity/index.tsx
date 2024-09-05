@@ -23,17 +23,17 @@ function Index() {
   const [total, setTotal] = useState(0)
   const [clubId, setClubId] = useState(0)
   const isArt = clubId === Garden.ActivityType.Art
-  const [cludGradeId, setCludGradeId] = useState<IdType[]>([]) // 年级id
-  const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType[]>([]) // 上下册
+  const [cludGradeId, setCludGradeId] = useState<IdType>() // 年级id
+  const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType>() // 上下册
   const [showFilter, setShowFilter] = useState(false)
   const getList = () => {
     // if (Taro.getStorageSync('userInfo')) {
-      const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType[], cludGradeVolumeId?: IdType[], searchKeyWord?: string} & PageParams = {...page};
+      const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {...page};
       if (schoolId) params.schoolId = schoolId;
       const club = clubId || Number(Taro.getCurrentInstance().router?.params.clubId);
       if (club) params.clubId = club
-      if (cludGradeId.length) params.cludGradeId = cludGradeId;
-      if (cludGradeVolumeId.length) params.cludGradeVolumeId = cludGradeVolumeId;
+      if (cludGradeId) params.cludGradeId = cludGradeId;
+      if (cludGradeVolumeId) params.cludGradeVolumeId = cludGradeVolumeId;
       getSchoolActivity(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
@@ -41,21 +41,17 @@ function Index() {
     // }
   }
   const handleGradeChange = (id) => {
-    if (cludGradeId.includes(id)) {
-      const filterArray = cludGradeId.filter((grade) => grade !== id)
-      setCludGradeId(filterArray)
+    if (cludGradeId === id) {
+      setCludGradeId('')
     } else {
-      const addArr = cludGradeId.concat([id])
-      setCludGradeId(addArr)
+      setCludGradeId(id)
     }
   }
   const handleVolumeChange = (id) => {
-    if (cludGradeVolumeId.includes(id)) {
-      const filterArray = cludGradeVolumeId.filter((volume) => volume !== id)
-      setCludGradeVolumeId(filterArray)
+    if (cludGradeVolumeId === id) {
+      setCludGradeVolumeId('')
     } else {
-      const addArr = cludGradeVolumeId.concat([id])
-      setCludGradeVolumeId(addArr)
+      setCludGradeVolumeId(id)
     }
   }
   const handleFilterClick = () => {
@@ -91,13 +87,13 @@ function Index() {
               <View className='filter-title'>选择年级</View>
               <View className='select-list'>
                 {gradeList.map(grade => 
-                  (<Button className={`button ${cludGradeId.includes(grade.value) ? 'active': ''}`} onClick={() => handleGradeChange(grade.value)}>{grade.title}</Button>)
+                  (<Button className={`button ${cludGradeId === grade.value ? 'active': ''}`} onClick={() => handleGradeChange(grade.value)}>{grade.title}</Button>)
                 )}
               </View>
               <View className='filter-title'>选择上下册</View>
               <View className="select-list">
                 {bookVolumesList.map(volume => 
-                  (<Button className={`button ${cludGradeVolumeId.includes(volume.value) ? 'active': ''}`} onClick={() => handleVolumeChange(volume.value)}>{volume.title}</Button>)
+                  (<Button className={`button ${cludGradeVolumeId === volume.value ? 'active': ''}`} onClick={() => handleVolumeChange(volume.value)}>{volume.title}</Button>)
                 )}
               </View>
             </View>
@@ -115,7 +111,7 @@ function Index() {
           coverImg: i.activityCoverUrl,
           date: i.createTime || ''
         }))}
-        detailUrl='../activity-detail/index'
+        detailUrl='/module/pages/activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({
