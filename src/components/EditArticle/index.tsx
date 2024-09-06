@@ -6,7 +6,6 @@ import Taro from '@tarojs/taro'
 import { getSchoolList } from '@/api'
 import FileUpload from '../FileUpload'
 import { gradeList, bookVolumesList, communityList } from '@/utils/constant'
-
 import './index.scss'
 
 export interface ArticleDetail {
@@ -30,7 +29,6 @@ export default function EditArticle(props: {
   hasVideo?: boolean
   hasAudio?: boolean
   hasClub?: boolean
-  hasSourceType?: boolean
 }) {
   const [article, setArticle] = useState(props.article || {
     title: '',
@@ -56,6 +54,16 @@ export default function EditArticle(props: {
   const [volumeIndex, setVolumeIndex] = useState<number>()
 
   const mySchool = Taro.getStorageSync('mySchool') as Garden.SchoolDetail
+
+  const changeClub = (e) => {
+      const index = +e.detail.value
+      const clubNo = communityList[index].value
+      setClubIndex(index)
+      setArticle({
+        ...article,
+        cludId: clubNo
+      } as any)
+  }
 
   useEffect(() => {
     if (props.showSchoolSelect) {
@@ -253,17 +261,10 @@ export default function EditArticle(props: {
               />
             </View>)
           }
-          {(props.hasClub || props.hasSourceType) && (
+          {props.hasClub && (
             <View className='select-wrapper input-wrapper'>
-              <Label className='required'>{props.hasSourceType ? '资源类型' : '美育社团'}</Label>
-              <Picker mode='selector' range={communityList} rangeKey='title' value={clubIndex} onChange={e => {
-                const index = +e.detail.value
-                setClubIndex(index)
-                setArticle({
-                  ...article,
-                  cludId: communityList[index].value
-                } as any)
-              }}
+              <Label className='required'>美育社团</Label>
+              <Picker mode='selector' range={communityList} rangeKey='title' value={clubIndex} onChange={changeClub}
               >
                 <Input
                   value={(clubIndex || clubIndex === 0) ? communityList[clubIndex]?.title : ''}

@@ -602,6 +602,8 @@ export function discussDelete(params: { id: IdType }) {
 // 资源-获取自己的列表
 export function getResourceList(params: {
     resourcesType: Resource.ResourceType;
+    clubId?: IdType; // 资源活动类型（这里产品设计有问题，资源和社团是分开管理的）
+    clubTagId?: IdType; // 资源标签
     searchKeyWord: string;
 } & PageParams) {
     if (params.resourcesType === Resource.ResourceType.All) {

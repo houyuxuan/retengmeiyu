@@ -190,7 +190,7 @@ export default function EditArticle(props: {
             />
           </View>
           <View className='input-wrapper has-label'>
-          <Label>社团标签</Label>
+          <Label>资源标签</Label>
           <View className='tag-box'>
             {tagList.map(
               (tag, index) => (

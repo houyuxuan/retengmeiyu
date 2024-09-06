@@ -246,17 +246,20 @@ namespace Resource {
         Art = 3,
         All = 100
     }
-
+    export interface Tag {
+        id?: IdType,
+        clubId?: IdType,
+        clubTagName: string
+    }
     export interface ResourceDetail {
         id: IdType;
         resourcesTitle: string;
         resourcesCoverUrl: string;
-        publicStatus: PublicStatus;
+        // publicStatus: PublicStatus;
         resourcesType: ResourceType;
         memberUserId: IdType;
         createTime: string;
         resourcesDetails: string;
-        detailList: ContentItem[]
     }
 }
 
