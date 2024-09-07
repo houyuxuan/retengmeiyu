@@ -35,13 +35,13 @@ function Index() {
       const menus = [
         {
           id: 99,
-          menuName: '社团管理', // v3改名字
+          menuName: '社团管理',
           menuIconUrl: '/club-manage-icon.png',
           path: '/pages/club-manage/index'
         },
         {
           id: 199,
-          menuName: '资讯配置', // v3改名字
+          menuName: '资讯配置',
           menuIconUrl: '/info-manage-icon.png',
           path: '/pages/info-config/index'
         }

@@ -325,7 +325,7 @@ export function getMenu() {
             ...res,
             data: res.data.map(i => ({
                 id: i.id,
-                menuName: i.menuName === '发布帖子' ? '讨论发帖' : i.menuName === '发布活动' ? '活动打卡' : i.menuName, // v3改名字,
+                menuName: i.menuName,
                 menuIconUrl: menuInfoMap[i.menuName]?.icon,
                 path: menuInfoMap[i.menuName]?.path,
             }))

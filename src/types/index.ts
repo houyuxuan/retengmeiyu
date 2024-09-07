@@ -269,7 +269,7 @@ namespace ClubManage {
         clubTitle: string,
         clubCoverUrl: string,
         clubDetails: string,
-        createTime: string
+        createTime?: string
     }
 
     export interface Tag {

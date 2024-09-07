@@ -90,6 +90,7 @@ export default function EditArticle(props: {
 
   useEffect(() => {
     if (article.clubDetails.length) {
+      console.log('article.clubDetails', article.clubDetails)
       const textCount = article.clubDetails.filter(i => i.type === 'text').length
       setCount([textCount, article.clubDetails.length - textCount])
     }
@@ -129,7 +130,6 @@ export default function EditArticle(props: {
       return
     }
     article.clubDetails = article.clubDetails.filter(i => !!i.content)
-    // article.tagList = tagList;
     props.onSave(article)
   }
 

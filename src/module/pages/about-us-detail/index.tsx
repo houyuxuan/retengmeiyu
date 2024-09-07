@@ -41,6 +41,7 @@ function Index() {
         } : undefined}
         editUrl={isPreview ? `/module/pages/about-us-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
+        hasPermission={false}
       />
     </View>
   )

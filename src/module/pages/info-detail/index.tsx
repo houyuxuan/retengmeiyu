@@ -42,8 +42,10 @@ function Index() {
           id: detail.id!,
           createTime: detail.createTime || '',
           detailList: detail.informationDetails && JSON.parse(detail.informationDetails)
+          
           } : undefined
         }
+        hasPermission={false}
         showTitle={false}
         getDetail={getDetail}
       />

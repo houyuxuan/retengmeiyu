@@ -46,6 +46,7 @@ function Index() {
         }
         showTitle={false}
         getDetail={getDetail}
+        hasPermission={false}
       />
     </View>
   )

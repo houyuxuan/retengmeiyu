@@ -6,7 +6,7 @@ import { Garden, PageParams, IdType } from '@/types'
 import { gradeList, bookVolumesList } from '@/utils/constant'
 import RtList from '@/components/RtList'
 import filterIcon from '@/assets/icon/filter.png'
-// import CheckLogin from '@/components/CheckLogin'
+import CheckLogin from '@/components/CheckLogin'
 import './index.scss'
 
 function Index() {
@@ -27,7 +27,7 @@ function Index() {
   const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType>() // 上下册
   const [showFilter, setShowFilter] = useState(false)
   const getList = () => {
-    // if (Taro.getStorageSync('userInfo')) {
+    if (Taro.getStorageSync('userInfo')) {
       const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {...page};
       if (schoolId) params.schoolId = schoolId;
       const club = clubId || Number(Taro.getCurrentInstance().router?.params.clubId);
@@ -38,7 +38,7 @@ function Index() {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
       })
-    // }
+    }
   }
   const handleGradeChange = (id) => {
     if (cludGradeId === id) {
@@ -120,6 +120,7 @@ function Index() {
           })
         }}
       />
+      <CheckLogin onSuccess={getList} />
     </View>
   )
 }

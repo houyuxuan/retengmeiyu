@@ -102,6 +102,7 @@ function Index() {
         author={detail?.memberUserInfo!}
         editUrl={isPreview ? `/module/pages/activity-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
+        hasPermission={false}
       />
       {!isPreview && <View className='remarks'>
         <View className='remark-title'>

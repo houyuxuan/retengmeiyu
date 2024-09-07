@@ -83,6 +83,7 @@ function Index() {
               }
               showTitle={false}
               getDetail={getDetail}
+              hasPermission={false}
             />
           </AtTabsPane>
           <AtTabsPane current={currTab} index={1}>
