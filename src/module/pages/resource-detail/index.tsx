@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { getResourceDetail } from '@/api'
 import { Resource } from '@/types'
 import ArticleDetail from '@/components/ArticleDetail'
@@ -13,7 +13,8 @@ function Index() {
   const isPreview = +currPage.options.preview === 1
 
   const [detail, setDetail] = useState<Resource.ResourceDetail>()
-
+  const [hasPerms, setPerm] = useState(false)
+  const hasPermRoles = ['super_admin', 'teacher', 'admin'] // 超级管理员、老师和管理员能下载资源文件
   const getDetail = () => {
     getResourceDetail({
       id: +currId
@@ -21,7 +22,11 @@ function Index() {
       setDetail(res.data)
     })
   }
-
+  useDidShow(() => {
+    const { roleCode = '' } = Taro.getStorageSync('userInfo')
+    const hasPerm = hasPermRoles.includes(roleCode)
+    setPerm(hasPerm)
+  })
   useEffect(() => {
     if (isPreview) {
       Taro.setNavigationBarTitle({
@@ -38,10 +43,11 @@ function Index() {
           title: detail.resourcesTitle,
           id: detail.id!,
           createTime: detail.createTime || '',
-          detailList: detail.detailList
+          detailList: JSON.parse(detail.resourcesDetails)
         } : undefined}
         editUrl={isPreview ? `/module/pages/resource-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
+        hasPermission={hasPerms}
       />
     </View>
   )

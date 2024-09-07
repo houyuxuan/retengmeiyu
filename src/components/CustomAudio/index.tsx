@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro'
-import { View, Text } from "@tarojs/components";
-import { AtIcon } from 'taro-ui';
+import { View, Text, Icon } from "@tarojs/components";
+import { AtActivityIndicator, AtIcon } from 'taro-ui';
 import './index.scss'
+import { downloadFile } from '@/utils/downloadFile';
 
 function CustomAudio(props: {
   src: string;
+  hasPermission: boolean;
 }) {
   const audioCtx = useRef<any>();
 
   const [audioImg, setAudioImg] = useState<'loading' | 'play' | 'pause'>('loading')
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0) // 总时长
+
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     audioCtx.current = Taro.createInnerAudioContext()
@@ -99,7 +103,7 @@ function CustomAudio(props: {
 
   return (
     <View className='custom-audio'>
-        <AtIcon className='audio-btn' onClick={() => playOrStopAudio()} value={audioImg} size={20} color="#78A4F4" />
+      <AtIcon className='audio-btn' onClick={() => playOrStopAudio()} value={audioImg} size={20} color="#78A4F4" />
       <View className='process-bar'>
         <View className='process-inner' style={{
           width: `${currentTime / duration}%`
@@ -107,6 +111,17 @@ function CustomAudio(props: {
         ></View>
       </View>
       <Text>{fmtSecond(Math.floor(currentTime))}/{fmtSecond(Math.floor(duration))}</Text>
+      {props.hasPermission && <View className='download'>
+        <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
+          setLoading(true)
+          if (!loading) {
+            downloadFile(props.src).finally(() => {
+              setLoading(false)
+            })
+          }
+        }} />
+      </View>}
+      {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>
   )
 }

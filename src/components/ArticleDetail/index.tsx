@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text, Video } from '@tarojs/components'
+import { View, Image, Text, Video, Button, Icon } from '@tarojs/components'
 import { ContentItem, IdType, UserManagement } from '@/types'
 import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
 import Taro, { useDidShow } from '@tarojs/taro'
 import CustomAudio from '@/components/CustomAudio'
 import './index.scss'
+import { downloadFile } from '@/utils/downloadFile'
 
 export default function ArticleDetail(props: {
   detail?: {
@@ -17,9 +18,11 @@ export default function ArticleDetail(props: {
   showTitle?: boolean;
   author?: UserManagement.UserInfo;
   editUrl?: string;
+  hasPermission: boolean;
   getDetail: () => void
 }) {
   const [titleVisible, setVisible] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useDidShow(() => {
     props.getDetail()
@@ -54,11 +57,35 @@ export default function ArticleDetail(props: {
           <View className='content'>
             {props.detail?.detailList?.map((item, idx) => (
               item.type === 'image' ? (
-                <View key={idx} className='img'><Image mode="widthFix" src={item.content} /></View>
+                <View key={idx} className='img'>
+                  <Image mode="widthFix" src={item.content} />
+                  {props.hasPermission && <View className='download'>
+                    <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
+                      setLoading(true)
+                      if (!loading) {
+                        downloadFile(item.content).finally(() => {
+                          setLoading(false)
+                        })
+                      }
+                    }} />
+                  </View>}
+                </View>
               ) : item.type === 'video' ? (
-                <View key={idx} className='img'><Video src={item.content} /></View>
+                <View key={idx} className='img'>
+                  <Video src={item.content} />
+                  {props.hasPermission && <View className='download'>
+                    <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
+                      setLoading(true)
+                      if (!loading) {
+                        downloadFile(item.content).finally(() => {
+                          setLoading(false)
+                        })
+                      }
+                    }} />
+                  </View>}
+                </View>
               ) : item.type === 'audio' ? (
-                <CustomAudio src={item.content} />
+                <CustomAudio src={item.content} hasPermission={props.hasPermission} />
               ) : (
                 <View className='text' key={idx}>
                   {item.content}
@@ -86,6 +113,7 @@ export default function ArticleDetail(props: {
           <AtActivityIndicator size={50} content='加载中...' />
         </View>
       )}
+      {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>
   )
 }

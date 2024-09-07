@@ -29,6 +29,8 @@
 
         .content {
             .text {
+                display: flex;
+                justify-content: space-between;
                 margin-bottom: 20px;
                 text-indent: 2em;
                 word-break: break-all;
@@ -37,7 +39,11 @@
         }
 
         .img {
-            text-align: center;
+            position: relative;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: end;
+            text-align: end;
         }
 
         image, video {
@@ -73,6 +79,20 @@
             margin-left: 10px;
             color: #fff;
             background: #C0182F;
+        }
+    }
+    .download {
+        height: 0;
+        line-height: 40px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 0 20px;
+        opacity: 1;
+        .icon {
+            &:hover {
+                opacity: 0.5;
+            }
         }
     }
 }
