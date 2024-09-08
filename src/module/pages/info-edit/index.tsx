@@ -9,7 +9,7 @@ function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
   const currId = currPage.options.id
-  const [clubDetail, setDetail] = useState<InfoManage.InfoDetail>()
+  const [infoDetail, setDetail] = useState<InfoManage.InfoDetail>()
 
   const getDetail = () => {
     if (currId) {
@@ -25,17 +25,16 @@ function Index() {
   }, [currId])
 
   const onSave = async (info: InfoDetail & InfoManage.InfoDetail) => {
-    // const textCount = club.detailList.reduce((pre, curr) => {
-    //   return pre + (curr.type === 'text' ? curr.content : '')
-    // }, '')
-    // const fileCount = club.detailList.filter(i => i.type !== 'text')
-    // if (textCount?.length < 300 || fileCount?.length < 9) {
-    //   Taro.atMessage({
-    //     type: 'warning',
-    //     message: textCount?.length < 300 ? '活动描述字数不得少于300字！' : '活动图片/视频总计不得少于9个文件！'
-    //   })
-    //   return false
-    // }
+    const textCount = info.detailList.reduce((pre, curr) => {
+      return pre + (curr.type === 'text' ? curr.content : '')
+    }, '')
+    if (textCount?.length < 300) {
+      Taro.atMessage({
+        type: 'warning',
+        message: '资讯字数不得少于300字！'
+      })
+      return false
+    }
     const params: InfoManage.InfoDetail = {
       ...info,
       informationTitle: info.title,
@@ -52,11 +51,11 @@ function Index() {
 
   return (
     <EditInfo
-      article={clubDetail ? {
-        ...clubDetail,
-        coverImg: clubDetail.informationCoverUrl || '',
-        title: clubDetail.informationTitle || '',
-        detailList: clubDetail.detailList || []
+      article={infoDetail ? {
+        ...infoDetail,
+        coverImg: infoDetail.informationCoverUrl || '',
+        title: infoDetail.informationTitle || '',
+        detailList: infoDetail.informationDetails ? JSON.parse(infoDetail.informationDetails) : []
       } : undefined}
       onSave={onSave}
       headerTitle={currId ? '资讯管理-编辑' : '资讯管理-新增'}

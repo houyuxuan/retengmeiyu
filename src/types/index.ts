@@ -94,6 +94,7 @@ namespace Garden {
         cludId?: IdType;
         cludGradeId?: IdType;
         cludGradeVolumeId?: IdType;
+        uvTotalCount: number | string | null
     }
 
     // 活动-点赞详情
@@ -226,6 +227,7 @@ namespace Community {
         createTime: string;
         postDetails: string;
         detailList: ContentItem[];
+        uvTotalCount: number | string | null
     }
 
     export interface PostDiscussDetail {
@@ -260,6 +262,7 @@ namespace Resource {
         memberUserId: IdType;
         createTime: string;
         resourcesDetails: string;
+        uvTotalCount: number | string | null;
     }
 }
 
@@ -270,6 +273,7 @@ namespace ClubManage {
         clubCoverUrl: string,
         clubDetails: string,
         createTime?: string
+        clubTagList?: Tag[];
     }
 
     export interface Tag {
@@ -282,6 +286,8 @@ namespace ClubManage {
         clubTitle: string;
         clubCoverUrl: string;
         clubDetails: string;
+        clubTagList?: Tag[];
+        clubTagRespVOList?: Tag[];
         // createTime: string;
         // publicStatus: PublicStatus;
         // memberUserId: IdType;
@@ -310,8 +316,9 @@ namespace InfoManage {
         memberUserId: IdType;
         createTime: string;
         informationDetails: string;
-        detailList: ContentItem[];
+        // detailList: ContentItem[];
         informationTagList: Tag[];
+        uvTotalCount: number | string | null
     }
 }
 

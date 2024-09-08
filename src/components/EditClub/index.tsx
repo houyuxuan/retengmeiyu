@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
 import { ClubManage, ContentItem, FileType, IdType } from '@/types'
-import { addTagAPI, deleteTagAPI } from '@/api/club'
+// import { addTagAPI, deleteTagAPI } from '@/api/club'
 import Taro from '@tarojs/taro'
 import FileUpload from '../FileUpload'
 import './index.scss'
@@ -13,6 +13,7 @@ export interface ClubDetail {
   clubCoverUrl: string;
   clubId?: IdType;
   clubDetails: ContentItem[];
+  clubTagList: ClubManage.Tag[];
 }
 type Tags = ClubManage.Tag[];
 export default function EditArticle(props: {
@@ -20,13 +21,13 @@ export default function EditArticle(props: {
   onSave: (info: any) => any;
   headerTitle?: string;
   titleText?: string
-  tagList?: Tags
 }) {
   const [article, setArticle] = useState(props.article || {
     id: '',
     clubTitle: '',
     clubCoverUrl: '',
     clubDetails: [],
+    clubTagList: [],
   })
 
   const [currentTag, setCurrentTag] = useState('')
@@ -44,30 +45,18 @@ export default function EditArticle(props: {
   }
 
   const addTag = async () => {
-    await addTagAPI({
+    tagList.push({
       id: '',
       clubId: article.id,
       clubTagName: currentTag
-    }).then(() => {
-      tagList.push({
-        id: '',
-        clubId: article.id,
-        clubTagName: currentTag
-      })
-      setTags(tagList)
-      setCurrentTag('')
     })
-    
+    setTags(tagList)
+    setCurrentTag('')
   }
   const deleteTag = async (i) => {
-    await deleteTagAPI({
-      id: tagList[i].id as string
-    }).then(() => {
-      const list = [...tagList]
-      list.splice(i, 1)
-      setTags(list)
-    })
-    
+    const list = [...tagList]
+    list.splice(i, 1)
+    setTags(list)
   }
 
   useEffect(() => {
@@ -81,17 +70,18 @@ export default function EditArticle(props: {
   const [contentCount, setCount] = useState([0, 0]) // [文字数, 图片数]
 
   useEffect(() => {
-    props.article && setArticle(props.article)
+    if (props.article) {
+      setArticle(props.article)
+      if (props.article.clubTagList) {
+        setTags(props.article.clubTagList)
+      }
+    }
   }, [props.article])
 
-  useEffect(() => {
-    setTags(props.tagList || [])
-  }, [props.tagList])
 
   useEffect(() => {
     if (article.clubDetails.length) {
-      console.log('article.clubDetails', article.clubDetails)
-      const textCount = article.clubDetails.filter(i => i.type === 'text').length
+      const textCount = (article.clubDetails as ContentItem[]).filter(i => i.type === 'text').length
       setCount([textCount, article.clubDetails.length - textCount])
     }
   }, [article])
@@ -130,6 +120,9 @@ export default function EditArticle(props: {
       return
     }
     article.clubDetails = article.clubDetails.filter(i => !!i.content)
+    if (tagList && tagList.length) {
+      article.clubTagList = tagList
+    }
     props.onSave(article)
   }
 

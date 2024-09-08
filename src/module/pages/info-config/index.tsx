@@ -46,6 +46,14 @@ function Index() {
       refresh()
     })
   }
+  
+  const getContent = (details: string) => {
+    try {
+      return JSON.parse(details).filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)
+    } catch (error) {
+      return ''
+    }
+  }
 
   const refresh = () => {
     setList([])
@@ -76,7 +84,9 @@ function Index() {
           title: i.informationTitle,
           date: i.createTime || ''
         }))}
-        cardContent={() => (<></>)}
+        cardContent={(item: InfoManage.InfoDetail) => (<>
+          <View className='detail-text'>{getContent(item.informationDetails)}...</View>
+      </>)}
         editFun={goEdit}
         deleteFun={deleteItem}
         total={total}

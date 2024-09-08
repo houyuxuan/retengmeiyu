@@ -76,7 +76,9 @@ function Index() {
           title: i.clubTitle,
           date: i.createTime || ''
         }))}
-        cardContent={() => (<></>)}
+        cardContent={(item: ClubManage.ClubDetail) => (<>
+            <View className='detail-text'>{(item.clubDetails ? JSON.parse(item.clubDetails) : []).filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)}...</View>
+        </>)}
         editFun={goEdit}
         deleteFun={deleteItem}
         total={total}

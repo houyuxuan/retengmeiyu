@@ -74,7 +74,7 @@ export const bookVolumesList = [
 ]
 
 export const menuInfoMap = {
-  '发布活动': {
+  '活动打卡': {
       icon: '/activity-add.png',
       path: '/pages/activity-manage/index'
   },
@@ -86,7 +86,7 @@ export const menuInfoMap = {
       icon: '/resource-add.png',
       path: '/pages/resource-manage/index'
   },
-  '发布帖子': {
+  '讨论发帖': {
       icon: '/post-add.png',
       path: '/pages/post-manage/index'
   },
@@ -116,11 +116,11 @@ export const menuInfoMap = {
   },
   // v3 新增模块
   '社团管理': {
-      icon: '/user-manage-icon.png',
+      icon: '/club-manage-icon.png',
       path: '/pages/club-manage/index'
   },
   '资讯配置': {
-      icon: '/user-manage-icon.png',
+      icon: '/info-manage-icon.png',
       path: '/pages/info-config/index'
   },
 }

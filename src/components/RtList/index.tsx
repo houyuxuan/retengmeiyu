@@ -54,6 +54,11 @@ function Index(props: {
               </View>
             )}
             <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm')}</View>
+            {(item.uvTotalCount || item.uvTotalCount === 0) && (
+              <View className='intro'>
+                访问量：{item.uvTotalCount}
+              </View>
+            )}
           </View>
         </View>
       )) : <View className='empty'>无内容</View>}

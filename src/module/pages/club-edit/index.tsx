@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { ClubManage } from '@/types'
-import { clubEdit, getClubDetail, getTagList } from '@/api/club'
+import { clubEdit, getClubDetail } from '@/api/club'
 import Taro from '@tarojs/taro'
 import EditClub, { ClubDetail } from '@/components/EditClub'
 
 type Tags = ClubManage.Tag[];
 
+
+const filterEmptyObj = (obj: {[key: string]: any}): {[key: string]: any} => {
+  const newObj = {}
+  Object.keys(obj).forEach(item => {
+    if (obj[item]) newObj[item] = obj[item]
+  })
+  return newObj
+}
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
@@ -18,11 +26,10 @@ function Index() {
         id: +currId
       }).then(res => {
         setDetail(res.data)
-      })
-      getTagList({
-        clubId: +currId
-      }).then(res => {
-        setTagList(res.data)
+        const { clubTagRespVOList: tagList } = res.data
+        if (tagList) {
+          setTagList(tagList);
+        }
       })
     }
   }
@@ -46,9 +53,11 @@ function Index() {
       ...club,
       clubTitle: club.clubTitle,
       clubCoverUrl: club.clubCoverUrl,
-      clubDetails: JSON.stringify(club.clubDetails),
+      clubDetails: club.clubDetails &&  JSON.stringify(club.clubDetails),
+      clubTagList: club.clubDetails && club.clubTagList
     }
-    await clubEdit(params)
+    const paramsFilter = filterEmptyObj(params)
+    await clubEdit(paramsFilter as ClubManage.ClubDetail)
     Taro.atMessage({
       message: '保存成功',
       type: 'success',
@@ -62,10 +71,10 @@ function Index() {
         ...clubDetail,
         clubCoverUrl: clubDetail.clubCoverUrl || '',
         clubTitle: clubDetail.clubTitle || '',
-        clubDetails: JSON.parse(clubDetail.clubDetails) || []
+        clubDetails: JSON.parse(clubDetail.clubDetails) || [],
+        clubTagList: [...tagList]
       } : undefined}
       onSave={onSave}
-      tagList={[...tagList]}
       headerTitle={currId ? '社团管理-编辑' : '社团管理-新增'}
       titleText='社团标题'
     />

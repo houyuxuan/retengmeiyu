@@ -26,7 +26,13 @@ function Index() {
       })
     }
   }
-  
+  const getIntroDetail = (details: string) => {
+    try {
+      return JSON.parse(details).filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)
+    } catch (error) {
+      return ''
+    }
+  }
   useEffect(getList, [page, clubId])
 
   return (
@@ -37,7 +43,9 @@ function Index() {
           title: i.activityTitle,
           id: i.id!,
           coverImg: i.activityCoverUrl,
-          date: i.createTime || ''
+          date: i.createTime || '',
+          intro: getIntroDetail(i.activityDetails),
+          uvTotalCount: i?.uvTotalCount
         }))}
         detailUrl='../activity-detail/index'
         total={total}

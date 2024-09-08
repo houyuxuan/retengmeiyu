@@ -130,7 +130,8 @@ function Index() {
             id: i.id!,
             coverImg: i.resourcesCoverUrl,
             title: i.resourcesTitle,
-            date: i.createTime || ''
+            date: i.createTime || '',
+            uvTotalCount: i?.uvTotalCount
           }))}
           detailUrl='/module/pages/resource-detail/index'
           total={total}

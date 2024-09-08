@@ -64,9 +64,10 @@ function Index() {
           id: i.id!,
           coverImg: i.postCoverUrl,
           title: i.postTitle,
-          date: i.createTime || ''
+          date: i.createTime || '',
+          uvTotalCount: i?.uvTotalCount
         }))}
-        detailUrl='../../module/pages/community-post-detail/index'
+        detailUrl='../community-post-detail/index'
         total={total}
         onLoading={() => {
           setPage({
