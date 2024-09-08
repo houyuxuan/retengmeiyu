@@ -42,10 +42,10 @@ function Index() {
       return pre + (curr.type === 'text' ? curr.content : '')
     }, '')
     // const fileCount = club.clubDetails.filter(i => i.type !== 'text')
-    if (textCount?.length < 300) {
+    if (textCount?.length <= 0) {
       Taro.atMessage({
         type: 'warning',
-        message: '社团描述字数不得少于300字！'
+        message: '请填写社团描述！'
       })
       return false
     }

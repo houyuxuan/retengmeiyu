@@ -28,10 +28,10 @@ function Index() {
     const textCount = info.detailList.reduce((pre, curr) => {
       return pre + (curr.type === 'text' ? curr.content : '')
     }, '')
-    if (textCount?.length < 300) {
+    if (textCount?.length <= 0) {
       Taro.atMessage({
         type: 'warning',
-        message: '资讯字数不得少于300字！'
+        message: '请添加资讯内容描述！'
       })
       return false
     }
