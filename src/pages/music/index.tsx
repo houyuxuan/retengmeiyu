@@ -47,7 +47,7 @@ function Index() {
           intro: getIntroDetail(i.activityDetails),
           uvTotalCount: i?.uvTotalCount
         }))}
-        detailUrl='../activity-detail/index'
+        detailUrl='/module/pages/activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({
