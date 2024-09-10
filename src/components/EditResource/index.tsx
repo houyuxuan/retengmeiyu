@@ -156,7 +156,7 @@ export default function EditArticle(props: {
           添加文本
         </AtButton>
         <AtButton type='secondary' size='small' onClick={() => addContent('image', index)}>
-          添加图片/视频'
+          添加图片/视频
         </AtButton>
         {props.hasAudio && <AtButton type='secondary' size='small' onClick={() => addContent('audio', index)}>
           添加音频

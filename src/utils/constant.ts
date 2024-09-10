@@ -76,7 +76,7 @@ export const bookVolumesList = [
 export const menuInfoMap = {
   '活动打卡': {
       icon: '/activity-add.png',
-      path: '/pages/activity-manage/index'
+      path: '/pages/activity-edit/index'
   },
   '关于我们管理': {
       icon: '/aboutus-manage-icon.png',
@@ -84,7 +84,7 @@ export const menuInfoMap = {
   },
   '发布资源': {
       icon: '/resource-add.png',
-      path: '/pages/resource-manage/index'
+      path: '/pages/resource-edit/index'
   },
   '讨论发帖': {
       icon: '/post-add.png',
