@@ -3,7 +3,7 @@ import request from "./request";
 
 /**************************   社团管理  **************************/
 // 社团管理-获取列表
-export function getClubList(params: { searchKeyWord: string } & PageParams) {
+export function getClubList(params: { searchKeyWord?: string } & PageParams) {
   return request<PageResult<ClubManage.Club>>({
       url: '/rt/v2/club/page',
       method: 'POST',

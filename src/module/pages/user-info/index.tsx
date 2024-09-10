@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Input, View, Picker, Checkbox, CheckboxGroup } from '@tarojs/components'
 import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfoChange } from '@/api'
-import { Garden, IdType, UserManagement } from '@/types'
+import { getClubList } from '@/api/club'
+import { Garden, IdType, UserManagement, ClubManage } from '@/types'
 import { AtAvatar, AtButton, AtIcon, AtMessage } from 'taro-ui'
 import moment from 'moment'
-import { systemImagePre, communityList } from '@/utils/constant'
+import { systemImagePre } from '@/utils/constant'
 import './index.scss'
+
+interface clubItem {checked: boolean, id: IdType, title: string}
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -20,7 +23,7 @@ function Index() {
   const [remarkName, setRemarkName] = useState('')
   const [schoolIndex, setSchoolIndex] = useState(-1)
   const [roleIndex, setRoleIndex] = useState(-1)
-  const [clubList, setClubList] = useState([...communityList])
+  const [clubList, setClubList] = useState<clubItem[]>()
   const [clubs, setClubs] = useState<IdType[]>([])
   const [clubNames, setClubNames] = useState('')
   const [showSchool, setShowSchool] = useState(false)
@@ -32,32 +35,9 @@ function Index() {
       id: currId
     }).then(res => {
       setInfo({...res.data, id: currId})
-      const { data: {nickname, name = '', clubIds = "[]"} } = res;
+      const { data: {nickname, name = '' } } = res;
       setName(nickname)
       setRemarkName(name)
-        // 实现勾选的回显
-      const list = cloneDeep(clubList)
-      const ids: IdType[] = []
-      let names: string = ''
-      let clubIdsList;
-      try {
-        const arr = JSON.parse(clubIds)
-        if(Array.isArray(arr)) clubIdsList = arr
-      } catch (error) {
-        clubIdsList = []
-      }
-      list.forEach(club => {
-        if(clubIdsList.includes(Number(club.value))) {
-          club.checked = true
-          ids.push(Number(club.value))
-          names = names.length ? names + '/' + club.title : club.title
-        } else {
-          club.checked = false
-        }
-      });
-      setClubs(ids)
-      setClubList(list)
-      setClubNames(names)
       const canShowSchool = res.data.memberUserRoleDTOList[0].code === UserManagement.RoleCodeEnum.Teacher
       setShowSchool(canShowSchool)
       if (canShowSchool) {
@@ -93,6 +73,7 @@ function Index() {
   useEffect(() => {
     if (showSchool) {
       getAllSchool()
+      getAllClub()
     }
   }, [showSchool])
 
@@ -111,6 +92,38 @@ function Index() {
       currSchool > -1 && setSchoolIndex(currSchool)
     })
   }
+  const getAllClub = () => {
+    return clubList || getClubList({
+      pageNo: 1,
+      pageSize: 100
+    }).then(res => {
+      const { data: { list = [] } } = res;
+      const clubArr:clubItem[] = []
+      let clubIdsList;
+      let names: string = ''
+        const ids: IdType[] = []
+      try {
+        const arr = JSON.parse(userInfo?.clubIds || '')
+        if(Array.isArray(arr)) clubIdsList = arr
+      } catch (error) {
+        clubIdsList = []
+      }
+      list.forEach((club: ClubManage.ClubDetail) => {
+        const item: clubItem = {checked: false, id: club.id, title: club.clubTitle}
+        
+        if (clubIdsList.includes(Number(club.id))) {
+          item.checked = true
+          ids.push(Number(item.id))
+          names = names.length ? names + '/' + item.title : item.title
+        }
+        clubArr.push(item);
+      })
+      setClubList(clubArr)
+      setClubs(ids)
+      setClubNames(names)
+    })
+  }
+
   const changeUser = () => {
     if (showSchool && schoolIndex < 0) {
       Taro.atMessage({type: 'warning', message: '请选择学校！'})
@@ -125,9 +138,10 @@ function Index() {
     if (!remarkName) {
       Taro.atMessage({type: 'warning', message: '请填写备注名称！'})
     }
-    // if (communityIndex) {
-    //   Taro.atMessage({type: 'warning', message: '请选择社团！'})
-    // }
+    if (showSchool && !clubs.length) {
+      Taro.atMessage({type: 'warning', message: '请选择社团！'})
+      return false
+    }
     userInfoChange({
       memberUserId: userInfo!.id,
       schoolId: allSchoolList?.[schoolIndex]?.id,
@@ -159,17 +173,20 @@ function Index() {
   const getClubs = (e) => {
     const list = e.detail.value
     const ids: IdType[] = []
-    const clubArrr = cloneDeep(communityList)
+    let names: string = ''
+    const clubArrr = cloneDeep(clubList)
     clubArrr.forEach(club => {
-      if(list.includes(String(club.value))) {
+      if(list.includes(String(club.id))) {
         club.checked = true
-        ids.push(Number(club.value))
+        ids.push(Number(club.id))
+        names = names.length ? names + '/' + club.title : club.title
       } else {
         club.checked = false
       }
     });
     setClubs(ids)
     setClubList(clubArrr)
+    setClubNames(names)
   }
   const defaultAvatarUrl = systemImagePre + '/noLoginAvatar.png'
 
@@ -240,18 +257,18 @@ function Index() {
               />
             ) : remarkName}
           </View>
-          <View className='line'>
+          {showSchool && <View className='line'>
             所属社团：
             {isModify ? (
               <CheckboxGroup className='checkbox-list' onChange={getClubs}>
-                {clubList.map((item, i) => {
+                {(clubList || []).map((item, i) => {
                   return (
-                      <Checkbox className='checkbox-list__checkbox' key={i} value={String(item.value)} checked={item.checked}>{item.title}</Checkbox>
+                      <Checkbox className='checkbox-list__checkbox' key={i} value={String(item.id)} checked={item.checked}>{item.title}</Checkbox>
                   )
                 })}
               </CheckboxGroup>
             ) : clubNames}
-          </View>
+          </View>}
         </View>
         <AtButton onClick={async () => {
           if (isModify) {
