@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text, Video, Button, Icon } from '@tarojs/components'
+import { View, Image, Text, Video, Icon } from '@tarojs/components'
 import { ContentItem, IdType, UserManagement } from '@/types'
 import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
@@ -33,6 +33,16 @@ export default function ArticleDetail(props: {
       setVisible(props.showTitle)
     }
   }, [props.showTitle])
+  
+  const previewImage = (url) => {  //这里获取到的是一张本地的图片
+    Taro.previewImage({
+      current: url,//需要预览的图片链接列表
+      urls: [url],  //当前显示图片的链接
+      success(res) {
+        console.log(res)
+      }
+    })
+  }
 
   return (
     <View className='detail-wrapper'>
@@ -58,17 +68,7 @@ export default function ArticleDetail(props: {
             {props.detail?.detailList?.map((item, idx) => (
               item.type === 'image' ? (
                 <View key={idx} className='img'>
-                  <Image mode="widthFix" src={item.content} />
-                  {props.hasPermission && <View className='download'>
-                    <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
-                      setLoading(true)
-                      if (!loading) {
-                        downloadFile(item.content).finally(() => {
-                          setLoading(false)
-                        })
-                      }
-                    }} />
-                  </View>}
+                  <Image mode="widthFix" src={item.content} onClick={() => {props.hasPermission && previewImage(item.content)}} />
                 </View>
               ) : item.type === 'video' ? (
                 <View key={idx} className='img'>

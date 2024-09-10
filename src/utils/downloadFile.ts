@@ -1,7 +1,7 @@
 import React from 'react';
 import Taro from '@tarojs/taro';
 
-export async  function downloadFile(fileUrl, type) {
+export async  function downloadFile(fileUrl) {
   try {
     const res = await Taro.downloadFile({
       url: fileUrl, // 七牛云文件的 URL
