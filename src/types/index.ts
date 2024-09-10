@@ -154,6 +154,8 @@ namespace UserManagement {
         status: UserStatusEnum;
         avatar: string; // url
         sex: UserGenderEnum;
+        memberRoleId?: string;
+        schoolName?: string;
         // role: UserRoleEnum
         schoolIds: IdType[];
         schoolNames?: string; // 自己拼接
@@ -169,6 +171,7 @@ namespace UserManagement {
     export interface RoleInfo {
         id: IdType;
         memberRoleName: string;
+        memberRoleId: string;
         code: RoleCodeEnum;
         status: 0;
         createTime: string;

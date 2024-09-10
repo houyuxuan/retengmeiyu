@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage, AtTabs } from 'taro-ui'
-import { getUserList, userDelete, userStatusChange } from '@/api'
+import { getRoleList, getUserList, userDelete, userStatusChange } from '@/api'
 import { IdType, PageParams, UserManagement } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
@@ -23,11 +23,25 @@ function Index() {
   const [currTab, setTab] = useState(0)
 
   const [total, setTotal] = useState(0)
+  const [roleList, setRoleList] = useState<{ [key: string]: string }>()
+  const getAllRole = () => {
+    return roleList || getRoleList({
+      pageNo: 1,
+      pageSize: 100
+    }).then(res => {
+      const {data: { list = []}} = res
+      const obj: { [key: string]: string } = {}
+      list.forEach((item) => {
+        obj[item.id] = item.memberRoleName
+      })
+      setRoleList(obj)
+    })
+  }
   const getList = () => {
     const member = userTabList[currTab].value
     getUserList({
       searchKeyWord: keyword,
-      memberRoleId: member === UserManagement.RoleIdEnum.All ? undefined : member,
+      roleId: member === UserManagement.RoleIdEnum.All ? undefined : member,
       ...page
     }).then(res => {
       setTotal(res.data.total)
@@ -49,7 +63,10 @@ function Index() {
     refresh()
   }, [currTab])
 
-  useDidShow(() => refresh())
+  useDidShow(async () => {
+    await getAllRole()
+    refresh()
+  })
 
   const goDetail = (id: IdType) => {
     Taro.navigateTo({url: `../user-info/index?id=${id}`})
@@ -76,7 +93,13 @@ function Index() {
       setList([...userList])
     })
   }
-
+  const getRoleName = (id) => {
+    if (id) {
+      return roleList?.[id] || ''
+    } else {
+      return ''
+    }
+  }
   const defaultAvatarUrl = `${systemImagePre}/defaultAvatar.png`
 
   return (
@@ -100,7 +123,8 @@ function Index() {
         }))}
         cardContent={(item: UserManagement.UserInfo) => (<>
             <View>手机：{item.mobile}</View>
-            <View>创建时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</View>
+            {currTab !== 2 &&  <View>角色：{getRoleName(item.memberRoleId)}</View>}
+            {currTab === 2 &&  <View>学校：{item.schoolName || ''}</View>}
             {item.creditTotalValue ? <View>积分：{item.creditTotalValue}</View> : ''}
         </>)}
         editFun={goDetail}

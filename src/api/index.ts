@@ -254,7 +254,7 @@ export function schoolDelete(params: { id: IdType }) {
 // 用户-获取用户列表 (超管权限)
 export function getUserList(params: {
     searchKeyWord: string,
-    memberRoleId?: UserManagement.RoleIdEnum,
+    roleId?: UserManagement.RoleIdEnum,
 } & PageParams) {
     return request<PageResult<UserManagement.UserInfo>>({
         url: '/member/v2/user/list',
