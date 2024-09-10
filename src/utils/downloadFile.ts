@@ -14,10 +14,10 @@ export async  function downloadFile(fileUrl) {
       });
 
       Taro.showToast({
-        title: '下载成功',
+        title: `下载成功，文件保存在${savedFilePath}路径下`,
         icon: 'success',
       });
-      // console.log('文件保存路径:', savedFilePath);
+      console.log('文件保存路径:', savedFilePath);
     } else {
       Taro.showToast({
         title: '下载失败',
