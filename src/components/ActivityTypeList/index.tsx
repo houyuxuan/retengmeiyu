@@ -1,17 +1,12 @@
-import { Garden } from '@/types/index'
-import Taro from '@tarojs/taro'
+import { useState } from 'react'
+import Taro, { getStorageSync } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import communityMusicImage from '../../assets/image/community_music.png';
-import communityArtImage from '../../assets/image/community_art.png';
-import communityTheaterImage from '../../assets/image/community_theater.png';
 import './index.scss'
 
 function activityTypeList() {
-  const activityType = [
-    { title: '美术', id: Garden.ActivityType.Art, img: communityArtImage },
-    { title: '音乐', id: Garden.ActivityType.Music, img: communityMusicImage },
-    { title: '戏剧', id: Garden.ActivityType.Theater, img: communityTheaterImage },
-  ];
+  
+  const activityType = getStorageSync('clubList')
+
   return (
     <View className='activity-type-container'>
       {activityType.map(activity =>

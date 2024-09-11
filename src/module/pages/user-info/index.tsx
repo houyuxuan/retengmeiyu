@@ -97,11 +97,11 @@ function Index() {
       pageNo: 1,
       pageSize: 100
     }).then(res => {
-      const { data: { list = [] } } = res;
-      const clubArr:clubItem[] = []
-      let clubIdsList;
+      const { data: { list = [] } } = res
+      const clubArr: clubItem[] = []
+      let clubIdsList
       let names: string = ''
-        const ids: IdType[] = []
+      const ids: IdType[] = []
       try {
         const arr = JSON.parse(userInfo?.clubIds || '')
         if(Array.isArray(arr)) clubIdsList = arr

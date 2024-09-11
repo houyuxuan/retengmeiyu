@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Image, Button } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { getStorageSync, useDidShow } from '@tarojs/taro'
 import { getSchoolActivity, } from '@/api'
 import { Garden, PageParams, IdType } from '@/types'
 import { gradeList, bookVolumesList } from '@/utils/constant'
@@ -18,12 +18,18 @@ function Index() {
   })
   
   const [total, setTotal] = useState(0)
-  const clubId = Garden.ActivityType.Art
+  const [clubId, setClub] = useState()
+  useDidShow(() => {
+    const list = getStorageSync('clubList')
+    const artClub = (list || []).filter((item) => item.title === '美术')[0]
+    setClub(artClub.id)
+    getList()
+  })
   const [cludGradeId, setCludGradeId] = useState<IdType>() // 年级id
   const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType>() // 上下册
   const [showFilter, setShowFilter] = useState(false)
   const getList = () => {
-    if (Taro.getStorageSync('userInfo')) {
+    if (Taro.getStorageSync('userInfo') && clubId) {
       const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {clubId, ...page};
       if (cludGradeId) params.cludGradeId = cludGradeId;
       if (cludGradeVolumeId) params.cludGradeVolumeId = cludGradeVolumeId;
@@ -60,7 +66,7 @@ function Index() {
       return ''
     }
   }
-  useEffect(getList, [page, clubId])
+  useEffect(getList, [page])
 
   return (
     <View className='activity-container art'>

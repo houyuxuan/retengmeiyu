@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { View } from '@tarojs/components'
-import { getSchoolActivity, } from '@/api'
+import { getSchoolActivity } from '@/api'
 import { Garden, PageParams, IdType } from '@/types'
 import RtList from '@/components/RtList'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow, getStorageSync } from '@tarojs/taro'
 import CheckLogin from '@/components/CheckLogin'
 import '@/module/pages/garden-activity/index.scss'
 
@@ -16,9 +16,15 @@ function Index() {
   })
   
   const [total, setTotal] = useState(0)
-  const clubId = Garden.ActivityType.Theater
+  const [clubId, setClub] = useState()
+  useDidShow(() => {
+    const list = getStorageSync('clubList')
+    const artClub = (list || []).filter((item) => item.title === '音乐')[0]
+    setClub(artClub.id)
+    getList()
+  })
   const getList = () => {
-    if (Taro.getStorageSync('userInfo')) {
+    if (Taro.getStorageSync('userInfo') && clubId) {
       const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {clubId, ...page};
       getSchoolActivity(params).then(res => {
         setTotal(res.data.total)
@@ -33,7 +39,7 @@ function Index() {
       return ''
     }
   }
-  useEffect(getList, [page, clubId])
+  useEffect(getList, [page])
 
   return (
     <View className='activity-container'>

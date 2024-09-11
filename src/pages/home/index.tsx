@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { setStorageSync, useDidShow } from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
 import { linkList, systemImagePre } from '@/utils/constant'
 import RtList from '@/components/RtList'
 import { Article } from '@/types/index'
+import { ClubManage } from '@/types/index'
 import './index.scss'
+import communityMusicImage from '../../assets/image/community_music.png';
+import communityArtImage from '../../assets/image/community_art.png';
+import communityTheaterImage from '../../assets/image/community_theater.png';
 import { getArticleList } from '@/api'
+import { getClubList } from '@/api/club'
 
 function Index() {
   const [articleList, setList] = useState<Article[]>([...linkList])
@@ -60,6 +65,33 @@ function Index() {
     })
     // getList()
   }, [])
+  useDidShow(() => {
+    getList()
+  })
+  const imgList = {
+    美术: communityArtImage,
+    音乐: communityMusicImage,
+    戏剧: communityTheaterImage
+  }
+  const getList = async () => {
+    if (Taro.getStorageSync('userInfo')) {
+      const result: { id: number, title: string, img: any }[] = []
+      await getClubList({
+        pageNo: 1,
+        pageSize: 100
+      }).then(res => {
+        const { data: { list = [] } } = res
+        list.forEach((club: ClubManage.ClubDetail) => {
+          result.push({
+            id: club.id as number,
+            title: club.clubTitle,
+            img: imgList[club.clubTitle] || club.clubCoverUrl
+          })
+        })
+      })
+      setStorageSync('clubList', result);
+    }
+  }
 
   // const getList = () => {
   //   Taro.request({

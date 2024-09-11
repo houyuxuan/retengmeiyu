@@ -4,14 +4,11 @@ import { View } from "@tarojs/components"
 import { AtTabs } from 'taro-ui'
 import GardenSchoolList from '@/components/SchoolList'
 import ActivityTypeList from '@/components/ActivityTypeList'
-
 import './index.scss'
 
 function Index() {
   const [currTab, setTab] = useState(0)
   const [pageView, setPageView] = useState<any>()
-  
-  
   const changeTab = () => {
     if (currTab === 0) {
       setPageView(<ActivityTypeList />)
@@ -20,8 +17,8 @@ function Index() {
     }
     
   }
-  useEffect(changeTab, [currTab])
 
+  useEffect(changeTab, [currTab])
   
   return (
     <View  className='garden-container'>

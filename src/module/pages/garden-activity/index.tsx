@@ -22,7 +22,7 @@ function Index() {
   
   const [total, setTotal] = useState(0)
   const [clubId, setClubId] = useState(0)
-  const isArt = clubId === Garden.ActivityType.Art
+  const [isArt, setIsArt] = useState(false)
   const [cludGradeId, setCludGradeId] = useState<IdType>() // 年级id
   const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType>() // 上下册
   const [showFilter, setShowFilter] = useState(false)
@@ -71,7 +71,7 @@ function Index() {
   useEffect(getList, [page])
   useEffect(() => {
     // 假设你通过 URL 参数传递了标题、社团类型
-    const titleParam = Taro.getCurrentInstance() && Taro.getCurrentInstance().router?.params.title
+    const titleParam = Taro.getCurrentInstance() && decodeURIComponent(Taro.getCurrentInstance().router?.params?.title || '')
     const clubIdParam = Taro.getCurrentInstance() && Taro.getCurrentInstance().router?.params.clubId
     if (clubIdParam) setClubId(Number(clubIdParam))
     if (titleParam) {
@@ -79,6 +79,7 @@ function Index() {
       Taro.setNavigationBarTitle({
         title: decodeURIComponent(`美育花园-${titleParam}`)
       });
+      setIsArt(titleParam.indexOf('美术') !== -1)
     }
   }, []);
 
