@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import Taro, { setStorageSync, useDidShow } from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
-import { linkList, systemImagePre } from '@/utils/constant'
+import { systemImagePre } from '@/utils/constant'
 import RtList from '@/components/RtList'
-import { Article } from '@/types/index'
+import { Article, InfoManage } from '@/types/index'
 import { ClubManage } from '@/types/index'
 import './index.scss'
 import communityMusicImage from '../../assets/image/community_music.png';
 import communityArtImage from '../../assets/image/community_art.png';
 import communityTheaterImage from '../../assets/image/community_theater.png';
-import { getArticleList } from '@/api'
 import { getClubList } from '@/api/club'
+import { getInfoList } from '@/api/info'
 
 function Index() {
-  const [articleList, setList] = useState<Article[]>([...linkList])
+  const [articleList, setList] = useState<Article[]>([])
   const enterList = [{
     pagePath: '../../module/pages/about-us/index',
     text: '关于我们',
@@ -63,17 +63,25 @@ function Index() {
       fail: () => {},
       complete: () => {}
     })
-    // getList()
+    // getClubList()
   }, [])
   useDidShow(() => {
-    getList()
+    getClubStore()
+    getArticleList()
   })
+  const getContent = (details: string) => {
+    try {
+      return JSON.parse(details).filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)
+    } catch (error) {
+      return ''
+    }
+  }
   const imgList = {
     美术: communityArtImage,
     音乐: communityMusicImage,
     戏剧: communityTheaterImage
   }
-  const getList = async () => {
+  const getClubStore = async () => {
     if (Taro.getStorageSync('userInfo')) {
       const result: { id: number, title: string, img: any }[] = []
       const idMap: { [key: string]: any } = {}
@@ -95,8 +103,25 @@ function Index() {
       setStorageSync('clubMap', idMap);
     }
   }
-
-  // const getList = () => {
+  const getArticleList = async () => {
+    if (Taro.getStorageSync('userInfo')) {
+      const { data: {list = []} } = await getInfoList({ pageNo: 1, pageSize: 5, searchKeyWord: '' })
+      const result: Article[] = []
+      list.forEach((a: InfoManage.InfoDetail) => {
+        const { articleAddress = '', id = '', informationCoverUrl = '', informationDetails = '', informationTitle = '', date = '' } = a
+        result.push({
+          id,
+          title: informationTitle,
+          coverImg: informationCoverUrl,
+          intro: getContent(informationDetails),
+          url: articleAddress,
+          date
+        })
+      })
+      setList(result)
+    }
+  }
+  // const getClubList = () => {
   //   Taro.request({
   //     url: 'https://api.weixin.qq.com/cgi-bin/stable_token',
   //     method: 'POST',

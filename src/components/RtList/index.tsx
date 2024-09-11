@@ -9,7 +9,7 @@ import './index.scss'
 interface ListItem {
     coverImg: string;
     title: string;
-    date: string;
+    date?: string;
     id: IdType;
     [key: string]: any;
 }
@@ -53,7 +53,7 @@ function Index(props: {
                 {item.intro}
               </View>
             )}
-            <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm')}</View>
+            {item.date && <View className='date'>{moment(item.date).format('YYYY-MM-DD HH:mm')}</View>}
             {(item.uvTotalCount || item.uvTotalCount === 0) && (
               <View className='intro'>
                 访问量：{item.uvTotalCount}

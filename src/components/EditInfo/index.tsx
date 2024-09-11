@@ -9,6 +9,7 @@ import './index.scss'
 export interface InfoDetail {
   informationId?: IdType;
   title: string;
+  articleAddress: string;
   coverImg: string;
   detailList: ContentItem[];
   tagList?: InfoManage.Tag[];
@@ -24,6 +25,7 @@ export default function EditArticle(props: {
     title: '',
     coverImg: '',
     detailList: [],
+    articleAddress: ''
   })
 
   const addContent = (type: ContentItem['type'], index) => {
@@ -63,6 +65,12 @@ export default function EditArticle(props: {
       title: e.detail.value
     })
   }
+  const handleAddress = (e: any) => {
+    setArticle({
+      ...article!,
+      articleAddress: e.detail.value
+    })
+  }
   
   const handleContentChange = (e: any, index) => {
     article.detailList[index].content = e.detail.value
@@ -84,6 +92,10 @@ export default function EditArticle(props: {
     }
     if (!article.coverImg) {
       Taro.atMessage({ type: 'warning', message: '请上传封面图！' })
+      return
+    }
+    if (!article.articleAddress) {
+      Taro.atMessage({ type: 'warning', message: '请填写文章地址！' })
       return
     }
     article.detailList = article.detailList.filter(i => !!i.content)
@@ -117,7 +129,7 @@ export default function EditArticle(props: {
       <View className='content-wrapper'>
         <View className='info'>
           <View className='input-wrapper has-label'>
-            <Label className='required'>{props.titleText || '标题'}</Label>
+            <Label className='required'>{props.titleText + '标题'}</Label>
             <Input
               name='value1'
               type='text'
@@ -125,6 +137,17 @@ export default function EditArticle(props: {
               maxlength={20}
               value={article.title}
               onInput={(text) => handleChange(text)}
+            />
+          </View>
+          <View className='input-wrapper has-label'>
+            <Label className='required'>{props.titleText + '文章地址'}</Label>
+            <Input
+              name='value2'
+              type='text'
+              placeholder={`请输入${props.titleText || '文章微信公众号文章地址'}`}
+              maxlength={100}
+              value={article.articleAddress}
+              onInput={(text) => handleAddress(text)}
             />
           </View>
           <View className='input-wrapper has-label'>

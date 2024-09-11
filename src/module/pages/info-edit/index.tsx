@@ -59,7 +59,7 @@ function Index() {
       } : undefined}
       onSave={onSave}
       headerTitle={currId ? '资讯管理-编辑' : '资讯管理-新增'}
-      titleText='资讯标题'
+      titleText='资讯'
     />
   )
 }

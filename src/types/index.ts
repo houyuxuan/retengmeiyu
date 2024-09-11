@@ -39,11 +39,11 @@ export enum PublicStatus {
 }
 
 export interface Article {
-    id: number,
+    id: IdType,
     title: string,
     coverImg: string,
     intro: string,
-    date: string,
+    date?: string,
     url: string
 }
 
@@ -317,7 +317,7 @@ namespace InfoManage {
         informationTagName: string
     }
     export interface InfoDetail {
-        id: IdType;
+        id: number;
         informationTitle: string;
         informationCoverUrl: string;
         publicStatus: PublicStatus;
@@ -325,6 +325,8 @@ namespace InfoManage {
         createTime: string;
         informationDetails: string;
         // detailList: ContentItem[];
+        date: string;
+        articleAddress: string;
         informationTagList: Tag[];
         uvTotalCount: number | string | null
     }
