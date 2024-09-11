@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Input, View, Picker, Checkbox, CheckboxGroup } from '@tarojs/components'
 import { getRoleList, getSchoolList, getSchoolListByIds, getUserDetail, userInfoChange } from '@/api'
-import { getClubList } from '@/api/club'
-import { Garden, IdType, UserManagement, ClubManage } from '@/types'
+import { Garden, IdType, UserManagement } from '@/types'
 import { AtAvatar, AtButton, AtIcon, AtMessage } from 'taro-ui'
 import moment from 'moment'
 import { systemImagePre } from '@/utils/constant'
 import './index.scss'
 
-interface clubItem {checked: boolean, id: IdType, title: string}
+interface clubItem {checked: boolean, id: number, title: string}
 
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
@@ -93,35 +92,30 @@ function Index() {
     })
   }
   const getAllClub = () => {
-    return clubList || getClubList({
-      pageNo: 1,
-      pageSize: 100
-    }).then(res => {
-      const { data: { list = [] } } = res
-      const clubArr: clubItem[] = []
-      let clubIdsList
-      let names: string = ''
-      const ids: IdType[] = []
-      try {
-        const arr = JSON.parse(userInfo?.clubIds || '')
-        if(Array.isArray(arr)) clubIdsList = arr
-      } catch (error) {
-        clubIdsList = []
+    const list = Taro.getStorageSync('clubList')
+    const clubArr: clubItem[] = []
+    let clubIdsList
+    let names: string = ''
+    const ids: IdType[] = []
+    try {
+      const arr = JSON.parse(userInfo?.clubIds || '')
+      if(Array.isArray(arr)) clubIdsList = arr
+    } catch (error) {
+      clubIdsList = []
+    }
+    list.forEach((club: {id: number, title: string}) => {
+      const item: clubItem = {checked: false, id: club.id, title: club.title}
+      
+      if (clubIdsList.includes(Number(club.id))) {
+        item.checked = true
+        ids.push(Number(item.id))
+        names = names.length ? names + '/' + item.title : item.title
       }
-      list.forEach((club: ClubManage.ClubDetail) => {
-        const item: clubItem = {checked: false, id: club.id, title: club.clubTitle}
-        
-        if (clubIdsList.includes(Number(club.id))) {
-          item.checked = true
-          ids.push(Number(item.id))
-          names = names.length ? names + '/' + item.title : item.title
-        }
-        clubArr.push(item);
-      })
-      setClubList(clubArr)
-      setClubs(ids)
-      setClubNames(names)
+      clubArr.push(item);
     })
+    setClubList(clubArr)
+    setClubs(ids)
+    setClubNames(names)
   }
 
   const changeUser = () => {

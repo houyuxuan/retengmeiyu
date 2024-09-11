@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { View, Input, Image, Button } from '@tarojs/components'
-import { PageParams, Resource, IdType } from '@/types'
+import { PageParams, Resource, IdType, Tab } from '@/types'
 import { AtTabs, AtIcon } from 'taro-ui'
 import { getResourceList } from '@/api'
 import { getTagList } from '@/api/club'
 import RtList from '@/components/RtList'
 import CheckLogin from '@/components/CheckLogin'
-import Taro from '@tarojs/taro'
-import { resourceTabList } from '@/utils/constant'
+import Taro, { getStorageSync, useDidShow } from '@tarojs/taro'
 import filterIcon from '@/assets/icon/filter.png'
 import './index.scss'
 
 interface Params {
-  resourcesType: Resource.ResourceType;
+  // resourcesType?: Resource.ResourceType;
   clubId?: IdType; // 资源活动类型（这里产品设计有问题，资源和社团是分开管理的）
   clubTagId?: IdType; // 资源标签
   searchKeyWord: string;
@@ -21,8 +20,12 @@ interface Params {
 function Index() {
   const [currTab, setTab] = useState(0)
   const [tagList, setTags] = useState<Resource.Tag[]>([])
+  const [resourceTabList, setTabs] = useState<Tab[]>([{ title: '全部', value: 0 }])
   const [keyword, setKeyword] = useState('');
 
+  useDidShow(() => {
+    getTabList()
+  })
   const handleChange = (e: any) => {
     setKeyword(e.detail.value)
   }
@@ -48,10 +51,8 @@ function Index() {
     setTags(data);
   } 
   const getList = () => {
-    if (Taro.getStorageSync('userInfo')) {
       const params: Params & PageParams  = {
-        resourcesType: resourceTabList[currTab].value,
-        // clubId: resourceTabList[currTab].value,
+        clubId: resourceTabList?.[currTab]?.value,
         searchKeyWord: keyword,
         ...page
       }
@@ -61,17 +62,29 @@ function Index() {
         setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
     }
-  }
 
   const refresh = () => {
     setList([])
-    getTags(currTab)
+    getTags(resourceTabList?.[currTab].value)
     setPage({
       ...page,
       pageNo: 1
     })
   }
 
+  const getTabList = () => {
+    if (Taro.getStorageSync('userInfo')) {
+        const clubList = getStorageSync('clubList')
+        const arr = [{ title: '全部', value: 0 }];
+        (clubList || []).forEach((club: { id: number, title: string, [key: string]: any}) => {
+          arr.push({
+            value: Number(club.id),
+            title: club.title + '素材'
+          })
+        })
+        setTabs(arr)
+    }
+  }
   useEffect(getList, [page])
 
   useEffect(refresh, [currTab, keyword])
@@ -98,7 +111,7 @@ function Index() {
       </View>
       <AtTabs
         current={currTab}
-        tabList={resourceTabList}
+        tabList={resourceTabList || []}
         onClick={item => setTab(item)}
       />
       {!!tagList.length && (

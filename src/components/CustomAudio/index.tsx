@@ -111,7 +111,7 @@ function CustomAudio(props: {
         ></View>
       </View>
       <Text>{fmtSecond(Math.floor(currentTime))}/{fmtSecond(Math.floor(duration))}</Text>
-      {props.hasPermission && <View className='download'>
+      {/* {props.hasPermission && <View className='download'>
         <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
           setLoading(true)
           if (!loading) {
@@ -120,7 +120,7 @@ function CustomAudio(props: {
             })
           }
         }} />
-      </View>}
+      </View>} */}
       {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>
   )

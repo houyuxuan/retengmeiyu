@@ -47,6 +47,11 @@ export interface Article {
     url: string
 }
 
+export interface Tab {
+    title: string,
+    value: number
+}
+
 // 关于我们
 namespace AboutUs {
     // 关于我们-新增介绍
@@ -285,7 +290,7 @@ namespace ClubManage {
         clubTagName: string
     }
     export interface ClubDetail {
-        id: IdType;
+        id: number;
         clubTitle: string;
         clubCoverUrl: string;
         clubDetails: string;

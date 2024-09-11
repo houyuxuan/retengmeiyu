@@ -76,6 +76,7 @@ function Index() {
   const getList = async () => {
     if (Taro.getStorageSync('userInfo')) {
       const result: { id: number, title: string, img: any }[] = []
+      const idMap: { [key: string]: any } = {}
       await getClubList({
         pageNo: 1,
         pageSize: 100
@@ -87,9 +88,11 @@ function Index() {
             title: club.clubTitle,
             img: imgList[club.clubTitle] || club.clubCoverUrl
           })
+          idMap[club.clubTitle] = club.id;
         })
       })
       setStorageSync('clubList', result);
+      setStorageSync('clubMap', idMap);
     }
   }
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea, Picker } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
-import { Resource, ContentItem, FileType, IdType } from '@/types'
-import Taro from '@tarojs/taro'
+import { Resource, ContentItem, FileType, IdType, Tab } from '@/types'
+import Taro, { useDidShow, getStorageSync } from '@tarojs/taro'
 import FileUpload from '../FileUpload'
-import { communityList } from '@/utils/constant'
+// import { communityList } from '@/utils/constant'
 import './index.scss'
 import { getTagList } from '@/api/club'
 
@@ -31,7 +31,27 @@ export default function EditArticle(props: {
     resourcesCoverUrl: '',
     resourcesDetails: [],
   })
+  const [communityList, setCommunityList] = useState<{
+    value: number,
+    title: string
+  }[]>([])
+  useDidShow(() => {
+    getTabList()
+  })
 
+  const getTabList = () => {
+    if (Taro.getStorageSync('userInfo')) {
+        const clubList = getStorageSync('clubList')
+        const arr: {title: string, value: number}[] = [];
+        (clubList || []).forEach((club: { id: number, title: string, [key: string]: any}) => {
+          arr.push({
+            value: Number(club.id),
+            title: club.title
+          })
+        })
+        setCommunityList(arr)
+    }
+  }
   const addContent = (type: ContentItem['type'], index) => {
     article.resourcesDetails.splice(index + 1, 0, {
       type,

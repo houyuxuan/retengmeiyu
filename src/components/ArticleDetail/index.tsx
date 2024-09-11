@@ -38,9 +38,6 @@ export default function ArticleDetail(props: {
     Taro.previewImage({
       current: url,//需要预览的图片链接列表
       urls: [url],  //当前显示图片的链接
-      success(res) {
-        console.log(res)
-      }
     })
   }
 
@@ -73,7 +70,7 @@ export default function ArticleDetail(props: {
               ) : item.type === 'video' ? (
                 <View key={idx} className='img'>
                   <Video src={item.content} />
-                  {props.hasPermission && <View className='download'>
+                  {/* {props.hasPermission && <View className='download'>
                     <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
                       setLoading(true)
                       if (!loading) {
@@ -82,7 +79,7 @@ export default function ArticleDetail(props: {
                         })
                       }
                     }} />
-                  </View>}
+                  </View>} */}
                 </View>
               ) : item.type === 'audio' ? (
                 <CustomAudio src={item.content} hasPermission={props.hasPermission} />

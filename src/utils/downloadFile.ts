@@ -6,7 +6,6 @@ export async  function downloadFile(fileUrl) {
     const res = await Taro.downloadFile({
       url: fileUrl, // 七牛云文件的 URL
     });
-    console.log('download res', res);
     if (res.statusCode === 200) {
       // 在微信小程序中，使用 Taro.saveFile 保存文件
       Taro.saveFile({

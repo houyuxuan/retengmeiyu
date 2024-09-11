@@ -601,14 +601,11 @@ export function discussDelete(params: { id: IdType }) {
 
 // 资源-获取自己的列表
 export function getResourceList(params: {
-    resourcesType: Resource.ResourceType;
-    clubId?: IdType; // 资源活动类型（这里产品设计有问题，资源和社团是分开管理的）
+    // resourcesType?: Resource.ResourceType;
+    clubId?: IdType; // 资源活动类型
     clubTagId?: IdType; // 资源标签
     searchKeyWord: string;
 } & PageParams) {
-    if (params.resourcesType === Resource.ResourceType.All) {
-        params.resourcesType = undefined as any
-    }
     return request<PageResult<Resource.ResourceDetail>>({
         url: '/rt/v2/resources/public/page',
         method: 'POST',
@@ -618,12 +615,9 @@ export function getResourceList(params: {
 
 // 资源-获取管理列表
 export function getResourceAdminList(params: {
-    resourcesType: Resource.ResourceType;
+    clubId: IdType;
     searchKeyWord: string;
 } & PageParams) {
-    if (params.resourcesType === Resource.ResourceType.All) {
-        params.resourcesType = undefined as any
-    }
     return request<PageResult<Resource.ResourceDetail>>({
         url: '/rt/resources/admin/page',
         method: 'POST',

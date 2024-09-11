@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Taro, { useDidShow } from '@tarojs/taro'
+import Taro, { useDidShow, getStorageSync } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtMessage, AtTabs } from 'taro-ui'
 import { getResourceAdminList, getResourceList, resourceDelete } from '@/api'
-import { IdType, PageParams, Resource } from '@/types'
+import { IdType, PageParams, Resource, Tab } from '@/types'
 import SearchAndAdd from '@/components/SearchAndAdd'
 import ManageList from '@/components/ManageList'
-import { resourceTabList } from '@/utils/constant'
+// import { resourceTabList } from '@/utils/constant'
 import moment from 'moment'
 import './index.scss'
 
@@ -16,6 +16,7 @@ function Index() {
   const isAdmin = currPage.options.from === 'admin'
 
   const [keyword, setKeyword] = useState('');
+  const [resourceTabList, setTabs] = useState<Tab[]>([{ title: '全部', value: 0 }])
 
   const [resourceList, setList] = useState<Resource.ResourceDetail[]>([])
   const [currTab, setTab] = useState(0)
@@ -26,10 +27,26 @@ function Index() {
   })
 
   const [total, setTotal] = useState(0)
+  useDidShow(() => {
+    getTabList()
+  })
+  const getTabList = () => {
+    if (Taro.getStorageSync('userInfo')) {
+        const clubList = getStorageSync('clubList')
+        const arr = [{ title: '全部', value: 0 }];
+        (clubList || []).forEach((club: { id: number, title: string, [key: string]: any}) => {
+          arr.push({
+            value: Number(club.id),
+            title: club.title + '素材'
+          })
+        })
+        setTabs(arr)
+    }
+  }
   const getList = () => {
     if (isAdmin) {
       getResourceAdminList({
-        resourcesType: resourceTabList[currTab]?.value,
+        clubId: resourceTabList[currTab]?.value,
         searchKeyWord: keyword,
         ...page
       }).then(res => {
@@ -38,7 +55,7 @@ function Index() {
       })
     } else {
       getResourceList({
-        resourcesType: resourceTabList[currTab]?.value,
+        clubId: resourceTabList[currTab]?.value,
         searchKeyWord: keyword,
         ...page
       }).then(res => {

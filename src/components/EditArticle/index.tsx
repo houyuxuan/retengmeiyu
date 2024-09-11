@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea, Picker } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
 import { ContentItem, FileType, Garden, IdType } from '@/types'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow, getStorageSync } from '@tarojs/taro'
 import { getSchoolList } from '@/api'
 import FileUpload from '../FileUpload'
-import { gradeList, bookVolumesList, communityList } from '@/utils/constant'
+import { gradeList, bookVolumesList } from '@/utils/constant'
 import './index.scss'
 
 export interface ArticleDetail {
@@ -54,7 +54,27 @@ export default function EditArticle(props: {
   const [volumeIndex, setVolumeIndex] = useState<number>()
 
   const mySchool = Taro.getStorageSync('mySchool') as Garden.SchoolDetail
-
+  const [communityList, setCommunityList] = useState<{
+    value: number,
+    title: string
+  }[]>([])
+  const clubMap = getStorageSync('clubMap')
+  useDidShow(() => {
+    getTabList()
+  })
+  const getTabList = () => {
+    if (Taro.getStorageSync('userInfo')) {
+        const clubList = getStorageSync('clubList')
+        const arr: {title: string, value: number}[] = [];
+        (clubList || []).forEach((club: { id: number, title: string, [key: string]: any}) => {
+          arr.push({
+            value: Number(club.id),
+            title: club.title
+          })
+        })
+        setCommunityList(arr)
+    }
+  }
   const changeClub = (e) => {
       const index = +e.detail.value
       const clubNo = communityList[index].value
@@ -275,7 +295,7 @@ export default function EditArticle(props: {
               </Picker>
             </View>)
           }
-          {props.hasClub && article.cludId === Garden.ActivityType.Art  && (
+          {props.hasClub && article.cludId === clubMap?.['美术']  && (
             <View>
               <View className='select-wrapper input-wrapper'>
                 <Label className='required'>年级</Label>
