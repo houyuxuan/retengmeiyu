@@ -10,6 +10,7 @@ export default defineAppConfig({
   subPackages: [
     {
       root: "module",
+      independent: true,
       pages: [
         'pages/garden/index',
         'pages/garden-activity/index',
@@ -30,6 +31,7 @@ export default defineAppConfig({
     },
     {
       root: "detailPackage",
+      independent: true,
       pages: [
         'pages/resource-detail/index',
         'pages/about-us-detail/index',
@@ -40,6 +42,7 @@ export default defineAppConfig({
     },
     {
       root: "editPackage",
+      independent: true,
       pages: [
         'pages/resource-edit/index',
         'pages/about-us-edit/index',
@@ -50,6 +53,7 @@ export default defineAppConfig({
     },
     {
       root: "systemPackage",
+      independent: true,
       pages: [
         'pages/about-us/index',
         'pages/about-us-manage/index',

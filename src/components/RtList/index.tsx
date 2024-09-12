@@ -44,7 +44,7 @@ function Index(props: {
     <View className='list-content'>
       <AtMessage />
       {props.list.length ? props.list.map((item, index) => (
-        <View className='list-item' key={index} onClick={() => toDetail(item?.articleAddress ? item.articleAddress : item.id)}>
+        <View className='list-item' key={index} onClick={() => toDetail(item?.url ? item.url : item.id)}>
           <Image src={item.coverImg} mode='aspectFill' />
           <View className='text'>
             <View className='title'>{item.title}</View>
