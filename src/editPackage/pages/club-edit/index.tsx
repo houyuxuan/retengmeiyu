@@ -28,7 +28,7 @@ function Index() {
         setDetail(res.data)
         const { clubTagRespVOList: tagAll } = res.data
         if (tagAll) {
-          setTagList(tagList);
+          setTagList(tagAll);
         }
       })
     }
