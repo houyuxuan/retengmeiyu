@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Input, Label, Textarea } from '@tarojs/components'
 import { AtAccordion, AtButton, AtIcon, AtModal, AtMessage } from 'taro-ui'
 import { ClubManage, ContentItem, FileType, IdType } from '@/types'
-// import { addTagAPI, deleteTagAPI } from '@/api/club'
+import { deleteTagAPI } from '@/api/club'
 import Taro from '@tarojs/taro'
 import FileUpload from '../FileUpload'
 import './index.scss'
@@ -53,10 +53,17 @@ export default function EditArticle(props: {
     setTags(tagList)
     setCurrentTag('')
   }
-  const deleteTag = async (i) => {
+  const deleteTag = async (i, tag: ClubManage.Tag) => {
     const list = [...tagList]
-    list.splice(i, 1)
-    setTags(list)
+    if (tag.id) {
+      await deleteTagAPI({ id: tag.id }).then(() => {
+        list.splice(i, 1)
+        setTags(list)
+      })
+    } else {
+      list.splice(i, 1)
+      setTags(list)
+    }
   }
 
   useEffect(() => {
@@ -189,9 +196,9 @@ export default function EditArticle(props: {
               (tag, index) => (
                 <View key={index} className="tag">
                   {tag.clubTagName}
-                  <AtIcon className='delete-icon' value='close' size={14} color='#C0182F' onClick={() => deleteTag(index)} />
+                  <AtIcon className='delete-icon' value='close' size={14} color='#C0182F' onClick={() => deleteTag(index, tag)} />
                 </View>
-              ) 
+              )
             )}
           </View>
           <View className="input-btn">
@@ -201,14 +208,16 @@ export default function EditArticle(props: {
               type='text'
               placeholder='请输入'
               maxlength={10}
-              onInput={(text) => tagchange(text)} />
+              onInput={(text) => tagchange(text)}
+            />
               <View className={`abb-btn ${currentTag ? '' : 'disabled'}`} onClick={() => {
                 currentTag && addTag()
-              }}>新增</View>
+              }}
+              >新增</View>
             </View>
           </View>
         </View>
-        
+
         <View className='detail'>
           <AtAccordion
             title={`${article.clubTitle} 详细内容`}

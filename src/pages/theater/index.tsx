@@ -14,12 +14,12 @@ function Index() {
     pageNo: 1,
     pageSize: 20
   })
-  
+
   const [total, setTotal] = useState(0)
   const [clubId, setClub] = useState()
   useDidShow(() => {
     const list = getStorageSync('clubList')
-    const artClub = (list || []).filter((item) => item.title === '音乐')[0]
+    const artClub = (list || []).filter((item) => item.title === '戏剧')[0]
     setClub(artClub.id)
     getList()
   })
