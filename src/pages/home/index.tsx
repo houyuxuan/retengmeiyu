@@ -16,22 +16,22 @@ import communityTheaterImage from '../../assets/image/community_theater.png'
 function Index() {
   const [articleList, setList] = useState<Article[]>([])
   const enterList = [{
-    pagePath: '../../systemPackage/pages/about-us/index',
+    pagePath: '/systemPackage/pages/about-us/index',
     text: '关于我们',
     bg: 'aboutusBg.png',
     icon: 'aboutus.png'
   }, {
-    pagePath: '../../module/pages/garden/index',
+    pagePath: '/module/pages/garden/index',
     text: '美育花园',
     bg: 'gardenBg.png',
     icon: 'garden.png'
   }, {
-    pagePath: '../../module/pages/community/index',
+    pagePath: '/module/pages/community/index',
     text: '美育论坛',
     bg: 'communityBg.png',
     icon: 'community.png'
   }, {
-    pagePath: '../../module/pages/resource/index',
+    pagePath: '/module/pages/resource/index',
     text: '美育资源',
     bg: 'resourceBg.png',
     icon: 'resource.png'
