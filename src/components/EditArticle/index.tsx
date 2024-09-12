@@ -13,9 +13,9 @@ export interface ArticleDetail {
   coverImg: string;
   detailList: ContentItem[];
   intro?: string;
-  cludId?: IdType;
-  cludGradeId?: IdType;
-  cludGradeVolumeId?: IdType;
+  clubId?: IdType;
+  clubGradeId?: IdType;
+  clubGradeVolumeId?: IdType;
 }
 
 export default function EditArticle(props: {
@@ -81,7 +81,7 @@ export default function EditArticle(props: {
       setClubIndex(index)
       setArticle({
         ...article,
-        cludId: clubNo
+        clubId: clubNo
       } as any)
   }
 
@@ -107,16 +107,16 @@ export default function EditArticle(props: {
         })
       }
     }
-    if (props.article?.cludId) {
-      const index = communityList.findIndex(i => i.value === props.article?.cludId)
+    if (props.article?.clubId) {
+      const index = communityList.findIndex(i => i.value === props.article?.clubId)
       setClubIndex(index)
     }
-    if (props.article?.cludGradeVolumeId) {
-      const index = bookVolumesList.findIndex(i => i.value === props.article?.cludGradeVolumeId)
+    if (props.article?.clubGradeVolumeId) {
+      const index = bookVolumesList.findIndex(i => i.value === props.article?.clubGradeVolumeId)
       setVolumeIndex(index)
     }
-    if (props.article?.cludGradeId) {
-      const index = gradeList.findIndex(i => i.value === props.article?.cludGradeId)
+    if (props.article?.clubGradeId) {
+      const index = gradeList.findIndex(i => i.value === props.article?.clubGradeId)
       setGradeIndex(index)
     }
   }, [schoolList, props.article])
@@ -171,7 +171,7 @@ export default function EditArticle(props: {
     if (props.showSchoolSelect && !article.schoolId) {
       Taro.atMessage({ type: 'warning', message: '请选择所属学校！' })
     }
-    if (props.hasClub && !article.cludId) {
+    if (props.hasClub && !article.clubId) {
       Taro.atMessage({ type: 'warning', message: '请选择所属社团！' })
     }
     if (props.hasIntro && !article.intro) {
@@ -187,23 +187,23 @@ export default function EditArticle(props: {
       Taro.atMessage({ type: 'warning', message: '请填写内容！' })
       return
     }
-    if (props.hasClub && !article.cludId) {
+    if (props.hasClub && !article.clubId) {
       Taro.atMessage({ type: 'warning', message: '请填写社团！' })
       return
     }
-    if (props.hasClub && article.cludId === Garden.ActivityType.Art) {
-      if (!article.cludGradeId) {
+    if (props.hasClub && article.clubId === Garden.ActivityType.Art) {
+      if (!article.clubGradeId) {
         Taro.atMessage({ type: 'warning', message: '请填写年级！' })
         return
       }
-      if (!article.cludGradeVolumeId) {
+      if (!article.clubGradeVolumeId) {
         Taro.atMessage({ type: 'warning', message: '请填写上下册！' })
         return
       }
     } else {
       // 不是美术的话要清除不必要的传参
-      delete article.cludGradeId
-      delete article.cludGradeVolumeId
+      delete article.clubGradeId
+      delete article.clubGradeVolumeId
     }
     props.onSave(article)
   }
@@ -295,7 +295,7 @@ export default function EditArticle(props: {
               </Picker>
             </View>)
           }
-          {props.hasClub && article.cludId === clubMap?.['美术']  && (
+          {props.hasClub && article.clubId === clubMap?.['美术']  && (
             <View>
               <View className='select-wrapper input-wrapper'>
                 <Label className='required'>年级</Label>
@@ -304,7 +304,7 @@ export default function EditArticle(props: {
                   setGradeIndex(index)
                   setArticle({
                     ...article,
-                    cludGradeId: gradeList[index].value
+                    clubGradeId: gradeList[index].value
                   } as any)
                 }}
                 >
@@ -323,7 +323,7 @@ export default function EditArticle(props: {
                   setVolumeIndex(index)
                   setArticle({
                     ...article,
-                    cludGradeVolumeId: bookVolumesList[index].value
+                    clubGradeVolumeId: bookVolumesList[index].value
                   } as any)
                 }}
                 >

@@ -102,7 +102,7 @@ export async function getSchoolDetail(params: { id: IdType }) {
 }
 
 // 花园-获取学校下活动列表
-export function getSchoolActivity(params:  {schoolId?: IdType, cludId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams) {
+export function getSchoolActivity(params:  {schoolId?: IdType, clubId?: IdType, clubGradeId?: IdType, clubGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams) {
     return request<PageResult<Garden.ActivityDetail>>({
         url: '/rt/v2/school/activity/public/page',
         method: 'POST',

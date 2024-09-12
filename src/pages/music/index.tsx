@@ -25,7 +25,7 @@ function Index() {
   })
   const getList = () => {
     if (Taro.getStorageSync('userInfo') && clubId) {
-      const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {clubId, ...page};
+      const params: {schoolId?: IdType, clubId?: IdType, clubGradeId?: IdType, clubGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {clubId, ...page};
       getSchoolActivity(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
