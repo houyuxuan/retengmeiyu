@@ -1,3 +1,10 @@
+/*
+ * @Author: lihuihui
+ * @Date: 2024-09-12 11:49:55
+ * @LastEditors: lihuihui
+ * @LastEditTime: 2024-09-12 14:18:09
+ * @Description: 请填写简介
+ */
 import { useEffect, useState } from 'react'
 import { View } from '@tarojs/components'
 import { getSchoolActivity } from '@/api'
@@ -53,7 +60,7 @@ function Index() {
           intro: getIntroDetail(i.activityDetails),
           uvTotalCount: i?.uvTotalCount
         }))}
-        detailUrl='/module/pages/activity-detail/index'
+        detailUrl='/detailPackage/pages/activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({

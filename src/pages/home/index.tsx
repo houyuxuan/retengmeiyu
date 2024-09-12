@@ -4,19 +4,19 @@ import Taro, { setStorageSync, useDidShow } from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
 import { systemImagePre } from '@/utils/constant'
 import RtList from '@/components/RtList'
-import { Article, InfoManage } from '@/types/index'
-import { ClubManage } from '@/types/index'
-import './index.scss'
-import communityMusicImage from '../../assets/image/community_music.png';
-import communityArtImage from '../../assets/image/community_art.png';
-import communityTheaterImage from '../../assets/image/community_theater.png';
+import { Article, InfoManage , ClubManage } from '@/types/index'
 import { getClubList } from '@/api/club'
 import { getInfoList } from '@/api/info'
+import './index.scss'
+import communityMusicImage from '../../assets/image/community_music.png'
+import communityArtImage from '../../assets/image/community_art.png'
+import communityTheaterImage from '../../assets/image/community_theater.png'
+
 
 function Index() {
   const [articleList, setList] = useState<Article[]>([])
   const enterList = [{
-    pagePath: '../../module/pages/about-us/index',
+    pagePath: '../../systemPackage/pages/about-us/index',
     text: '关于我们',
     bg: 'aboutusBg.png',
     icon: 'aboutus.png'
@@ -164,7 +164,7 @@ function Index() {
         <View className="link-title">资讯推荐</View>
           <RtList
             list={articleList}
-            detailUrl='/module/pages/news/index'
+            detailUrl='/systemPackage/pages/news/index'
             onLoading={() => null}
             total={articleList.length}
           />

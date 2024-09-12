@@ -49,7 +49,7 @@ function Index() {
   const getTags = async (no) => {
     const { data } = await getTagList({ clubId: no })
     setTags(data);
-  } 
+  }
   const getList = () => {
       const params: Params & PageParams  = {
         clubId: resourceTabList?.[currTab]?.value,
@@ -124,7 +124,7 @@ function Index() {
               {showFilter && (
                 <View className='filter-content'>
                   <View className='select-list'>
-                    {tagList.map(tag => 
+                    {tagList.map(tag =>
                       (<Button className={`button ${tagId === tag.id ? 'active': ''}`} onClick={() => handleTagChange(tag.id)}>{tag.clubTagName}</Button>)
                     )}
                   </View>
@@ -146,7 +146,7 @@ function Index() {
             date: i.createTime || '',
             uvTotalCount: i?.uvTotalCount
           }))}
-          detailUrl='/module/pages/resource-detail/index'
+          detailUrl='/detailPackage/pages/resource-detail/index'
           total={total}
           onLoading={() => {
             setPage({
@@ -156,7 +156,7 @@ function Index() {
           }}
         />
       </View>
-      
+
       <CheckLogin onSuccess={getList} />
     </View>
   )

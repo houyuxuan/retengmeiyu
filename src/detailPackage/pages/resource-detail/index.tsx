@@ -45,7 +45,7 @@ function Index() {
           createTime: detail.createTime || '',
           detailList: JSON.parse(detail.resourcesDetails)
         } : undefined}
-        editUrl={isPreview ? `/module/pages/resource-edit/index?id=${currId}` : ''}
+        editUrl={isPreview ? `/editPackage/pages/resource-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
         hasPermission={hasPerms}
       />

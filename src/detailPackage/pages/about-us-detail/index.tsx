@@ -1,3 +1,10 @@
+/*
+ * @Author: lihuihui
+ * @Date: 2024-09-12 11:49:55
+ * @LastEditors: lihuihui
+ * @LastEditTime: 2024-09-12 14:01:31
+ * @Description: 请填写简介
+ */
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { getIntroDetail } from '@/api'
@@ -39,7 +46,7 @@ function Index() {
           id: detail.id!,
           createTime: detail.createTime || ''
         } : undefined}
-        editUrl={isPreview ? `/module/pages/about-us-edit/index?id=${currId}` : ''}
+        editUrl={isPreview ? `/editPackage/pages/about-us-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
         hasPermission={false}
       />

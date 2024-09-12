@@ -101,7 +101,7 @@ function Index() {
 
   const toScorePage = () => {
     Taro.navigateTo({
-      url: '../../module/pages/score/index'
+      url: '/systemPackage/pages/score/index'
     })
   }
 
@@ -150,14 +150,14 @@ function Index() {
             <View>暂无内容</View>
           </View>
         ) : menuList.filter(i => i.menuName !== '后台管理').map(i => (
-          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `../../module${i.path}`})}>
+          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: i.path})}>
             <Image src={`${systemImagePre}/${i.menuIconUrl}`} />
             <View>{i.menuName}</View>
           </View>
         ))}
       </View>
       {manageItem && (
-        <View className='manage-item' onClick={() => Taro.navigateTo({url: `../../module${manageItem.path}`})}>
+        <View className='manage-item' onClick={() => Taro.navigateTo({url: manageItem.path})}>
           <Image src={`${systemImagePre}/${manageItem.menuIconUrl}`} />
           <View>{manageItem.menuName}</View>
           <AtIcon value="chevron-right" size='20' color='#999' />

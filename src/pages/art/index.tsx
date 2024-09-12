@@ -16,7 +16,7 @@ function Index() {
     pageNo: 1,
     pageSize: 20
   })
-  
+
   const [total, setTotal] = useState(0)
   const [clubId, setClub] = useState()
   useDidShow(() => {
@@ -80,13 +80,13 @@ function Index() {
             <View className='filter-content'>
               <View className='filter-title'>选择年级</View>
               <View className='select-list'>
-                {gradeList.map(grade => 
+                {gradeList.map(grade =>
                   (<Button className={`button ${cludGradeId === grade.value ? 'active': ''}`} onClick={() => handleGradeChange(grade.value)}>{grade.title}</Button>)
                 )}
               </View>
               <View className='filter-title'>选择上下册</View>
               <View className="select-list">
-                {bookVolumesList.map(volume => 
+                {bookVolumesList.map(volume =>
                   (<Button className={`button ${cludGradeVolumeId === volume.value ? 'active': ''}`} onClick={() => handleVolumeChange(volume.value)}>{volume.title}</Button>)
                 )}
               </View>
@@ -107,7 +107,7 @@ function Index() {
           intro: getIntroDetail(i.activityDetails),
           uvTotalCount: i?.uvTotalCount
         }))}
-        detailUrl='/module/pages/activity-detail/index'
+        detailUrl='/detailPackage/pages/activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({

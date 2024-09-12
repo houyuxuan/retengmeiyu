@@ -35,7 +35,7 @@ function Index() {
     }
   }
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `../club-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `/editPackage/pages/club-edit/index${id ? '?id=' + id : ''}`})
   }
   const deleteItem = (id: IdType) => {
     clubDelete({ id }).then(res => {

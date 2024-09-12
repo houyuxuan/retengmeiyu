@@ -14,7 +14,7 @@ function Index() {
     pageNo: 1,
     pageSize: 20
   })
-  
+
   const [total, setTotal] = useState(0)
   const [clubId, setClub] = useState()
   useDidShow(() => {
@@ -53,7 +53,7 @@ function Index() {
           intro: getIntroDetail(i.activityDetails),
           uvTotalCount: i?.uvTotalCount
         }))}
-        detailUrl='/module/pages/activity-detail/index'
+        detailUrl='/detailPackage/pages/activity-detail/index'
         total={total}
         onLoading={() => {
           setPage({

@@ -84,11 +84,11 @@ function Index() {
   })
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `../resource-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `/editPackage/pages/resource-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    Taro.navigateTo({ url: `../resource-detail/index?id=${id}&preview=1` })
+    Taro.navigateTo({ url: `/detailPackage/pages/resource-detail/index?id=${id}&preview=1` })
   }
 
   const deleteItem = (id: IdType) => {

@@ -26,16 +26,14 @@ function Index() {
         id: +currId
       }).then(res => {
         setDetail(res.data)
-        const { clubTagRespVOList: tagList } = res.data
-        if (tagList) {
+        const { clubTagRespVOList: tagAll } = res.data
+        if (tagAll) {
           setTagList(tagList);
         }
       })
     }
   }
-  useEffect(() => {
-    getDetail()
-  }, [currId])
+  useEffect(() => getDetail(), [currId])
 
   const onSave = async (club: ClubDetail & ClubManage.ClubDetail) => {
     const textCount = club.clubDetails.reduce((pre, curr) => {

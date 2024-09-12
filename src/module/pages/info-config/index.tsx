@@ -35,7 +35,7 @@ function Index() {
     }
   }
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `../info-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `/editPackage/pages/info-edit/index${id ? '?id=' + id : ''}`})
   }
   const deleteItem = (id: IdType) => {
     infoDelete({ id }).then(res => {
@@ -46,7 +46,7 @@ function Index() {
       refresh()
     })
   }
-  
+
   const getContent = (details: string) => {
     try {
       return JSON.parse(details).filter(i => i.type === 'text').map(i => i.content).join('').slice(0, 40)

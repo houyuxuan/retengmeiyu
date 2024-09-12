@@ -62,7 +62,7 @@ function Index() {
       ) : <></>}
       <View className='menu-list'>
         {menuList.map(i => (
-          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `..${i.path.split('/pages')[1]}?from=admin`})}>
+          <View className='menu-item' key={i.id} onClick={() => Taro.navigateTo({url: `${i.path}?from=admin`})}>
             <Image src={`${systemImagePre}${i.menuIconUrl}`} />
             <View>{i.menuName}</View>
           </View>

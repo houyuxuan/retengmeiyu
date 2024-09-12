@@ -39,52 +39,52 @@ export const bookVolumesList = [
 export const menuInfoMap = {
   '活动打卡': {
       icon: '/activity-add.png',
-      path: '/pages/activity-edit/index'
+      path: '/editPackage/pages/activity-edit/index'
   },
   '关于我们管理': {
       icon: '/aboutus-manage-icon.png',
-      path: '/pages/about-us-manage/index'
+      path: '/systemPackage/pages/about-us-manage/index'
   },
   '发布资源': {
       icon: '/resource-add.png',
-      path: '/pages/resource-edit/index'
+      path: '/editPackage/pages/resource-edit/index'
   },
   '讨论发帖': {
       icon: '/post-add.png',
-      path: '/pages/post-edit/index'
+      path: '/module/pages/post-edit/index'
   },
   '后台管理': {
       icon: '/setting.png',
-      path: '/pages/admin-page/index'
+      path: '/systemPackage/pages/admin-page/index'
   },
   '学校管理': {
       icon: '/school-manage-icon.png',
-      path: '/pages/school-manage/index'
+      path: '/module/pages/school-manage/index'
   },
   '活动管理': {
       icon: '/activity-manage-icon.png',
-      path: '/pages/activity-manage/index'
+      path: '/module/pages/activity-manage/index'
   },
   '帖子管理': {
       icon: '/post-manage-icon.png',
-      path: '/pages/post-manage/index'
+      path: '/module/pages/post-manage/index'
   },
   '资源管理': {
       icon: '/resource-manage-icon.png',
-      path: '/pages/resource-manage/index'
+      path: '/module/pages/resource-manage/index'
   },
   '用户管理': {
       icon: '/user-manage-icon.png',
-      path: '/pages/user-manage/index'
+      path: '/systemPackage/pages/user-manage/index'
   },
   // v3 新增模块
   '社团管理': {
       icon: '/club-manage-icon.png',
-      path: '/pages/club-manage/index'
+      path: '/module/pages/club-manage/index'
   },
   '资讯配置': {
       icon: '/info-manage-icon.png',
-      path: '/pages/info-config/index'
+      path: '/module/pages/info-config/index'
   },
 }
 

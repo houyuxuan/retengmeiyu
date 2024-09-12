@@ -59,11 +59,11 @@ function Index() {
   }, [page])
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `../activity-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `/editPackage/pages/activity-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    Taro.navigateTo({url: `../activity-detail/index?id=${id}&preview=1`})
+    Taro.navigateTo({url: `/detailPackage/pages/activity-detail/index?id=${id}&preview=1`})
   }
 
   const deleteItem = (id: IdType) => {

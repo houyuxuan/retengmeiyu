@@ -14,36 +14,51 @@ export default defineAppConfig({
         'pages/garden/index',
         'pages/garden-activity/index',
         'pages/resource/index',
-        'pages/resource-detail/index',
         'pages/resource-manage/index',
-        'pages/resource-edit/index',
-        'pages/about-us/index',
-        'pages/about-us-detail/index',
-        'pages/about-us-manage/index',
-        'pages/about-us-edit/index',
-        'pages/activity-detail/index',
         'pages/post-manage/index',
         'pages/post-edit/index',
         'pages/community/index',
         'pages/community-post-detail/index',
         'pages/community-discuss-post/index',
         'pages/club-manage/index',
-        'pages/club-detail/index',
-        'pages/club-edit/index',
         'pages/school-manage/index',
         'pages/activity-manage/index',
-        'pages/user-manage/index',
-        'pages/user-info/index',
-        'pages/activity-edit/index',
         'pages/school-edit/index',
         'pages/discuss-manage/index',
         'pages/info-config/index',
-        'pages/info-edit/index',
+      ],
+    },
+    {
+      root: "detailPackage",
+      pages: [
+        'pages/resource-detail/index',
+        'pages/about-us-detail/index',
+        'pages/activity-detail/index',
+        'pages/club-detail/index',
         'pages/info-detail/index',
+      ]
+    },
+    {
+      root: "editPackage",
+      pages: [
+        'pages/resource-edit/index',
+        'pages/about-us-edit/index',
+        'pages/club-edit/index',
+        'pages/activity-edit/index',
+        'pages/info-edit/index',
+      ]
+    },
+    {
+      root: "systemPackage",
+      pages: [
+        'pages/about-us/index',
+        'pages/about-us-manage/index',
+        'pages/user-manage/index',
+        'pages/user-info/index',
         'pages/admin-page/index',
         'pages/score/index',
         'pages/news/index'
-      ],
+      ]
     }
   ],
   window: {

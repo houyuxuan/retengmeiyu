@@ -47,11 +47,11 @@ function Index() {
   })
 
   const goEdit = (id?: IdType) => {
-    Taro.navigateTo({url: `../about-us-edit/index${id ? '?id=' + id : ''}`})
+    Taro.navigateTo({url: `/editPackage/pages/about-us-edit/index${id ? '?id=' + id : ''}`})
   }
 
   const goPreview = (id: IdType) => {
-    Taro.navigateTo({ url: `../about-us-detail/index?id=${id}&preview=1` })
+    Taro.navigateTo({ url: `/detailPackage/pages/about-us-detail/index?id=${id}&preview=1` })
   }
 
   const deleteItem = (id: IdType) => {

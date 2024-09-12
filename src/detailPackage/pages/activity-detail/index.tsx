@@ -100,9 +100,9 @@ function Index() {
           createTime: detail.createTime || ''
         } : undefined}
         author={detail?.memberUserInfo!}
-        editUrl={isPreview ? `/module/pages/activity-edit/index?id=${currId}` : ''}
+        editUrl={isPreview ? `/editPackage/pages/activity-edit/index?id=${currId}` : ''}
         getDetail={getDetail}
-        hasPermission={true}
+        hasPermission
       />
       {!isPreview && <View className='remarks'>
         <View className='remark-title'>
