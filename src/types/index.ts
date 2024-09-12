@@ -96,9 +96,9 @@ namespace Garden {
         detailList: ContentItem[];
         zanNumber: number;
         memberUserInfo: UserManagement.UserInfo;
-        cludId?: IdType;
-        cludGradeId?: IdType;
-        cludGradeVolumeId?: IdType;
+        clubId?: IdType;
+        clubGradeId?: IdType;
+        clubGradeVolumeId?: IdType;
         uvTotalCount: number | string | null
     }
 

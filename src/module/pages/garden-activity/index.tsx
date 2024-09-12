@@ -23,17 +23,17 @@ function Index() {
   const [total, setTotal] = useState(0)
   const [clubId, setClubId] = useState(0)
   const [isArt, setIsArt] = useState(false)
-  const [cludGradeId, setCludGradeId] = useState<IdType>() // 年级id
-  const [cludGradeVolumeId, setCludGradeVolumeId] = useState<IdType>() // 上下册
+  const [clubGradeId, setClubGradeId] = useState<IdType>() // 年级id
+  const [clubGradeVolumeId, setClubGradeVolumeId] = useState<IdType>() // 上下册
   const [showFilter, setShowFilter] = useState(false)
   const getList = () => {
     if (Taro.getStorageSync('userInfo')) {
-      const params: {schoolId?: IdType, clubId?: IdType, cludGradeId?: IdType, cludGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {...page};
+      const params: {schoolId?: IdType, clubId?: IdType, clubGradeId?: IdType, clubGradeVolumeId?: IdType, searchKeyWord?: string} & PageParams = {...page};
       if (schoolId) params.schoolId = schoolId;
       const club = clubId || Number(Taro.getCurrentInstance().router?.params.clubId);
       if (club) params.clubId = club
-      if (cludGradeId) params.cludGradeId = cludGradeId;
-      if (cludGradeVolumeId) params.cludGradeVolumeId = cludGradeVolumeId;
+      if (clubGradeId) params.clubGradeId = clubGradeId;
+      if (clubGradeVolumeId) params.clubGradeVolumeId = clubGradeVolumeId;
       getSchoolActivity(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...activityList, ...res.data.list])
@@ -41,17 +41,17 @@ function Index() {
     }
   }
   const handleGradeChange = (id) => {
-    if (cludGradeId === id) {
-      setCludGradeId('')
+    if (clubGradeId === id) {
+      setClubGradeId('')
     } else {
-      setCludGradeId(id)
+      setClubGradeId(id)
     }
   }
   const handleVolumeChange = (id) => {
-    if (cludGradeVolumeId === id) {
-      setCludGradeVolumeId('')
+    if (clubGradeVolumeId === id) {
+      setClubGradeVolumeId('')
     } else {
-      setCludGradeVolumeId(id)
+      setClubGradeVolumeId(id)
     }
   }
   const handleFilterClick = () => {
@@ -95,14 +95,14 @@ function Index() {
             <View className='filter-content'>
               <View className='filter-title'>选择年级</View>
               <View className='select-list'>
-                {gradeList.map(grade =>
-                  (<Button className={`button ${cludGradeId === grade.value ? 'active': ''}`} onClick={() => handleGradeChange(grade.value)}>{grade.title}</Button>)
+                {gradeList.map(grade => 
+                  (<Button className={`button ${clubGradeId === grade.value ? 'active': ''}`} onClick={() => handleGradeChange(grade.value)}>{grade.title}</Button>)
                 )}
               </View>
               <View className='filter-title'>选择上下册</View>
               <View className="select-list">
-                {bookVolumesList.map(volume =>
-                  (<Button className={`button ${cludGradeVolumeId === volume.value ? 'active': ''}`} onClick={() => handleVolumeChange(volume.value)}>{volume.title}</Button>)
+                {bookVolumesList.map(volume => 
+                  (<Button className={`button ${clubGradeVolumeId === volume.value ? 'active': ''}`} onClick={() => handleVolumeChange(volume.value)}>{volume.title}</Button>)
                 )}
               </View>
             </View>

@@ -41,11 +41,11 @@ function Index() {
       activityTitle: activity.title,
       activityCoverUrl: activity.coverImg,
       activityDetails: JSON.stringify(activity.detailList),
-      cludId: activity.cludId,
+      clubId: activity.clubId,
     }
-    if (Garden.ActivityType.Art === activity.cludId) {
-      params.cludGradeId = activity.cludGradeId
-      params.cludGradeVolumeId = activity.cludGradeVolumeId
+    if (Garden.ActivityType.Art === activity.clubId) {
+      params.clubGradeId = activity.clubGradeId
+      params.clubGradeVolumeId = activity.clubGradeVolumeId
     }
     await activityEdit(params)
     Taro.atMessage({

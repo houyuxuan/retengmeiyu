@@ -104,22 +104,20 @@ function Index() {
     }
   }
   const getArticleList = async () => {
-    if (Taro.getStorageSync('userInfo')) {
-      const { data: {list = []} } = await getInfoList({ pageNo: 1, pageSize: 5, searchKeyWord: '' })
-      const result: Article[] = []
-      list.forEach((a: InfoManage.InfoDetail) => {
-        const { articleAddress = '', id = '', informationCoverUrl = '', informationDetails = '', informationTitle = '', date = '' } = a
-        result.push({
-          id,
-          title: informationTitle,
-          coverImg: informationCoverUrl,
-          intro: getContent(informationDetails),
-          url: articleAddress,
-          date
-        })
+    const { data: {list = []} } = await getInfoList({ pageNo: 1, pageSize: 5, searchKeyWord: '' })
+    const result: Article[] = []
+    list.forEach((a: InfoManage.InfoDetail) => {
+      const { articleAddress = '', id = '', informationCoverUrl = '', informationDetails = '', informationTitle = '', date = '' } = a
+      result.push({
+        id,
+        title: informationTitle,
+        coverImg: informationCoverUrl,
+        intro: getContent(informationDetails),
+        url: articleAddress,
+        date
       })
-      setList(result)
-    }
+    })
+    setList(result)
   }
   // const getClubList = () => {
   //   Taro.request({
