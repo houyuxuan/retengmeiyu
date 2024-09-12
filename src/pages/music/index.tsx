@@ -21,7 +21,6 @@ function Index() {
     const list = getStorageSync('clubList')
     const artClub = (list || []).filter((item) => item.title === '音乐')[0]
     setClub(artClub.id)
-    getList()
   })
   const getList = () => {
     if (Taro.getStorageSync('userInfo') && clubId) {
@@ -39,7 +38,7 @@ function Index() {
       return ''
     }
   }
-  useEffect(getList, [page])
+  useEffect(getList, [page, clubId])
 
   return (
     <View className='activity-container'>

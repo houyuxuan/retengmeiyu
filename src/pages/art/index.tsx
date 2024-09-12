@@ -23,7 +23,6 @@ function Index() {
     const list = getStorageSync('clubList')
     const artClub = (list || []).filter((item) => item.title === '美术')[0]
     setClub(artClub.id)
-    getList()
   })
   const [clubGradeId, setClubGradeId] = useState<IdType>() // 年级id
   const [clubGradeVolumeId, setClubGradeVolumeId] = useState<IdType>() // 上下册
@@ -66,7 +65,7 @@ function Index() {
       return ''
     }
   }
-  useEffect(getList, [page])
+  useEffect(getList, [page, clubId])
 
   return (
     <View className='activity-container art'>
