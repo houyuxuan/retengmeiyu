@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro'
 import { View, Text, Icon } from "@tarojs/components";
 import { AtActivityIndicator, AtIcon } from 'taro-ui';
-import './index.scss'
 import { downloadFile } from '@/utils/downloadFile';
+import './index.scss'
 
 function CustomAudio(props: {
   src: string;
@@ -119,7 +119,8 @@ function CustomAudio(props: {
               setLoading(false)
             })
           }
-        }} />
+        }}
+        />
       </View>} */}
       {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>

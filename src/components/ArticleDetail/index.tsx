@@ -5,8 +5,9 @@ import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
 import Taro, { useDidShow } from '@tarojs/taro'
 import CustomAudio from '@/components/CustomAudio'
-import './index.scss'
 import { downloadFile } from '@/utils/downloadFile'
+import './index.scss'
+
 
 export default function ArticleDetail(props: {
   detail?: {
@@ -33,7 +34,7 @@ export default function ArticleDetail(props: {
       setVisible(props.showTitle)
     }
   }, [props.showTitle])
-  
+
   const previewImage = (url) => {  //这里获取到的是一张本地的图片
     Taro.previewImage({
       current: url,//需要预览的图片链接列表
@@ -70,7 +71,7 @@ export default function ArticleDetail(props: {
               ) : item.type === 'video' ? (
                 <View key={idx} className='img'>
                   <Video src={item.content} />
-                  {/* {props.hasPermission && <View className='download'>
+                  {props.hasPermission && <View className='download'>
                     <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
                       setLoading(true)
                       if (!loading) {
@@ -78,8 +79,9 @@ export default function ArticleDetail(props: {
                           setLoading(false)
                         })
                       }
-                    }} />
-                  </View>} */}
+                    }}
+                    />
+                  </View>}
                 </View>
               ) : item.type === 'audio' ? (
                 <CustomAudio src={item.content} hasPermission={props.hasPermission} />
