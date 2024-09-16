@@ -119,21 +119,6 @@ function Index() {
     })
     setList(result)
   }
-  // const getClubList = () => {
-  //   Taro.request({
-  //     url: 'https://api.weixin.qq.com/cgi-bin/stable_token',
-  //     method: 'POST',
-  //     data: {
-  //       grant_type: 'client_credential',
-  //       appid: 'wxa688e0cca18e3f1f',
-  //       secret: 'af8f54bd690ad6ff849c364449331fe1'
-  //     }
-  //   }).then(res => {
-  //     Taro.request({
-  //       url: `https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=${res.data.access_token}`
-  //     })
-  //   })
-  // }
 
   const rect = Taro.getMenuButtonBoundingClientRect()
 

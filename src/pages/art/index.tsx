@@ -7,7 +7,7 @@ import { gradeList, bookVolumesList } from '@/utils/constant'
 import RtList from '@/components/RtList'
 import filterIcon from '@/assets/icon/filter.png'
 import CheckLogin from '@/components/CheckLogin'
-import './index.scss'
+import '../index.scss'
 
 function Index() {
   const [activityList, setList] = useState<Garden.ActivityDetail[]>([])

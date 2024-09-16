@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtMessage } from 'taro-ui'
-import './index.scss'
 
 function Index() {
   useEffect(() => {

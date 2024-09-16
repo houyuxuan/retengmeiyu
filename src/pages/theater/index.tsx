@@ -5,7 +5,7 @@ import { Garden, PageParams, IdType } from '@/types'
 import RtList from '@/components/RtList'
 import Taro, { useDidShow, getStorageSync } from '@tarojs/taro'
 import CheckLogin from '@/components/CheckLogin'
-import './index.scss'
+import '../index.scss'
 
 function Index() {
   const [activityList, setList] = useState<Garden.ActivityDetail[]>([])
