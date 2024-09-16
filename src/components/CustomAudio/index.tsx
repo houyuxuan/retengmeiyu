@@ -120,7 +120,7 @@ function CustomAudio(props: {
             })
           }
         }
-        >下载资源</Button>
+        >下载</Button>
       </View>}
       {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>

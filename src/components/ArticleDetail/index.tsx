@@ -80,7 +80,7 @@ export default function ArticleDetail(props: {
                         })
                       }
                     }
-                    >下载资源</Button>
+                    >下载</Button>
                   </View>}
                 </View>
               ) : item.type === 'audio' ? (
