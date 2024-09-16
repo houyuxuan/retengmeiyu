@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro'
-import { View, Text, Icon } from "@tarojs/components";
+import { View, Text, Button } from "@tarojs/components";
 import { AtActivityIndicator, AtIcon } from 'taro-ui';
 import { downloadFile } from '@/utils/downloadFile';
 import './index.scss'
@@ -111,17 +111,17 @@ function CustomAudio(props: {
         ></View>
       </View>
       <Text>{fmtSecond(Math.floor(currentTime))}/{fmtSecond(Math.floor(duration))}</Text>
-      {/* {props.hasPermission && <View className='download'>
-        <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
+      {props.hasPermission && <View className='download'>
+        <Button className='icon' size='mini' onClick={() => {
           setLoading(true)
-          if (!loading) {
+          if (!loading) 
             downloadFile(props.src).finally(() => {
               setLoading(false)
             })
           }
-        }}
-        />
-      </View>} */}
+        }
+        >下载资源</Button>
+      </View>}
       {loading && <AtActivityIndicator size={30} content='下载中...' />}
     </View>
   )
