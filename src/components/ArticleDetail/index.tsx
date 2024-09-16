@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text, Video, Icon } from '@tarojs/components'
+import { View, Image, Text, Video, Button } from '@tarojs/components'
 import { ContentItem, IdType, UserManagement } from '@/types'
 import { AtActivityIndicator, AtAvatar, AtButton } from 'taro-ui'
 import moment from 'moment'
@@ -72,15 +72,15 @@ export default function ArticleDetail(props: {
                 <View key={idx} className='img'>
                   <Video src={item.content} />
                   {props.hasPermission && <View className='download'>
-                    <Icon className='icon' size='20' type='download' color={loading ? '#aaa' : '#C0182F'} onClick={() => {
+                    <Button className='icon' size='mini' onClick={() => {
                       setLoading(true)
-                      if (!loading) {
+                      if (!loading) 
                         downloadFile(item.content).finally(() => {
                           setLoading(false)
                         })
                       }
-                    }}
-                    />
+                    }
+                    >下载资源</Button>
                   </View>}
                 </View>
               ) : item.type === 'audio' ? (

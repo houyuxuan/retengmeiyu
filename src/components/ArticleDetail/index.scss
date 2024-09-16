@@ -40,9 +40,9 @@
 
         .img {
             position: relative;
-            // display: flex;
-            // flex-direction: column;
-            // justify-content: end;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
             text-align: end;
         }
 
@@ -82,14 +82,17 @@
         }
     }
     .download {
-        height: 0;
-        line-height: 40px;
-        position: absolute;
+        height: 60px;
+        line-height: 60px;
+        margin-bottom: 20px;
+        position: relative;
         bottom: 0;
         right: 0;
-        padding: 0 20px;
         opacity: 1;
         .icon {
+            width: 168px;
+            color: #C0182F;
+            margin: 0;
             &:hover {
                 opacity: 0.5;
             }
