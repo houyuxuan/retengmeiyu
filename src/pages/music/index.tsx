@@ -5,7 +5,7 @@ import { getSchoolActivity, } from '@/api'
 import { Garden, PageParams, IdType } from '@/types'
 import RtList from '@/components/RtList'
 import CheckLogin from '@/components/CheckLogin'
-import '@/module/pages/garden-activity/index.scss'
+import './index.scss'
 
 function Index() {
   const [activityList, setList] = useState<Garden.ActivityDetail[]>([])
