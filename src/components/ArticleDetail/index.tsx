@@ -15,6 +15,7 @@ export default function ArticleDetail(props: {
     title: string;
     createTime: string;
     detailList: ContentItem[];
+    uvTotalCount?: IdType | null
   };
   showTitle?: boolean;
   author?: UserManagement.UserInfo;
@@ -58,7 +59,7 @@ export default function ArticleDetail(props: {
               </View>
             ) : (
               <View className='date'>
-                {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm')}
+              {moment(props.detail.createTime).format('YYYY-MM-DD HH:mm')}
               </View>
             )}
           </>)}
@@ -74,7 +75,7 @@ export default function ArticleDetail(props: {
                   {props.hasPermission && <View className='download'>
                     <Button className='icon' size='mini' onClick={() => {
                       setLoading(true)
-                      if (!loading) 
+                      if (!loading)
                         downloadFile(item.content).finally(() => {
                           setLoading(false)
                         })
@@ -106,6 +107,9 @@ export default function ArticleDetail(props: {
               >编辑</AtButton>
             </View>
           )}
+          {(props.detail.uvTotalCount  || props.detail.uvTotalCount === 0) && <View className='date'>
+            访问量：{props.detail.uvTotalCount}
+          </View>}
         </View>
       ) : (
         <View>

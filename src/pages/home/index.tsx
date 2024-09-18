@@ -65,8 +65,8 @@ function Index() {
     })
     // getClubList()
   }, [])
-  useDidShow(() => {
-    getClubStore()
+  useDidShow(async () => {
+    await getClubStore()
     getArticleList()
   })
   const getContent = (details: string) => {
