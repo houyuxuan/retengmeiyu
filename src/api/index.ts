@@ -615,7 +615,7 @@ export function getResourceList(params: {
 
 // 资源-获取管理列表
 export function getResourceAdminList(params: {
-    clubId: IdType;
+    clubId?: IdType;
     searchKeyWord: string;
 } & PageParams) {
     return request<PageResult<Resource.ResourceDetail>>({

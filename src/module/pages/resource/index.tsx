@@ -52,10 +52,10 @@ function Index() {
   }
   const getList = () => {
       const params: Params & PageParams  = {
-        clubId: resourceTabList?.[currTab]?.value,
         searchKeyWord: keyword,
         ...page
       }
+      if (resourceTabList?.[currTab]?.value) params.clubId = resourceTabList?.[currTab]?.value
       if (tagId) params.clubTagId = tagId;
       getResourceList(params).then(res => {
         setTotal(res.data.total)

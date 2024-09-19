@@ -10,6 +10,13 @@ import ManageList from '@/components/ManageList'
 import moment from 'moment'
 import './index.scss'
 
+interface Params {
+  // resourcesType?: Resource.ResourceType;
+  clubId?: IdType; // 资源活动类型（这里产品设计有问题，资源和社团是分开管理的）
+  clubTagId?: IdType; // 资源标签
+  searchKeyWord: string;
+}
+
 function Index() {
   const currPage = Taro.getCurrentPages().pop()!
 
@@ -44,21 +51,18 @@ function Index() {
     }
   }
   const getList = () => {
+    const params: Params & PageParams = {
+      searchKeyWord: keyword,
+      ...page
+    }
+    if (resourceTabList[currTab]?.value) params.clubId = resourceTabList[currTab]?.value
     if (isAdmin) {
-      getResourceAdminList({
-        clubId: resourceTabList[currTab]?.value,
-        searchKeyWord: keyword,
-        ...page
-      }).then(res => {
+      getResourceAdminList(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
     } else {
-      getResourceList({
-        clubId: resourceTabList[currTab]?.value,
-        searchKeyWord: keyword,
-        ...page
-      }).then(res => {
+      getResourceList(params).then(res => {
         setTotal(res.data.total)
         setList(page.pageNo === 1 ? res.data.list : [...resourceList, ...res.data.list])
       })
